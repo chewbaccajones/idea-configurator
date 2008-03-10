@@ -1,0 +1,566 @@
+<!--
+  ~ /**
+  ~  IDEA Configurator
+  ~  Copyright (C) 2006 Justin Tomich<tomichj at gmail dot com>
+  ~
+  ~  This program is free software; you can redistribute it and/or
+  ~  modify it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation; either version 2 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful, but
+  ~  WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  ~  General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program; if not, write to the Free Software
+  ~  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  ~  */
+  ~
+  -->
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us">
+    <title>IdeaJavaModule Ant Task</title>
+</head>
+
+<body>
+
+<h2><a name="ant">IdeaJavaModule</a></h2>
+
+<h3>Description</h3>
+
+<p>Generates a java module configuration file for
+    <a href="http://www.jetbrains.com/idea/">Intellij IDEA</a>.</p>
+
+<p>IDEA Configurator, Copyright (C) 2006 Justin Tomich<tomichj at gmail
+	dot com>, is distributed under version 2 of the GNU General Public
+	License. For complete information see LICENSE.txt in the
+	idea-configurator distribution or consult the <a
+	href="http://www.gnu.org/licenses/gpl.html">
+	online copy</a> of the license. Intellij IDEA is a registered
+	copyright of <a href="http://www.jetbrains.com">Jetbrains
+	s.r.o.</a>, and has no affiliation in any way with the
+	idea-configurator project. For idea-configurator support or
+	questions, or to contribute to idea-configurator, see <a
+	href="http://code.google.com/p/idea-configurator/">our site</a>.</p>
+
+<p>IdeaJavaModule strives to make module configuration simple for basic
+    projects, but still provides the tools necessary for arbitrarily complex
+    configuration.</p>
+
+<p>IDEA manages the classpath with "libraries" - module libraries,
+	project-wide libraries, and global libraries. IdeaJavaModule allows
+	you to configure module library and refer to global or project
+	libraries, which are configured outside of the module. You can set
+	the classpath as an attribute of
+	<code>&lt;ideajavamodule&gt;</code>, you can set it through nested
+	<code>&lt;classpath&gt;</code> elements, or you can set up nested
+	<code>&lt;moduleLibrary&gt;</code>,
+	<code>&lt;projectLibrary&gt;</code>, and
+	<code>&lt;globalLibrary&gt;</code> elements. You can even
+	mix-and-match, although you're advised to use only the nested
+	elements if you want to control the ordering of your dependencies.
+	IdeaJavaModule wil render all classpath attribute and nested-element
+	additions as module libraries.</p>
+
+<p>Setting the classpath through nested <code>&lt;moduleLibrary&gt;</code> entries
+	allows you to declare source, javadoc, and javadoc urls to associate
+	with the module. You may also associate source, javadoc, and
+	javadocurls indirectly by using IdeaJavaModule's sourceproperty,
+	javadocproperty, and javadocurlproperty attributes. When set,
+	ideajavamodule will examine at every jar set via the classpath
+	attribute or set using a nested <code>&lt;classpath&gt;</code> element. If a
+	property defining that jar exists, IdeaJavaModule will search for
+	propert with an identical name but prepended with the
+	sourceproperty, javadocproperty, or javadocurlproperty, (plus a
+	period) in it's name. If found, that property is treated as source
+	or javadoc for the jar from the classpath. You can use this to
+	easily add source and/or javadoc for libraries in a classpath by
+	simply adding source, javadoc, and/or javadocurl properties to the
+	project.</p>
+
+<p>Example: sourceproperty is set to "source". A property named
+	"foolib.jar" is defined and added to the module's classpath. A
+	second property named "source.foolib.jar" is added to the project.
+	The foolib.jar module library will now be defined with both the
+	classes jar and source jar, automatically, by dint of their
+	associationg through the sourceproperty.
+
+<p></p>
+
+<h3>Parameters</h3>
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">rootDir</td>
+    <td valign="top">Root directory of the module. Defaults to ant's
+	    baseDir.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">moduleFile</td>
+    <td valign="top">Name of the module file. Defaults to ant project's
+        name.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">relativePaths</td>
+    <td valign="top">Use relative paths for files outside the root
+        directory. Defaults to false (i.e. use absolute paths).
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">excludeOutputPaths</td>
+    <td valign="top">Exclude output paths from the build. Defaults to
+        false.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">srcDir</td>
+    <td valign="top">Set the source directory. Set either this property,
+        srcPathRef, or one or more nested src elements.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">srcPathRef</td>
+    <td valign="top">Set the source directories to the given path. Set
+        either this property, srcPathRef, or one or more nested src
+        elements.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">testsDir</td>
+    <td valign="top">Set the test directories to the given path. Set either
+        this property, srcPathRef, or one or more nested src elements.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">testsPathRef</td>
+    <td valign="top">Set the test directories to the given path reference.
+        Set either this property, srcPathRef, or one or more nested src
+        elements.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">outputDir</td>
+    <td valign="top">Set the folder that stores all project production
+        compilation results.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">testsOutputDir</td>
+    <td valign="top">Set the folder that stores all project test compilation
+        results
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">excludes</td>
+    <td valign="top">Set folder(s) to be excluded roots, which will not be
+        displayed in Project tab or otherwise included in IDEA. If listing
+        more than one, they must be colon-delimited.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">excludesPathRef</td>
+    <td valign="top">Set the given path as excluded roots.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+
+
+<tr>
+    <td valign="top">classpath</td>
+    <td valign="top">Set the classpath as a colon-delimited list. You may
+        EITHER set classpath OR use the &lt;dependencies&gt; subtask.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">sourceProperty</td>
+    <td valign="top">Set string that source properties must begin with to be
+        automagically identified as source for a corresponging library.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">javadocProperty</td>
+    <td valign="top">Set string that javadoc properties must begin with to
+        be automagically identified as source for a corresponging library.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">javadocUrlProperty</td>
+    <td valign="top">Set string that javadoc url properties must begin with
+        to be automagically identified as source for a corresponging
+        library.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+</table>
+
+<h3>Parameters specified as nested elements</h3>
+
+<!-- TODO -->
+
+<h4>src, tests, and excludes</h4>
+
+<p><code>&lt;ideajavamodule&gt;</code>'s <code>src</code>,
+    <code>tests</code>, and <code>excludes</code> attributes are
+    <a href="http://ant.apache.org/mahual/using.html#path">path-like
+        structures</a>
+    and can also be set via nested
+    <code>&lt;src&gt;</code>,
+    <code>&lt;tests&gt;</code> and
+    <code>&lt;excludes&gt;</code> elements, respectively.</p>
+
+
+<h4>classpathFilter</h4>
+
+<p>Remove any jars from the classpath selected by this filter. Set using a
+regexp conforming to jdk 1.5's regexp syntax.</p>
+
+<p>If a library has has all of it's classes jars/zips removed by
+    <code>&lt;classpathFilter&ggt;</code>, then the library will be removed
+    entirely from the idea configuration.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+    <tr>
+        <td valign="top"><b>Attribute</b></td>
+        <td valign="top"><b>Description</b></td>
+        <td align="center" valign="top"><b>Required</b></td>
+    </tr>
+    <tr>
+        <td valign="top">pattern</td>
+        <td valign="top">The pattern to be selected, conforming to java 1.5's
+            regexp syntax.
+        </td>
+        <td valign="top" align="center">Yes</td>
+    </tr>
+</table>
+
+
+<h4>Dependencies</h4>
+
+<p><code>&lt;dependencies&gt;</code> is an optional element that allows
+	you to specify what resources your module depends on, and the order
+	in which the dependencies are resolved. The elements nested inside
+	the dependencies tag are thus order-dependent. IDEA will process the
+	libraries and modules in the order they appear below. This list
+	corresponds to the "Dependencies" tab of IDEAs Project Structure
+	window.</p>
+
+<h4>Parameters specified as nested elements of <code>&lt;dependencies&gt;</code></h4>
+
+<h4>moduleSource</h4>
+
+<p>Specifies the dependency order of the source from your module.</p>
+
+<h4>jdk</h4>
+
+<p>Specifies the dependency order of the jdk. If a jdk name is specified, that
+    jdk will be used for the module, otherwise it will default to the project's
+    jdk.</p>
+<table border="1" cellpadding="2" cellspacing="0">
+    <tr>
+        <td valign="top"><b>Attribute</b></td>
+        <td valign="top"><b>Description</b></td>
+        <td align="center" valign="top"><b>Required</b></td>
+    </tr>
+    <tr>
+        <td valign="top">jdkName</td>
+        <td valign="top">If set, uses the specified jdk rather than the
+            project's default jdk.
+        </td>
+        <td valign="top" align="center">No</td>
+    </tr>
+</table>
+
+<h4>classpath</h4>
+
+<p>Specifies a classpath of jars to be added to the module's libraries.
+	Each jar in the list will become a new Module Library entry (see
+	IDEA's documentation, or <code>&lt;moduleLibrary&gt;</code> below).
+	If you add libraries using the <code>&lt;moduleLibrary&gt;</code>,
+	<code>&lt;projectLibrary&gt;</code>, or <code>&lt;globalLibrary&gt;</code> tags,
+	you do not need to include those jars in a separate
+	<code>&lt;classpath&gt;</code>.</p>
+
+<p>If source, javadoc, or javadocurl properties are specified in the top-level
+    element's attributes, and corresponding properties are found, then they will
+    be added to the appropriate module library.</p>
+
+<p>Classpath is a path-like structure.</p>
+
+<h4>moduleLibrary</h4>
+
+<p>Defines a module library. A module library requires a single jar or zip 
+    (referred to as 'classes' below), as well as source, javadoc, and/or
+    javadocUrl. While there must be exactly one classes jar/zip set (by
+    attribute or nested element), multiple source, javadoc, and javadocUrl
+    entries may be made (a requirement of IDEA's, not us).</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+    <tr>
+        <td valign="top"><b>Attribute</b></td>
+        <td valign="top"><b>Description</b></td>
+        <td align="center" valign="top"><b>Required</b></td>
+    </tr>
+    <tr>
+        <td valign="top">exported</td>
+        <td valign="top">If true, this library will be exported to other modules
+            that depend upon this module.
+        </td>
+        <td valign="top" align="center">No</td>
+    </tr>
+    <tr>
+        <td valign="top">classes</td>
+        <td valign="top">jar/zip of classes for the library. Or use the nested
+            &lt;classes&gt; element. This attribute, or a nested classes 
+            element, is required.
+        </td>
+        <td valign="top" align="center">Yes, unless nested &lt;classes&gt;
+            elements are present.
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">source</td>
+        <td valign="top">Jar or directory of source files for the library. Or
+            use the nested &lt;sources&gt; element.
+        </td>
+        <td valign="top" align="center">No</td>
+    </tr>
+    <tr>
+        <td valign="top">javadoc</td>
+        <td valign="top">Jar or directory of javadoc for the library. Or use the
+            nested &lt;javadoc&gt; element.
+        </td>
+        <td valign="top" align="center">No</td>
+    </tr>
+    <tr>
+        <td valign="top">javadocUrl</td>
+        <td valign="top">Url to javadoc. No nested element is offered... :(</td>
+        <td valign="top" align="center">No</td>
+    </tr>
+</table>
+
+<p>moduleLibrary offers the following nested elements which are path-like
+    structures: &lt;sources&gt;, and &lt;javadoc&gt;. <p/>
+
+<p> moduleLibrary offers the nested &lt;classes&gt; element, which may be set in
+    place of the classes attribute above. &lt;classes&gt; offers only one 
+    attribute, file. Only one instance of &lt;classes&gt; may be set.</p>
+
+
+<h4>projectLibrary</h4>
+
+<p>Depend on a library defined at the project level. Project libraries are
+    referred to by name. The project library must already exist.</p>
+<table border="1" cellpadding="2" cellspacing="0">
+    <tr>
+        <td valign="top"><b>Attribute</b></td>
+        <td valign="top"><b>Description</b></td>
+        <td align="center" valign="top"><b>Required</b></td>
+    </tr>
+    <tr>
+        <td valign="top">name</td>
+        <td valign="top">Name of project library to include.</td>
+        <td valign="top" align="center">No</td>
+    </tr>
+    <tr>
+        <td valign="top">exported</td>
+        <td valign="top">If <code>true</code>, this library will be exported to
+            other modules that depend upon this module.
+        </td>
+        <td valign="top" align="center">No</td>
+    </tr>
+</table>
+
+
+<h4>globalLibrary</h4>
+
+<p>Depend on a global library. Global libraries are referred to by name.</p>
+<table border="1" cellpadding="2" cellspacing="0">
+    <tr>
+        <td valign="top"><b>Attribute</b></td>
+        <td valign="top"><b>Description</b></td>
+        <td align="center" valign="top"><b>Required</b></td>
+    </tr>
+    <tr>
+        <td valign="top">name</td>
+        <td valign="top">Name of global library to include.</td>
+        <td valign="top" align="center">Yes</td>
+    </tr>
+    <tr>
+        <td valign="top">exported</td>
+        <td valign="top">If <code>true</code>, this library will be exported to
+            other modules that depend upon this module.
+        </td>
+        <td valign="top" align="center">No</td>
+    </tr>
+</table>
+
+
+<h4>idealib</h4>
+
+<p>Depend on a library shipped with IDEA, in it's lib folder. Set the name
+attribute to the name of the jar (NOT the path to the jar, just the jar filename).
+ideaLib entries are set up internally as moduleLibrary entries (i.e. this is a
+convenience method).</p>
+<table border="1" cellpadding="2" cellspacing="0">
+    <tr>
+        <td valign="top"><b>Attribute</b></td>
+        <td valign="top"><b>Description</b></td>
+        <td align="center" valign="top"><b>Required</b></td>
+    </tr>
+    <tr>
+        <td valign="top">name</td>
+        <td valign="top">Name (or path below idea's lib/) of library to 
+            include.</td>
+        <td valign="top" align="center">Yes</td>
+    </tr>
+    <tr>
+        <td valign="top">exported</td>
+        <td valign="top">If <code>true</code>, this library will be exported to
+            other modules that depend upon this module.
+        </td>
+        <td valign="top" align="center">No</td>
+    </tr>
+</table>
+
+<h4>module</h4>
+
+<p>Depend on another module in the project.</p>
+<table border="1" cellpadding="2" cellspacing="0">
+    <tr>
+        <td valign="top"><b>Attribute</b></td>
+        <td valign="top"><b>Description</b></td>
+        <td align="center" valign="top"><b>Required</b></td>
+    </tr>
+    <tr>
+        <td valign="top">name</td>
+        <td valign="top">Name of module to include.</td>
+        <td valign="top" align="center">No</td>
+    </tr>
+    <tr>
+        <td valign="top">exported</td>
+        <td valign="top">If <code>true</code>, this library will be exported to
+            other modules that depend upon this module.
+        </td>
+        <td valign="top" align="center">No</td>
+    </tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<p>A simple configuration that defines two source directories, and a tests
+    directory, using nested tags.</p>
+
+<blockquote><pre>
+    &lt;ideajavamodule moduleFile="sample1.iml"
+                    outputDir="${build.classes.dir}"
+                    testsOutputDir="${build.test.classes.dir}"&gt;
+      &lt;src path="${src.dir}"/&gt;
+      &lt;src path="${src2.dir}"/&gt;
+      &lt;tests refid="test.path"/&gt;
+    &lt;/ideajavamodule&gt;
+</pre>
+</blockquote>
+
+
+<p>A configuration that uses a classpath defined earlier in the build:</p>
+
+<blockquote><pre>
+    &lt;ideajavamodule moduleFile="sample2.iml"
+                    srcdir="${src.dir}"
+                    outputDir="${build.classes.dir}"
+                    classpath="${build.classpath}"/&gt;
+</pre>
+</blockquote>
+
+
+<p>A configuration that defines dependencies for the source and jdk:</p>
+
+<blockquote><pre>
+    &lt;ideajavamodule moduleFile="sample3.iml"
+                    srcdir="${src.dir}"
+                    outputDir="${build.classes.dir}"&gt;
+      &lt;dependencies&gt;
+        &lt;modulesource/&gt;
+        &lt;jdk/&gt;
+      &lt;/dependencies&gt;
+    &lt;/ideajavamodule&gt;
+</pre>
+</blockquote>
+
+
+<p>A configuration that uses a classpath defined earlier in the build,
+    and uses the sourceproperty attribute to associate the source for a jar in
+    the classpath:</p>
+
+<blockquote><pre>
+    &lt;property name="commons.lang.jar" location="lib/commons-lang-3.0.jar"/&gt;
+    &lt;property name="source.commons.lang.jar"
+              location="lib/commons-lang-3.0-src.jar"/&gt;
+    &lt;property name="build.classpath" value="${commons.lang.jar}"/&gt;
+    ...
+    &lt;ideajavamodule moduleFile="sample4.iml"
+                    sourceproperty="source"
+                    srccdir="${src.dir}"
+                    outputDir="${build.classes.dir}"
+                    classpath="${build.classpath}"/&gt;
+</pre>
+</blockquote>
+
+
+<p>A configuration that makes use of multiple configuration options:</p>
+
+<blockquote><pre>
+    &lt;property name="source.foo.jar" location="${lib.dir}/foo-src.jar"/&gt;
+    &lt;ideajavamodule moduleFile="sample4.iml"
+                    sourceproperty="source"
+                    outputDir="${build.classes.dir}"
+                    classpath="${build.classpath}"&gt;
+        &lt;src path="${src.dir}"/&gt;
+        &lt;src path="${src2.dir}"/&gt;
+        &lt;tests path="${tests.src.dirr}"/&gt;
+        &lt;excludes path="dist:build"/&gt;
+        &lt;classpathfilter pattern=".*some.*\.jar"/&gt;
+        &lt;dependencies&gt;
+          &lt;modulesource/&gt;
+          &lt;jdk/&gt;
+          &lt;classpath path="foo.jar:bar.jar"/&gt;        
+          &lt;modulelibrary&gt;
+            &lt;classes path="some-lib.jar"/&gt;
+            &lt;javadoc path="some-lib-doc"/&gt;
+            &lt;sources path="some-lib-src.jar"/&gt;
+          &lt;/modulelibrary&gt;
+          &lt;module name="foobly-module"/&gt;
+        &lt;/dependencies&gt;
+    &lt;/ideajavamodule&gt;
+</pre></blockquote>
+
+
+<hr>
+<p align="center">Copyright &copy; 2006 Justin Tomich. All rights Reserved.</p>
+
+</body>
+</html>

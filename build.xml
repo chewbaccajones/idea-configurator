@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~  IDEA Configurator
+  ~  Copyright (C) 2006 Justin Tomich<tomichj at gmail dot com>
+  ~
+  ~  This program is free software; you can redistribute it and/or
+  ~  modify it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation; either version 2 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful, but
+  ~  WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  ~  General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program; if not, write to the Free Software
+  ~  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  ~  */
+  ~
+  -->
+
+<project name="idea-configurator" default="all">
+
+  <!-- populate build properties with source and javadoc properties -->
+  <property file="${user.home}/${ant.project.name}.build.properties"/>
+  <property file="build.properties"/>
+
+
+  <!-- IMPORTANT: increment this for a new release. also build num/date? -->
+
+
+  <!-- ============================================================== -->
+  <!--      D  I  R  E  C  T  O  R  Y    M  A  P  P  I  N  G  S       -->
+  <!-- ============================================================== -->
+
+  <!-- src -->
+  <property name="src.dir" location="src"/>
+  <property name="src.test.dir" location="test"/>
+  <property name="docs.dir" location="docs"/>
+
+  <!-- build -->
+  <property name="build.dir" location="build"/>
+  <property name="build.classes.dir" location="${build.dir}/classes"/>
+  <property name="build.depcache.dir" location="${build.dir}/depcache"/>
+  <property name="build.docs.dir" location="${build.dir}/docs"/>
+  <property name="build.javadocs.dir" location="${build.docs.dir}/javadocs"/>
+  <property name="build.test.classes.dir"
+            location="${build.dir}/test-classes"/>
+  <property name="build.test.depcache.dir"
+            location="${build.dir}/test-depcache"/>
+
+  <!-- distribution -->
+  <property name="dist.name" value="${ant.project.name}-${release}"/>
+
+  <property name="dist.dir" location="dist/${dist.name}"/>
+  <property name="dist.docs.dir" location="${dist.dir}/docs"/>
+  <property name="dist.javadocs.dir" location="${dist.docs.dir}/api"/>
+
+  <property name="dist.jar" location="${dist.dir}/${dist.name}.jar"/>
+  <property name="dist.src.jar" location="${dist.dir}/${dist.name}-src.jar"/>
+  <property name="dist.zipfile" location="${dist.dir}/${dist.name}.zip"/>
+
+  
+  <!-- ============================================================== -->
+  <!--                  C  L  A  S  S  P  A  T  H                     -->
+  <!-- ============================================================== -->
+
+  <!-- ant.jar is only needed for idea-conf, not for ant build itself. -->
+  <property name="ant.jar" location="${ant.home}/lib/ant.jar"/>
+  <property name="easymock.jar" location="lib/easymock-2.2.jar"/>
+
+  <!-- if this doesn't exist, over-ride it -->
+  <property name="junit.jar" location="${ant.home}/lib/junit.jar"/>
+
+  
+  <path id="build.classpath">
+  </path>
+
+  <!-- junit required to be in ant's lib dir to compile the tests -->
+  <path id="build.test.libs.classpath">
+    <path refid="build.classpath"/>
+    <pathelement location="${easymock.jar}"/>
+    <pathelement location="${ant.jar}"/>
+    <pathelement location="${junit.jar}"/>
+  </path>
+
+  <path id="build.test.classpath">
+    <path refid="build.classpath"/>
+    <path refid="build.test.libs.classpath"/>
+    <pathelement location="${build.classes.dir}"/>
+  </path>
+
+  <!-- classpath for running/testing -->
+  <path id="test.run.classpath">
+    <path refid="build.classpath"/>
+    <path refid="build.test.libs.classpath"/>
+    <pathelement location="${build.classes.dir}"/>
+    <!--<path refid="build.test.classpath"/>-->
+    <pathelement location="${build.test.classes.dir}"/>
+  </path>
+
+
+  <!-- ============================================================== -->
+  <!--        F  U  L  L    B  U  I  L  D    C  Y  C  L  E  S         -->
+  <!-- ============================================================== -->
+  <target name="all" depends="compile, compile-tests, test, dist"
+          description="clean up and compile"/>
+
+
+  <target name="docs" depends="clean-docs, javadoc"
+          description="generate all documentation."/>
+
+
+  <target name="dist" depends="compile, docs, jar, jar-src, zip-dist"
+          description="create distribution"/>
+
+
+  <target name="fresh" depends="realclean, dist"
+          description="make a fresh distribution"/>
+
+
+  <target name="noop"/>
+
+
+  <!-- ============================================================== -->
+  <!--                      C  O  M  P  I  L  E                       -->
+  <!-- ============================================================== -->
+  <target name="init">
+    <!-- make sure junit is available -->
+    <available classname="junit.framework.TestCase" property="junit.available"/>
+    <fail unless="junit.available">
+Make junit available to ant by adding junit.jar to your ant install's lib dir.
+    </fail>
+
+    <!-- construct build dirs -->
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.classes.dir}"/>
+    <mkdir dir="${build.depcache.dir}"/>
+    <mkdir dir="${build.test.classes.dir}"/>
+    <mkdir dir="${build.test.depcache.dir}"/>
+  </target>
+
+
+  <target name="compile" depends="init" description="compile datadog">
+    <build srcdir="${src.dir}"
+           destdir="${build.classes.dir}"
+           classpathref="build.classpath"
+           cachedir="${build.depcache.dir}"/>
+  </target>
+
+
+  <!-- deprecation is off because of Faux classes. -->
+  <target name="compile-tests" depends="init, compile"
+          description="compile tests">
+    <build srcdir="${src.test.dir}"
+           destdir="${build.test.classes.dir}"
+           classpathref="build.test.classpath"
+           cachedir="${build.test.depcache.dir}"/>
+  </target>
+
+
+  <target name="classpath" description="print the classpath for debuggery">
+    <property name="temp.build.classpath" refid="build.classpath"/>
+    <echo>build.classpath:</echo>
+    <echo>${temp.build.classpath}</echo>
+  </target>
+
+
+  <macrodef name="build">
+    <attribute name="srcdir"/>
+    <attribute name="destdir"/>
+    <attribute name="classpathref"/>
+    <attribute name="cachedir"/>
+    <sequential>
+      <depend srcdir="@{srcdir}"
+              destdir="@{destdir}"
+              cache="@{cachedir}"
+              closure="no"/>
+      <javac source="1.5"
+             srcdir="@{srcdir}"
+             destdir="@{destdir}"
+             classpathref="@{classpathref}"
+             debug="on"
+             deprecation="on"/>
+      <copy toDir="@{destdir}">
+        <fileset dir="@{srcdir}" includes="**/*.properties, **/*.dtd, **/*.xml,
+                                           **/*.xsd, **/*.conf"/>
+      </copy>
+    </sequential>
+  </macrodef>
+
+
+  <!-- ============================================================== -->
+  <!--                        T  E  S  T  S                           -->
+  <!-- Specify a testcase or testpackage, or all tests will run.      -->
+  <!--                                                                -->
+  <!-- Options:                                                       -->
+  <!--    testcase    - run a single testcase, specify path below     -->
+  <!--                  tests/ directory.                             -->
+  <!--    testpackage - run all tests in a package, specify package   -->
+  <!--                  as a path below tests dir.                    -->
+  <!--                                                                -->
+  <!-- Specify testcase and testpackage as path, not class.           -->
+  <!-- example:                                                       -->
+  <!--        ant test -Dtestcase=configurator/model/ModuleTest.java  -->
+  <!-- ============================================================== -->
+
+  <target name="test" depends="compile-tests" description="run tests">
+    <!-- run all tests, a testcase, or a testpackage -->
+    <condition property="run.all.tests">
+      <not>
+        <or>
+          <isset property="testcase"/>
+          <isset property="testpackage"/>
+        </or>
+      </not>
+    </condition>
+
+    <junit fork="yes" forkmode="perTest"
+           printsummary="false" failureproperty="test.failed">
+      <classpath refid="test.run.classpath"/>
+      <formatter type="brief" usefile="false"/>
+
+      <!-- single test case -->
+      <batchtest fork="yes" if="testcase">
+        <fileset dir="${src.test.dir}" includes="${testcase}"/>
+      </batchtest>
+
+      <!-- test a package -->
+      <batchtest fork="yes" if="testpackage">
+        <fileset dir="${src.test.dir}" includes="${testpackage}/*Test.java"/>
+      </batchtest>
+
+      <!-- run ALL tests -->
+      <batchtest fork="yes" if="run.all.tests">
+        <fileset dir="${src.test.dir}">
+          <include name="**/*Test.java"/>
+        </fileset>
+      </batchtest>
+
+    </junit>
+
+    <fail if="test.failed">Tests Failed!!!!</fail>
+  </target>
+
+
+  <!-- ============================================================== -->
+  <!--                           J  A  R                              -->
+  <!-- ============================================================== -->
+  <target name="jar-init">
+    <mkdir dir="${dist.dir}"/>
+  </target>
+
+
+  <target name="jar" depends="compile, jar-init">
+    <delete file="${dist.jar}"/>
+    <jar destfile="${dist.jar}" basedir="${build.classes.dir}">
+      <metainf dir=".">
+        <include name="LICENSE.txt"/>
+      </metainf>
+    </jar>
+  </target>
+
+
+    <target name="jar-src" depends="jar-init">
+      <jar destfile="${dist.src.jar}" basedir="${src.dir}">
+        <metainf dir=".">
+          <include name="LICENSE.txt"/>
+        </metainf>
+      </jar>
+    </target>
+
+  <!-- the docs don't go in a separate jar, just put in dir -->
+  <target name="copy-docs" depends="javadoc, jar-init">
+    <delete dir="${dist.javadocs.dir}"/>
+    <delete dir="${dist.docs.dir}"/>
+    <mkdir dir="${dist.docs.dir}"/>
+    <mkdir dir="${dist.javadocs.dir}"/>
+    <copy file="LICENSE.txt" todir="${dist.docs.dir}"/>
+    <copy todir="${dist.javadocs.dir}">
+      <fileset dir="${build.javadocs.dir}"/>
+    </copy>
+    <copy todir="${dist.docs.dir}">
+      <fileset dir="${docs.dir}"/>
+    </copy>
+  </target>
+
+
+  <target name="zip-dist" depends="jar, copy-docs, jar-src">
+    <zip destfile="${dist.zipfile}"
+         basedir="${dist.dir}" excludes="*zip">
+    </zip>
+  </target>
+
+  <!--
+  distro should contain:
+      jar (with version number)
+      src jar (with version number)
+      docs/
+        api/
+        ideamodule.html
+        LICENSE
+  -->
+
+
+  <!-- ============================================================== -->
+  <!--                          D  O  C  S                            -->
+  <!-- ============================================================== -->
+  <target name="init-docs">
+    <mkdir dir="${build.docs.dir}"/>
+    <mkdir dir="${build.javadocs.dir}"/>
+  </target>
+
+
+  <target name="javadoc" depends="clean-javadocs, init-docs">
+    <javadoc packagenames="configurator.*"
+             sourcepath="${src.dir}"
+             destdir="${build.javadocs.dir}"
+             Use="yes"
+             classpathref="build.test.libs.classpath">
+      <link href="http://jakarta.apache.org/commons/logging/apidocs/"/>
+      <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+    </javadoc>
+  </target>
+
+
+  <!-- ============================================================== -->
+  <!--                     C  L  E  A  N  U  P                        -->
+  <!-- ============================================================== -->
+  <target name="clean" description="clean build directories"
+          depends="clean-tests">
+    <delete dir="${build.classes.dir}"/>
+    <delete dir="${build.depcache.dir}"/>
+    <delete dir="${build.javadocs.dir}"/>
+    <delete dir="${build.docs.dir}"/>
+    <delete dir="${build.dir}"/>
+  </target>
+
+
+  <target name="realclean" depends="clean, clean-docs, clean-dist"
+          description="clean build, docs, and older twiddle files">
+    <tstamp>
+      <format property="two.days.ago" pattern="MM/dd/yyyy hh:mm aa"
+              offset="-2" unit="day"/>
+    </tstamp>
+    <delete>
+      <!-- delete old CVS-mode backup files -->
+      <fileset dir="." includes="**/*~*.~" defaultexcludes="no">
+        <date datetime="${two.days.ago}" when="before"/>
+      </fileset>
+    </delete>
+  </target>
+
+
+  <target name="clean-tests">
+    <delete dir="${build.test.classes.dir}"/>
+  </target>
+
+
+  <target name="clean-docs" depends="clean-javadocs">
+    <delete dir="${build.docs.dir}"/>
+  </target>
+
+
+  <target name="clean-javadocs">
+    <delete dir="${build.javadocs.dir}"/>
+  </target>
+
+
+  <target name="clean-dist">
+    <delete dir="${dist.javadocs.dir}"/>
+    <delete dir="${dist.docs.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <!-- ============================================================== -->
+  <!--                     C  O  N  F  I  G                           -->
+  <!-- ============================================================== -->
+
+  <target name="idea-conf" description="create IDEA module config file">
+    <taskdef classpath="${dist.jar}" resource="taskdef.properties"/>
+    <ideajavamodule moduleFile="idea-configurator.iml"
+                    outputDir="${build.classes.dir}"
+                    testsoutputdir="${build.test.classes.dir}"
+                    relativepaths="true"
+                    excludeoutputpaths="true"
+                    sourceproperty="source"
+                    javadocproperty="javadoc">
+      <src path="${src.dir}"/>
+      <tests path="${src.test.dir}"/>
+      <excludes path="${build.dir}"/>
+      <excludes path="${dist.dir}"/>
+      <dependencies>
+        <modulesource/>
+        <jdk/>
+        <classpath>
+          <path refid="build.test.libs.classpath"/>
+          <pathelement path="${ant.jar}"/>
+          <pathelement path="${junit.jar}"/>
+        </classpath>
+      </dependencies>
+    </ideajavamodule>
+  </target>
+
+</project>
+    

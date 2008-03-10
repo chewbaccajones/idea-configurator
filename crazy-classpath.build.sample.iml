@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+<component name="ModuleRootManager"/>
+<component inherit-compiler-output="false" name="NewModuleRootManager">
+<output url="file://$MODULE_DIR$/whatever"/>
+<content url="file://$MODULE_DIR$"/>
+<orderEntry forTests="false" type="sourceFolder"/>
+<orderEntry type="inheritedJdk"/>
+<orderEntry type="module-library">
+<library>
+<CLASSES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/lib/moduleLibraryJar.jar!/"/>
+</CLASSES>
+<JAVADOC>
+<root url="file:///Users/tomichj/IdeaProjects/idea-configurator/lib/moduleLibraryJarJavadoc/doc/api"/>
+</JAVADOC>
+<SOURCES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/lib/moduleLibraryJarSource.jar!/"/>
+</SOURCES>
+</library>
+</orderEntry>
+<orderEntry type="module-library">
+<library>
+<CLASSES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/lib/lib1.jar!/"/>
+</CLASSES>
+<JAVADOC/>
+<SOURCES/>
+</library>
+</orderEntry>
+<orderEntry type="module-library">
+<library>
+<CLASSES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/lib/lib2.jar!/"/>
+</CLASSES>
+<JAVADOC/>
+<SOURCES/>
+</library>
+</orderEntry>
+<orderEntry type="module-library">
+<library>
+<CLASSES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/lib6.jar!/"/>
+</CLASSES>
+<JAVADOC/>
+<SOURCES/>
+</library>
+</orderEntry>
+<orderEntry type="module-library">
+<library>
+<CLASSES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/lib7.jar!/"/>
+</CLASSES>
+<JAVADOC/>
+<SOURCES/>
+</library>
+</orderEntry>
+<orderEntryProperties/>
+</component>
+</module>

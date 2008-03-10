@@ -1,0 +1,733 @@
+<!--
+  ~ /**
+  ~  IDEA Configurator
+  ~  Copyright (C) 2006 Justin Tomich<tomichj at gmail dot com>
+  ~
+  ~  This program is free software; you can redistribute it and/or
+  ~  modify it under the terms of the GNU General Public License as
+  ~  published by the Free Software Foundation; either version 2 of the
+  ~  License, or (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful, but
+  ~  WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  ~  General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program; if not, write to the Free Software
+  ~  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  ~  */
+  ~
+  -->
+
+<!--   <code>&lt;  &gt;</code>   -->
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us">
+    <title>IdeaWebModule Ant Task</title>
+</head>
+
+<body>
+
+<h1><a name="ant">IdeaWebModule</a></h1>
+
+<h2>Description</h2>
+
+<p>Generates a web module configuration file for <a
+	href="http://www.jetbrains.com/idea/">Intellij IDEA</a>.
+	IdeaWebModule strives to make module configuration
+	simple for basic projects, but still provides the tools necessary
+	for arbitrarily complex configuration.
+</p>
+    
+<p>IDEA Configurator, Copyright (C) 2006 Justin Tomich<tomichj at gmail
+	dot com>, is distributed under version 2 of the GNU General Public
+	License. For complete information see LICENSE.txt in the
+	idea-configurator distribution or consult the <a
+	href="http://www.gnu.org/licenses/gpl.html"> online copy</a> of the
+	license (or, view source in your browser). Intellij IDEA is
+	copyright of <a href="http://www.jetbrains.com">Jetbrains
+	s.r.o.</a>. JetBrains has no affiliation in any way with the
+	idea-configurator project. For idea-configurator support or
+	questions, or to contribute to idea-configurator, see the <a
+	href="http://code.google.com/p/idea-configurator/">idea-configurator
+	</a> site.</p>
+
+<p></p>
+
+<h2>Parameters</h2>
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">rootDir</td>
+    <td valign="top">Root directory of the module. Defaults to ant's 
+        baseDir.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">moduleFile</td>
+    <td valign="top">Name of the module file. Defaults to ant project's
+        name.
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">relativePaths</td>
+    <td valign="top">Use relative paths for files outside the root
+        directory. Defaults to false (i.e. use absolute paths).
+    </td>
+    <td valign="top" align="center">No</td>
+</tr>
+</table>
+
+<h2>Parameters specified as nested elements of &lt;ideawebmodule&gt;</h2>
+
+<h3>java</h3>
+
+<p>The nested java element is identical to the <a
+	href="ideajavamodule.html">ideajavamodule</a>. All properties and
+	nested elements are included and are identical to ideajavamodule,
+	with the following exception: the <code>&lt;java&gt;</code> element
+	does not have the properties <code>rootDir</code>,
+	<code>moduleFile</code>, and <code>relativePaths</code>, which are
+	part of <code>&lt;ideawebmodule&gt;</code>, rather than
+	<code>&lt;java&gt;</code>.</p>
+
+
+
+
+<h3>build</h3>
+
+<p><code>&lt;build&gt;</code> is an optional element that allows you to
+	configure the "Java EE Build Settings" tab in IDEA.
+	<code>&lt;build&gt;</code> is nested below
+	<code>&lt;ideawebmodule&gt;</code>. <code>&lt;build&gt;</code> has no
+	attributes.</p>
+
+<h4>Parameters specified as nested elements of <code>&lt;build&gt;</code></h4>
+
+
+
+
+<h4>jasperValidator</h4>
+
+<p>If enabled, IDEA will run Jasper to validate JSPs. Files can be excluded
+from Jasper validation (see below). </p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">run</td>
+    <td valign="top">If <code>true</code>, enable jasper validation.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+<p>jasperValidator has an optional nested element, <code>&lt;excludes&gt;</code>, that is
+a path-like structure.</p>
+
+
+
+
+
+<h4>war</h4>
+
+<p>Configures the web module to build and deploy a warfile.
+	<code>&lt;war&gt;</code> is an optional element nested inside
+	<code>&lt;build&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">file</td>
+    <td valign="top">Path to warfile to build and deploy.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+<tr>
+    <td valign="top">buildOnFrameDeactivation</td>
+    <td valign="top">If <code>true</code>, builds the war on frame
+	    deactivation. Defaults to false.</td>
+    <td valign="top" align="center">no</td>
+</tr>
+<tr>
+    <td valign="top">allowFilesOutsideExploded</td>
+    <td valign="top">If <code>true</code>, allows files outside of the 'exploded'
+        dir to be copied into the war. Defaults to false.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+</table>
+
+
+
+
+<h4>exploded</h4>
+
+<p>Configure the "exploded" directory for IDEA.
+	<code>&lt;exploded&gt;</code> is an optional element nested inside
+	<code>&lt;build&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">dir</td>
+    <td valign="top">Path to location of exploded dir.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+<tr>
+    <td valign="top">excluded</td>
+    <td valign="top">If <code>true</code>, builds the war on frame
+	    deactivation. Defaults to false.</td>
+    <td valign="top" align="center">no</td>
+</tr>
+<tr>
+    <td valign="top">synchronize</td>
+    <td valign="top">If <code>true</code>, IDEA will sync the </td>
+    <td valign="top" align="center">No</td>
+</tr>
+</table>
+
+<p><i>end nested elements of <code>&lt;build&gt;</code></i></p> 
+
+
+
+
+<h3>deployment</h3>
+
+<p>Configures the assets to be deployed to a web archive, including:
+	application server and deployment descriptors (i.e.
+	<code>web.xml</code>, <code>weblogic.xml</code>, etc), modules and
+	libraries, and web resource directories within the web
+	archive. This corresponds to the web module's "Web Module Settings"
+	panel in IDEA.</p>
+	
+<p>Deployment has no attributes of it's own.
+	<code>&lt;deployment&gt;</code> is nested below
+	<code>&lt;ideawebmodule&gt;</code>.</p>
+
+<h4>Parameters specified as nested elements of <code>&lt;deployment&gt;</code></h4>
+
+<h4>webXml, ormXml, persistenceXml</h4>
+
+<p><code>&lt;webXml&gt;</code>, <code>&lt;ormXml&gt;</code>, and
+	<code>&lt;persistenceXml&gt;</code> deploy common descriptors common
+	to most application servers and have identical attributes and behavior.
+	Each deployes the file pointed to by their "file" attribute. All
+	three elements are nested below <code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">file</td>
+    <td valign="top">Path to file to deploy.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+
+
+
+<h4>weblogic, glassfish, jBoss, geronimo, tomcat</h4>
+
+<p><code>&lt;weblogic&gt;</code>, <code>&lt;glassfish&gt;</code>,
+	<code>&lt;jBoss&gt;</code>, <code>&lt;geronimo&gt;</code>, and
+	<code>&lt;tomcat&gt;</code> deploy application server-specific
+	descriptors, and have identical attributes and behavior. For each
+	descriptor, specify	the version to deploy. All five descriptors
+	are nested below <code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">version</td>
+    <td valign="top">Version file to deploy.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+
+
+
+<h4>additionalResource</h4>
+
+<p>Deploy an additional resource (some sort of xml descriptor).
+	<code>&lt;additionalResource&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">file</td>
+    <td valign="top"></td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+<tr>
+    <td valign="top">deployTo</td>
+    <td valign="top"></td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+
+
+
+<h4>ignoreModule</h4>
+
+<p>Specify a module, by name, to ignore in the deployment.
+	<code>&lt;ignoreModule&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code></p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">name</td>
+    <td valign="top">Name of the module to be ignored.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+
+
+
+<h4>copyModule</h4>
+
+<p>Specify a module who's output should be copied for the deployment.
+	<code>&lt;copyModule&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">name</td>
+    <td valign="top">Name of the module to copy.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+<tr>
+    <td valign="top">archivePath</td>
+    <td valign="top">path, relative to the root of the archive, that the module's
+	    output should be copied to. Defaults to /WEB-INF/classes.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+</table>
+
+
+
+
+<h4>jarModule</h4>
+
+<p>Specify a module who's output will be jar'd up and copied for
+	deployment. <code>&lt;jarModule&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">name</td>
+    <td valign="top">Name of the module to jar and deploy.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+<tr>
+    <td valign="top">archivePath</td>
+    <td valign="top">path, relative to the archive root, that the jar of the
+	    module should be copied to. Defaults to
+        /WEB-INF/lib/[modulenName].jar or, if linking via manifest,
+        /[moduleName].jar</td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">linkViaManifest</td>
+    <td valign="top">Add a link to the jar in the manifest?</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+
+
+
+<h4>ignoreModuleLib</h4>
+
+<p>Specify a module library to ignore in the deployment.
+	<code>&lt;ignoreModuleLib&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">jar</td>
+    <td valign="top">Path to the module library jar.</td>
+    <td valign="top" align="center">Set either jar, or set name and level.</td>
+</tr>
+</table>
+
+<p/>
+<p>Examples:</p>
+
+<li/>Ignore beanutils jar, part of a module library. It will not be deployed.
+<blockquote>
+<pre>
+&lt;ignoreModuleLib jar="${beanutils.jar}"&gt;
+</pre>
+</blockquote>
+
+
+
+
+<h4>ignoreProjectLib</h4>
+
+<p>Specify a project library to ignore in the deployment.
+	<code>&lt;ignoreProjectLib&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">name</td>
+    <td valign="top">Name of a project library.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+<p/>
+<p>Examples:</p>
+
+<li/>Ignore the beanutils project library. It will not be deployed.
+<blockquote>
+<pre>
+&lt;ignoreProjectLib name="beanutils"&gt;
+</pre>
+</blockquote>
+
+
+
+
+<h4>ignoreGlobalLib</h4>
+
+<p>Specify a global library to ignore in the deployment.
+	<code>&lt;ignoreGlobalLib&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">name</td>
+    <td valign="top">Name of a global library.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+<p/>
+<p>Examples:</p>
+
+<li/>Ignore the beanutils global library. It will not be deployed.
+<blockquote>
+<pre>
+&lt;ignoreGlobalLib name="beanutils"&gt;
+</pre>
+</blockquote>
+
+
+
+
+<h4>copyModuleLib</h4>
+
+<p>Copy the module library's jar during deployment.
+	<code>&lt;copyModuleLib&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">jar</td>
+    <td valign="top">Path to module library jar to be deployed.</td>
+    <td valign="top" align="center">Yes.</td>
+</tr>
+<tr>
+    <td valign="top">archivePath</td>
+    <td valign="top">Path to jar in web archive, relative to deployment root
+	    of the archive. Include the jar name in the path if you supply one.
+        Defaults to /WEB-INF/lib/[jar] or, if linking in manifest,
+        /[jar].</td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">linkViaManifest</td>
+    <td valign="top">If <code>true</code>, add a link to the jar(s) in the
+	    manifest. Default is <code>false</code>.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+</table>
+
+<p/>
+<p>Examples:</p>
+
+<li/>copy beanutils jar, part of a module library, to the /WEB-INF/lib dir of
+	deployment (the default deployment).
+<blockquote>
+<pre>
+&lt;copyModuleLib jar="${beanutils.jar}"&gt;
+</pre>
+</blockquote>
+
+<li/>copy beanutils jar, part of a module library, to the /WEB-INF/foo directory
+	of the deployment and create a link to it in the manifest.
+<blockquote>
+<pre>
+&lt;copyModuleLib jar="${beanutils.jar}" archivePath="/WEB-INF/foo/beanutils.jar"
+    linkViaManifest="true"&gt;
+</pre>
+</blockquote>
+
+
+
+
+<h4>copyModuleLibPath</h4>
+
+<p>Copy the path of module library jars during deployment.
+	<code>&lt;copyModuleLibPath&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">path</td>
+    <td valign="top">An ant Path of module library jars to be deployed.</td>
+    <td valign="top" align="center">Yes.</td>
+</tr>
+<tr>
+    <td valign="top">archiveDir</td>
+    <td valign="top">Path to a directory in web archive, relative to deployment root
+	    of the archive. Jars will be copied to this location upon deployment.
+        Defaults to /WEB-INF/lib/ or, if linking in manifest, /.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">linkViaManifest</td>
+    <td valign="top">If <code>true</code>, add a link to the jar(s) in the
+	    manifest. Default is <code>false</code>.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+</table>
+
+<p/>
+<p>Examples:</p>
+
+<li/>copy build.classpath to the /WEB-INF/lib dir ofdeployment (the default deployment).
+<blockquote>
+<pre>
+&lt;copyModuleLibPath path="${build.classpath}"&gt;
+</pre>
+</blockquote>
+
+<li/>copy jars to the /WEB-INF/someOtherDir of the deployment.
+<blockquote>
+<pre>
+&lt;copyModuleLib path="${foo.jar}:${bar.jar}:${baz.jar}" 
+    archivePath="/WEB-INF/someOtherDir/"&gt;
+</pre>
+</blockquote>
+
+
+
+
+<h4>copyProjectLib and copyGlobalLib</h4>
+
+<p>Copy the project or global library jars during deployment. Both
+	elements nested below <code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">name</td>
+    <td valign="top">Name of a project or global library.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+<tr>
+    <td valign="top">level</td>
+    <td valign="top">Set to either <code>PROJECT</code> or <code>GLOBAL</code>.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+<tr>
+    <td valign="top">archivePath</td>
+    <td valign="top">Path of destination directory (do not include jar
+        name(s)) relative to deployment root of the archive. Defaults to
+        /WEB-INF/lib/ or, if linking in manifest, /.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+<tr>
+    <td valign="top">linkViaManifest</td>
+    <td valign="top">If <code>true</code>, add a link to the jar(s) in the
+	    manifest. Default is <code>false</code>.</td>
+    <td valign="top" align="center">No</td>
+</tr>
+
+</table>
+
+<p/>
+<p>Examples:</p>
+
+<li/>copy beanutils jar, part of a global library, to the /WEB-INF/lib dir of
+	deployment (the default deployment).
+<blockquote>
+<pre>
+&lt;copyGlobalLib jar="${beanutils.jar}"&gt;
+</pre>
+</blockquote>
+
+<li/>copy beanutils jar, part of a project library, to the /WEB-INF/foo directory
+	of the deployment and create a link to it in the manifest.
+<blockquote>
+<pre>
+&lt;copyLib jar="${beanutils.jar}" archivePath="/WEB-INF/foo" linkViaManifest="true"&gt;
+</pre>
+</blockquote>
+
+
+
+
+<h4>directory</h4>
+
+<p>Maps a Web Resource Directory in the project with a particular Relative Path in
+	Deployment Directory of the archive. <code>&lt;directory&gt;</code> is nested below
+	<code>&lt;deployment&gt;</code>.</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+<tr>
+    <td valign="top"><b>Attribute</b></td>
+    <td valign="top"><b>Description</b></td>
+    <td align="center" valign="top"><b>Required</b></td>
+</tr>
+<tr>
+    <td valign="top">projectDir</td>
+    <td valign="top">Location of the resource directory on your drive.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+<tr>
+    <td valign="top">archiveDir</td>
+    <td valign="top">Location of your web resource directory relative to the
+	    deployment directory root of the archive.</td>
+    <td valign="top" align="center">Yes</td>
+</tr>
+</table>
+
+Example: 
+
+<li/>map the resources directory of the module directory to the root
+	directory of the archive.
+
+<blockquote>
+<pre>
+&lt;property name="resources.dir" location="resources"/&gt;
+...
+&lt;directory projectDir="${resources.dir}" archiveDir="/"&gt;
+</pre>
+</blockquote>
+
+<p><i>end nested elements of <code>&lt;deployment&gt;</code></i></p>
+
+
+
+
+<h3>Examples</h3>
+
+<p>A simple web module with java assets that also builds and deploys a war.</p>
+
+<blockquote><pre>
+    &lt;ideawebmodule moduleFile="webby.build.sample.iml"&gt;
+      &lt;java outputDir="${build.classes.dir}"&gt;
+        &lt;src path="${src.dir}"/&gt;
+        &lt;dependencies&gt;
+          &lt;modulelibrary classes="foo.jar"/&gt;
+        &lt;/dependencies&gt;
+      &lt;/java&gt;
+      &lt;build&gt;
+        &lt;war file="whatever/big.war" buildOnFrameDeactivation="false"
+             allowFilesOutsideExploded="false"/&gt;
+        &lt;exploded dir="exploded" excluded="true" synchronize="true"/&gt;
+      &lt;/build&gt;
+      &lt;deployment&gt;
+        &lt;webxml file="WEB-INF/web.xml"/&gt;
+        &lt;weblogic version="9.x"/&gt;
+        &lt;copymodulelib jar="lib/foo.jar"/&gt;
+        &lt;copyprojectlib name="beanutils" linkviamanifest="false"/&gt;
+        &lt;copygloballib name="someLib" linkviamanifest="true"
+                       archivePath="/someDumDirectory/"/&gt;
+        &lt;directory projectDir="resources" archiveDir="/"/&gt;
+        &lt;directory projectDir="WEB-INF" archivedir="/WEB-INF"/&gt;
+      &lt;/deployment&gt;
+    &lt;/ideawebmodule&gt;
+</pre></blockquote>
+
+
+
+
+<hr>
+<p align="center">Copyright &copy; 2006 Justin Tomich. All rights Reserved.</p>
+
+</body>
+</html>

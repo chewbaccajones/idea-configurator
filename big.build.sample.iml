@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+<component name="ModuleRootManager"/>
+<component inherit-compiler-output="false" name="NewModuleRootManager">
+<output url="file://$MODULE_DIR$/whatever"/>
+<output-test url="file://$MODULE_DIR$/whatever.tests"/>
+<content url="file://$MODULE_DIR$">
+<sourceFolder isTestSource="false" url="file://$MODULE_DIR$/src-dir1"/>
+<sourceFolder isTestSource="false" url="file://$MODULE_DIR$/src2"/>
+<sourceFolder isTestSource="false" url="file://$MODULE_DIR$/src3"/>
+<sourceFolder isTestSource="true" url="file://$MODULE_DIR$/test-dir"/>
+<sourceFolder isTestSource="true" url="file://$MODULE_DIR$/test2"/>
+<excludeFolder url="file://$MODULE_DIR$/dist"/>
+<excludeFolder url="file://$MODULE_DIR$/build"/>
+</content>
+<orderEntry forTests="false" type="sourceFolder"/>
+<orderEntry type="inheritedJdk"/>
+<orderEntry type="module-library">
+<library>
+<CLASSES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/foo.jar!/"/>
+</CLASSES>
+<JAVADOC/>
+<SOURCES/>
+</library>
+</orderEntry>
+<orderEntry type="module-library">
+<library>
+<CLASSES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/bar.jar!/"/>
+</CLASSES>
+<JAVADOC/>
+<SOURCES/>
+</library>
+</orderEntry>
+<orderEntry type="module-library">
+<library>
+<CLASSES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/some-lib.jar!/"/>
+</CLASSES>
+<JAVADOC>
+<root url="file:///Users/tomichj/IdeaProjects/idea-configurator/some-lib-doc"/>
+<root url="file:///Users/tomichj/IdeaProjects/idea-configurator/some-lib-doc2"/>
+</JAVADOC>
+<SOURCES>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/some-lib-src.jar!/"/>
+<root url="jar:///Users/tomichj/IdeaProjects/idea-configurator/some-lib-src2.jar!/"/>
+</SOURCES>
+</library>
+</orderEntry>
+<orderEntry exported="" module-name="foobly-module" type="module"/>
+<orderEntryProperties/>
+</component>
+</module>
