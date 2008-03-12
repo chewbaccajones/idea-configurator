@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sample.build.xml" default="foo">
+
+    <path id="cp">
+        <pathelement location="configurator.jar"/>
+        <fileset dir="/lib/groovy-current/embeddable">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <taskdef classpathref="cp" resource="taskdef.properties"/>
+
+
+    <target name="foo">
+        <!--<ideajavamodule relativePaths="false"/>-->
+        <ideajavamodule/>
+    </target>
+    
+</project>

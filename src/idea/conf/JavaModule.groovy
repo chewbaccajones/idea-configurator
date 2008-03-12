@@ -1,27 +1,43 @@
 package idea.conf
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Reference
+
+import idea.conf.idea.conf.render.DebugVisitor;
+
 
 /**
  *
  *
  * @author tomichj
  */
-class JavaModule extends Task
+class JavaModule extends Task implements Visitable
 {
-    private File rootDir;
+    File rootDir;
     private File moduleFile;
-    private boolean relativePaths = true; // defaults to true yo!
+    boolean relativePaths = true; // defaults to true yo!
+
+    JavaComponent java;
 
 
+    void execute()
+    {
+        super.execute();
+        def debug = new DebugVisitor()
+        debug.visit(this)
+        println debug
+    }
+
+    
     void setProject(Project project)
     {
+        super.setProject(project)
+        java = new JavaComponent(project)
     }
 
-    void setRootDir(File rootDir)
-    {
-        this.rootDir = rootDir;
-    }
 
     void setModuleFile(File moduleFile)
     {
@@ -33,12 +49,7 @@ class JavaModule extends Task
 
         this.moduleFile = moduleFile;
     }
-
-    void setRelativePaths(boolean relativePaths)
-    {
-        this.relativePaths = relativePaths;
-    }
-
+    
     File getRootDir()
     {
         if (rootDir != null) return rootDir;
@@ -53,5 +64,136 @@ class JavaModule extends Task
         return new File(project.getBaseDir(), project.getName() + ".iml")
     }
 
+
+
+    /////////////////////////////////////////////////////////
+    // Java stuff here
+    
+
+    void setSourceProperty(String sourceProperty)
+    {
+        java.setSourceProperty(sourceProperty);
+    }
+
+
+    void setJavadocProperty(String javadocProperty)
+    {
+        java.setJavadocProperty(javadocProperty);
+    }
+
+
+    void setJavadocUrlProperty(String javadocUrlProperty)
+    {
+        java.setJavadocUrlProperty(javadocUrlProperty);
+    }
+
+
+    void setSrcDir(File sourceDir)
+    {
+        java.setSrcDir(sourceDir);
+    }
+
+
+    void setSrcPathRef(Reference srcPathRef)
+    {
+        java.setSrcPathRef(srcPathRef);
+    }
+
+
+    Path createSrc()
+    {
+        return java.createSrc();
+    }
+
+
+    void setTestsDir(File testDir)
+    {
+        java.setTestsDir(testDir);
+    }
+
+
+    void setTestsPathRef(Reference testsPathRef)
+    {
+        java.setTestsPathRef(testsPathRef);
+    }
+
+
+    Path createTests()
+    {
+        return java.createTests();
+    }
+
+
+    void setInheritCompilerOutput(boolean inheritCompilerOutput) throws BuildException
+    {
+        java.setInheritCompilerOutput(inheritCompilerOutput);
+    }
+
+
+    void setExcludeOutputPaths(boolean excludeOutputPaths)
+    {
+        java.setExcludeOutputPaths(excludeOutputPaths);
+    }
+
+
+    void setOutputDir(File outputDir)
+    {
+        java.setOutputDir(outputDir);
+    }
+
+
+    void setTestsOutputDir(File testsOutputDir)
+    {
+        java.setTestsOutputDir(testsOutputDir);
+    }
+
+
+    void setExcludes(Path excludes)
+    {
+        java.setExcludes(excludes);
+    }
+
+
+    void setExcludesPathRef(Reference excludesPathRef)
+    {
+        java.setExcludesPathRef(excludesPathRef);
+    }
+
+
+    Path createExcludes()
+    {
+        return java.createExcludes();
+    }
+
+
+    void setClasspath(Path classpath)
+    {
+        java.setClasspath(classpath);
+    }
+
+
+    Dependencies createDependencies()
+    {
+        return java.createDependencies();
+    }
+
+
+    ClasspathFilter createClasspathFilter()
+    {
+        return java.createClasspathFilter();
+    }
+
+
+    List<Visitable> getChildren()
+    {
+        return [java];
+    }
+
+    String toString()
+    {
+        "JavaModule{" << "rootDir=" << rootDir <<
+                ", moduleFile=" << moduleFile << 
+                ", relativePaths=" << relativePaths << "}"
+    }
     
 }
