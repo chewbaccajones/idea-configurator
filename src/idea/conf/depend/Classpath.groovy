@@ -1,8 +1,9 @@
-package idea.conf
+package idea.conf.depend
 
 import org.apache.tools.ant.types.Path
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.BuildException
+import idea.conf.Visitable
 
 
 /**

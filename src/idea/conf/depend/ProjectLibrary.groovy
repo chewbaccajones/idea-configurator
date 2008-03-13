@@ -1,4 +1,7 @@
-package idea.conf
+package idea.conf.depend
+
+import idea.conf.Visitable
+
 /**
  *
  *
@@ -20,3 +23,4 @@ class ProjectLibrary implements Dependency
         "ProjectLibrary{name=" << name << ", exported=" << exported << "}"  
     }
 }
+

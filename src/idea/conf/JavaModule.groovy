@@ -6,14 +6,16 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference
 
-import idea.conf.idea.conf.render.DebugVisitor;
-
+import idea.conf.render.DebugVisitor
+import idea.conf.render.JavaImlVisitor
+import idea.conf.depend.Dependencies
+import idea.conf.depend.ClasspathFilter
 
 /**
- *
- *
- * @author tomichj
- */
+*
+*
+* @author tomichj
+*/
 class JavaModule extends Task implements Visitable
 {
     File rootDir;
@@ -29,6 +31,11 @@ class JavaModule extends Task implements Visitable
         def debug = new DebugVisitor()
         debug.visit(this)
         println debug
+        println "\n\n"
+
+        def xml = new JavaImlVisitor(getRootDir(), relativePaths)
+        xml.visit(this)
+        println xml
     }
 
     
@@ -41,6 +48,7 @@ class JavaModule extends Task implements Visitable
 
     void setModuleFile(File moduleFile)
     {
+        if (moduleFile == null) throw new BuildException("Null moduleFile!")
         if (!moduleFile.getAbsolutePath().endsWith(".iml"))
         {
             String p = moduleFile.getAbsolutePath() + ".iml";
@@ -49,12 +57,14 @@ class JavaModule extends Task implements Visitable
 
         this.moduleFile = moduleFile;
     }
+
     
     File getRootDir()
     {
         if (rootDir != null) return rootDir;
         return project.getBaseDir();
     }
+
 
     File getModuleFile()
     {
@@ -186,12 +196,13 @@ class JavaModule extends Task implements Visitable
 
     List<Visitable> getChildren()
     {
-        return [java];
+        return [java] as List<Visitable>;
     }
 
     String toString()
     {
-        "JavaModule{" << "rootDir=" << rootDir <<
+        "JavaModule{" <<
+                "rootDir=" << rootDir <<
                 ", moduleFile=" << moduleFile << 
                 ", relativePaths=" << relativePaths << "}"
     }

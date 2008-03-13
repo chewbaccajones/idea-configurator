@@ -1,9 +1,12 @@
-package idea.conf
+package idea.conf.depend
+
+import idea.conf.Visitable
+
 /**
- *
- *
- * @author tomichj
- */
+*
+*
+* @author tomichj
+*/
 class IdeaLibrary
 {
     String name

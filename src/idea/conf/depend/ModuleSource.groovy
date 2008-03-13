@@ -1,4 +1,7 @@
-package idea.conf
+package idea.conf.depend
+
+import idea.conf.Visitable
+
 /**
  *
  *
@@ -17,3 +20,4 @@ class ModuleSource implements Dependency
         "ModuleSource{}"
     }
 }
+

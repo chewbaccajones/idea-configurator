@@ -1,11 +1,17 @@
-package idea.conf
+package idea.conf.depend
+
+import idea.conf.Visitable
+
 /**
- *
- *
- * @author tomichj
- */
+*
+*
+* @author tomichj
+*/
 class Module implements Dependency
 {
+    String moduleName
+    boolean exported
+    
 
     List<Visitable> getChildren()
     {
@@ -14,6 +20,7 @@ class Module implements Dependency
 
     String toString()
     {
-        "Module{}"
+        "Module{moduleName=${moduleName}, exported=${exported}}"
     }
 }
+

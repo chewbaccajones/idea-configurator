@@ -1,11 +1,21 @@
-package idea.conf
+package idea.conf.depend
+
+import idea.conf.Visitable
+
 /**
- *
- *
- * @author tomichj
- */
+*
+*
+* @author tomichj
+*/
 class ClasspathFilter implements Dependency
 {
+    String pattern;
+
+
+    void filter(ModuleLibrary lib)
+    {
+        
+    }
 
     List<Visitable> getChildren()
     {
@@ -14,6 +24,6 @@ class ClasspathFilter implements Dependency
 
     String toString()
     {
-        return "ClasspathFilter{}"
+        "ClasspathFilter{" << "pattern=" << pattern << "}"
     }
 }

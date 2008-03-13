@@ -4,8 +4,7 @@ package idea.conf.depend
  *
  * @author tomichj
  */
-class ModuleLibraryClasspath
+class JavadocUrl
 {
-    
+    String url;
 }
-

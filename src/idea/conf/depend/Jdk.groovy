@@ -1,4 +1,7 @@
-package idea.conf
+package idea.conf.depend
+
+import idea.conf.Visitable
+
 /**
  *
  *
@@ -6,6 +9,9 @@ package idea.conf
  */
 class Jdk implements Dependency
 {
+    String jdkName // if null, use inherited jdk
+    boolean exported
+    
 
     List<Visitable> getChildren()
     {
@@ -14,7 +20,8 @@ class Jdk implements Dependency
 
     String toString()
     {
-        return "Jdk{}"
+        "Jdk{jdkName=${jdkName}, exported=${exported}}"
     }
 
 }
+
