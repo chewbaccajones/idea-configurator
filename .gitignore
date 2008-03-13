@@ -3,6 +3,6 @@ idea-configurator-groovy.iws
 configurator.jar
 .DS_Store
 *~
-out/
+out/*
 
 
