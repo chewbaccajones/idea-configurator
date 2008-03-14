@@ -14,10 +14,10 @@ import idea.conf.url.UrlFactory
 import idea.conf.url.UrlFactoryImpl
 
 /**
-*
-*
-* @author tomichj
-*/
+ *
+ *
+ * @author tomichj
+ */
 class JavaModule extends Task implements Visitable
 {
     File rootDir;
@@ -81,6 +81,7 @@ class JavaModule extends Task implements Visitable
 
     /////////////////////////////////////////////////////////
     // Java stuff here
+    // we could do some crazy property delegation stuff, but this might be simpler
     
 
     void setSourceProperty(String sourceProperty)
