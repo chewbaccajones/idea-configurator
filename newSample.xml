@@ -126,11 +126,15 @@
 
 
     <target name="classpath">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
+        <property name="source.foo.jar" value="/lib/foo-src.jar"/>
+        <property name="foo.jar" value="/lib/foo.jar"/>
+
+        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes"
+                sourceProperty="source">
             <src location="foobly"/>
             <dependencies>
                 <classpath exported="true">
-                    <pathelement path="/lib/foo.jar"/>
+                    <pathelement path="${foo.jar}"/>
                     <pathelement path="/lib/bar.jar"/>
                 </classpath>
             </dependencies>
@@ -158,6 +162,9 @@
             </dependencies>
         </ideajavamodule>
     </target>
+
+
+    
 
 </project>
 

@@ -7,4 +7,9 @@ package idea.conf.depend
 class JavadocUrl
 {
     String url;
+
+    String toString()
+    {
+        return "JavadocUrl{url=${url}}"
+    }
 }

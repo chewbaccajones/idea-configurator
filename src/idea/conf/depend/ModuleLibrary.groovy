@@ -37,7 +37,11 @@ class ModuleLibrary implements Dependency, Exportable
     Path getJarDirs() { return jarDirs }
     Path getSources() { return sources }
     Path getJavadocs() { return javadocs }
-    List<JavadocUrl> getJavadocUrls() { return javadocUrls }
+
+    List<JavadocUrl> getJavadocUrls()
+    {
+        javadocUrls.findAll { it.url != null }
+    }
 
 
     void validate() {
@@ -95,7 +99,7 @@ class ModuleLibrary implements Dependency, Exportable
     JavadocUrl createJavadocUrl()
     {
         JavadocUrl ju = new JavadocUrl()
-        javadocUrls << ju
+        javadocUrls.add(ju)
         return ju
     }
 

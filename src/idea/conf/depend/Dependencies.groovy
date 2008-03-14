@@ -160,7 +160,8 @@ class Dependencies implements Visitable
 
     Classpath createClasspath()
     {
-        Classpath cp = new Classpath(project);
+        Classpath cp = new Classpath(project, sourceProperty, javadocProperty,
+                javadocUrlProperty);
         dependencies.add(cp);
         return cp;
     }

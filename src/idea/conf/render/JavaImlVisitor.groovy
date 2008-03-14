@@ -102,18 +102,18 @@ class JavaImlVisitor extends DefaultVisitor
         xml.orderEntry(export([type:"module-library"], lib)) {
             xml.library(nonNulls(name:lib.getName())){
                 xml.CLASSES() {
-                    lib.classes.list().each { xml.root(url:asUrl(it)) }
-                    lib.jarDirs.list().each { xml.root(url:asUrl(it)) }
+                    lib.classes.list().each{ classes -> xml.root(url:asUrl(classes)) }
+                    lib.jarDirs.list().each{ dir -> xml.root(url:asUrl(dir)) }
                 }
                 xml.JAVADOC() {
-                    lib.javadocs.list().each { xml.root(url:asUrl(it)) }
-                    lib.javadocUrls.each { xml.root(url:asUrl(it.url)) }
+                    lib.javadocs.list().each { javadoc -> xml.root(url:asUrl(javadoc)) }
+                    lib.javadocUrls.each { docUrl -> xml.root(url:asUrl(docUrl.url)) }
                 }
                 xml.SOURCES() {
-                    lib.sources.list().each { xml.root(url:asUrl(it)) }
+                    lib.sources.list().each { source -> xml.root(url:asUrl(source)) }
                 }
-                lib.jarDirs.list().each {
-                    xml.jarDirectory(url:asUrl(it), recursive:"false")
+                lib.jarDirs.list().each { jarDir ->
+                    xml.jarDirectory(url:asUrl(jarDir), recursive:"false")
                 }
                 super.visit(lib)
             }
@@ -184,6 +184,7 @@ class JavaImlVisitor extends DefaultVisitor
 
     String asUrl(String path)
     {
+        assert path
         if (path.endsWith("jar")) return urls.jar(path)
         if (path.endsWith("zip")) return urls.jar(path)
         if (path.startsWith("http")) return urls.http(path)
