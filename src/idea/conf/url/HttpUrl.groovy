@@ -13,7 +13,7 @@ class HttpUrl extends BaseUrl
     }
 
 
-    String contents()
+    String url()
     {
         return path;
     }

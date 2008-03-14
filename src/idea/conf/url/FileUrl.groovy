@@ -12,7 +12,7 @@ class FileUrl extends BaseUrl
     }
 
 
-    String contents()
+    String url()
     {
         "file://" + path
     }

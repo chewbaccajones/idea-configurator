@@ -1,9 +1,11 @@
 package idea.conf.depend
 
-import org.apache.tools.ant.types.Path
-import org.apache.tools.ant.Project
 import idea.conf.depend.JavadocUrl
 import idea.conf.Visitable;
+
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.types.Path
+import org.apache.tools.ant.Project
 
 
 /**
@@ -11,15 +13,16 @@ import idea.conf.Visitable;
  *
  * @author tomichj
  */
-class ModuleLibrary implements Dependency
+class ModuleLibrary implements Dependency, Exportable
 {
+    String name
     private Path classes // roots with jar entries
     private Path jarDirs // roots with file entries, plus separate jarDirectory directive
     private Path sources;
     private Path javadocs;
     private List<JavadocUrl> javadocUrls = []
 
-    boolean exported = false
+    boolean exported
 
 
     ModuleLibrary(Project project)
@@ -30,7 +33,23 @@ class ModuleLibrary implements Dependency
         javadocs = new Path(project)
     }
 
-    
+    Path getClasses() { return classes }
+    Path getJarDirs() { return jarDirs }
+    Path getSources() { return sources }
+    Path getJavadocs() { return javadocs }
+    List<JavadocUrl> getJavadocUrls() { return javadocUrls }
+
+
+    void validate() {
+        if (!classes.size()) throw new BuildException("ModuleLibrary requires classes")
+    }
+
+
+    void setClasses(File jar)
+    {
+        this.classes.setLocation(jar)
+    }
+
     void setSource(File sources)
     {
         this.sources.setLocation(sources)

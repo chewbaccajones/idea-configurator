@@ -12,7 +12,7 @@ class JarUrl extends BaseUrl
     }
     
     
-    String contents()
+    String url()
     {
         return "jar://" + path + "!/";
     }

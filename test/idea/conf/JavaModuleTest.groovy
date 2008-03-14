@@ -1,7 +1,7 @@
 package idea.conf
 
 import org.apache.tools.ant.Project
-import idea.conf.idea.conf.render.DebugVisitor
+import idea.conf.render.DebugVisitor
 
 /**
 *

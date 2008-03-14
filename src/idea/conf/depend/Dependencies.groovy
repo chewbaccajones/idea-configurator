@@ -55,7 +55,7 @@ class Dependencies implements Visitable
 
     IdeaLibrary createIdeaLib()
     {
-        IdeaLibrary lib = new IdeaLibrary();
+        IdeaLibrary lib = new IdeaLibrary(project);
         dependencies.add(lib);
         return lib;
     }

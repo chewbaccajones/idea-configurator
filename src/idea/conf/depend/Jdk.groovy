@@ -9,7 +9,7 @@ import idea.conf.Visitable
  */
 class Jdk implements Dependency
 {
-    String jdkName // if null, use inherited jdk
+    String jdkName // if null, we use the jdk inherited from project
     boolean exported
     
 
@@ -18,10 +18,16 @@ class Jdk implements Dependency
         return null;
     }
 
+
+    void validate() {
+        // nothing to validate just now
+    }
+
+
     String toString()
     {
         "Jdk{jdkName=${jdkName}, exported=${exported}}"
     }
-
+    
 }
 

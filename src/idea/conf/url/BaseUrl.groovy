@@ -8,16 +8,16 @@ abstract class BaseUrl implements Url
 {
     String path;
     
-    abstract String contents();
+    abstract String url();
     
     public boolean matches(String pattern)
     {
-        return contents().matches(pattern);
+        return url().matches(pattern);
     }
 
     public boolean contains(String candidatePath)
     {
-        return contents().contains(candidatePath)
+        return url().contains(candidatePath)
     }
 }
 

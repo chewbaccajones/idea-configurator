@@ -7,12 +7,15 @@ import idea.conf.Visitable
 
 
 /**
- *
+ * Wrapper class that takes a classpath and will generate module library entries.
  *
  * @author tomichj
  */
-class Classpath extends Path implements Dependency
+class Classpath extends Path implements Dependency, Exportable
 {
+    boolean exported
+
+    
     Classpath(Project project)
     {
         super(project);
@@ -23,6 +26,10 @@ class Classpath extends Path implements Dependency
     List<Visitable> getChildren()
     {
         return null;
+    }
+
+    void validate() {
+        // nothing to validate
     }
 
 

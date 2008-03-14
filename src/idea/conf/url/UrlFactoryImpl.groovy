@@ -22,6 +22,30 @@ class UrlFactoryImpl implements UrlFactory
     }
 
 
+    public String file(File path) {
+        return fileUrl(path).url()
+    }
+
+    public String file(String path) {
+        return fileUrl(path).url()
+    }
+
+    public String http(String path) {
+        return httpUrl(path).url()
+    }
+
+    public String jar(File path) {
+        return jarUrl(path).url()
+    }
+
+    public String jar(String path) {
+        return jarUrl(path).url()
+    }
+
+
+
+
+
     FileUrl fileUrl(File path)
     {
         if (path == null) throw new BuildException("Null path!")
@@ -31,8 +55,10 @@ class UrlFactoryImpl implements UrlFactory
 
     FileUrl fileUrl(String path)
     {
-        String relative = relativePath(path);
-        return new FileUrl(relative);
+        String computed = computePath(path)
+        return new FileUrl(computed)
+//        String relative = relativePath(path);
+//        return new FileUrl(relative)
     }
 
 

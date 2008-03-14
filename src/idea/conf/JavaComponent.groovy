@@ -11,7 +11,7 @@ import idea.conf.depend.ClasspathFilter;
 
 
 /**
- *
+ * The innards of the basic java configuration. Used by multiple module types.
  *
  * @author tomichj
  */
@@ -28,7 +28,7 @@ class JavaComponent implements Visitable
     Path excludes
 
     Dependencies dependencies
-    List<ClasspathFilter> filters = []
+    List<ClasspathFilter> filters = [] // todo deal with filters
 
 
     JavaComponent(Project project)

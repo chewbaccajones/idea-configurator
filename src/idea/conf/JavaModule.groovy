@@ -10,6 +10,8 @@ import idea.conf.render.DebugVisitor
 import idea.conf.render.JavaImlVisitor
 import idea.conf.depend.Dependencies
 import idea.conf.depend.ClasspathFilter
+import idea.conf.url.UrlFactory
+import idea.conf.url.UrlFactoryImpl
 
 /**
 *
@@ -20,7 +22,7 @@ class JavaModule extends Task implements Visitable
 {
     File rootDir;
     private File moduleFile;
-    boolean relativePaths = true; // defaults to true yo!
+    boolean relativePaths = false;
 
     JavaComponent java;
 
@@ -31,11 +33,12 @@ class JavaModule extends Task implements Visitable
         def debug = new DebugVisitor()
         debug.visit(this)
         println debug
-        println "\n\n"
 
-        def xml = new JavaImlVisitor(getRootDir(), relativePaths)
+        UrlFactory urlFactory = new UrlFactoryImpl(getRootDir(), relativePaths)
+        def xml = new JavaImlVisitor(urlFactory);
         xml.visit(this)
         println xml
+        println "\n"
     }
 
     

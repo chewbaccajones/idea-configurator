@@ -2,14 +2,17 @@ package idea.conf.depend
 
 import idea.conf.Visitable
 
+import org.apache.tools.ant.BuildException;
+
+
 /**
-*
-*
-* @author tomichj
-*/
-class Module implements Dependency
+ * A reference to another module. 
+ *
+ * @author tomichj
+ */
+class Module implements Dependency, Exportable
 {
-    String moduleName
+    String name
     boolean exported
     
 
@@ -18,9 +21,14 @@ class Module implements Dependency
         return null;
     }
 
+    void validate() {
+        if (!name) throw new BuildException("Module dependency requires name attribute")
+    }
+
     String toString()
     {
-        "Module{moduleName=${moduleName}, exported=${exported}}"
+        "Module{name=${name}, exported=${exported}}"
     }
+
 }
 

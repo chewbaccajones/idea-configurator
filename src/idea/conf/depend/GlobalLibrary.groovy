@@ -2,15 +2,17 @@ package idea.conf.depend
 
 import idea.conf.Visitable
 
+import org.apache.tools.ant.BuildException;
+
 /**
 *
 *
 * @author tomichj
 */
-class GlobalLibrary implements Dependency
+class GlobalLibrary implements Dependency, Exportable
 {
     String name;
-    boolean exported = false;
+    boolean exported
 
 
     public List<Visitable> getChildren()
@@ -18,8 +20,13 @@ class GlobalLibrary implements Dependency
         return null;
     }
 
+    void validate() {
+        if (!name) throw new BuildException("GlobalLibrary name must not be null!")
+    }
+
     String toString()
     {
         return "GlobalLibrary{" << "name=" << name << ", exported=" << exported << "}"
     }
 }
+

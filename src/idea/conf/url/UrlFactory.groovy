@@ -1,19 +1,15 @@
 package idea.conf.url
 /**
- *
+ * Factory for creating Url objects.
  *
  * @author tomichj
  */
 interface UrlFactory
 {
-    FileUrl fileUrl(File path);
-
-    FileUrl fileUrl(String path);
-
-    HttpUrl httpUrl(String path);
-
-    JarUrl jarUrl(String path);
-
-    JarUrl jarUrl(File file);
+    String file(File path)
+    String file(String path)
+    String http(String path)
+    String jar(File path)
+    String jar(String path)
 }
 

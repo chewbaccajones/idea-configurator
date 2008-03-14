@@ -1,7 +1,7 @@
 package idea.conf.url
+
+
 /**
- *
- *
  * @author tomichj
  */
 class FileUrlTest extends GroovyTestCase
@@ -10,7 +10,7 @@ class FileUrlTest extends GroovyTestCase
     {
         String path = "foo"
         FileUrl fu = new FileUrl(path);
-        assertEquals("file://foo", fu.contents())
+        assertEquals("file://foo", fu.url())
     }
 
 }
