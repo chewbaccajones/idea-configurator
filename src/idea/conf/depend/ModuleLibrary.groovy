@@ -109,12 +109,12 @@ class ModuleLibrary implements Dependency, Exportable
     String toString()
     {
         "ModuleLibrary{" <<
-                "classes=" << classes <<
-                ", jarDirs=" << jarDirs <<
-                ", sources=" << sources <<
-                ", javadocs=" << javadocs <<
-                ", javadocUrls=" << javadocUrls <<
-                ", exported=" << exported <<
+                "classes=${classes}" <<
+                ", jarDirs=${jarDirs}" <<
+                ", sources=${sources}" <<
+                ", javadocs=${javadocs}" <<
+                ", javadocUrls=${javadocUrls}" <<
+                ", exported=${exported}" <<
                 "}"
     }
 }

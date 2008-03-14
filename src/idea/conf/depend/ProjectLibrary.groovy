@@ -27,7 +27,7 @@ class ProjectLibrary implements Dependency, Exportable
 
     String toString()
     {
-        "ProjectLibrary{name=" << name << ", exported=" << exported << "}"  
+        "ProjectLibrary{name=${name}, exported=${exported}}"  
     }
 }
 

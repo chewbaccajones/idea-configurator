@@ -32,7 +32,7 @@ class IdeaLibrary implements Dependency, Exportable
 
     List<Visitable> getChildren()
     {
-        return null;
+        return [asModuleLibrary()];
     }
 
     void validate() {
@@ -41,7 +41,7 @@ class IdeaLibrary implements Dependency, Exportable
 
     String toString()
     {
-        return "IdeaLibrary{" << "name=" << name << "}"
+        "IdeaLibrary{name=${name}, exported=${exported}"
     }
 }
 

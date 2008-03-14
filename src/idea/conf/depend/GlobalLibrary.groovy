@@ -26,7 +26,7 @@ class GlobalLibrary implements Dependency, Exportable
 
     String toString()
     {
-        return "GlobalLibrary{" << "name=" << name << ", exported=" << exported << "}"
+        "GlobalLibrary{name=${name}, exported=${exported}}"
     }
 }
 

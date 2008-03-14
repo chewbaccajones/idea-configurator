@@ -15,8 +15,8 @@ import idea.conf.Visitable;
  */
 class Dependencies implements Visitable
 {
-    def dependencies = []
     Project project;
+    def dependencies = []
 
     /**
      * Set string that source properties must begin with to be automagically
@@ -32,6 +32,7 @@ class Dependencies implements Visitable
     String sourceProperty
     
     String javadocProperty
+
     String javadocUrlProperty
 
 
@@ -49,7 +50,55 @@ class Dependencies implements Visitable
 
     List<Visitable> getChildren()
     {
+        completeJdkAndSourceOrderEntries()
         return dependencies
+    }
+
+
+    void completeJdkAndSourceOrderEntries()
+    {
+        if (hasJdk() && hasSource()) return;
+        if (hasSource())
+        {
+            putAfter(ModuleSource, new Jdk())
+        }
+        else if (hasJdk())
+        {
+            putBefore(Jdk, new ModuleSource())
+        }
+        else
+        {
+            dependencies.add(0, new ModuleSource())
+            dependencies.add(1, new Jdk())
+        }
+    }
+
+
+    boolean hasJdk()
+    {
+        dependencies.any { it instanceof Jdk }
+    }
+
+
+    boolean hasSource()
+    {
+        dependencies.any { it instanceof ModuleSource }
+    }
+
+
+    void putAfter(Class clazz, Dependency insert)
+    {
+        def entry = dependencies.find { clazz.isInstance(it) }
+        int index = dependencies.indexOf(entry)
+        dependencies.add(index+1, insert)
+    }
+
+
+    void putBefore(Class clazz, Dependency insert)
+    {
+        def entry = dependencies.find { clazz.isInstance(it) }
+        int index = dependencies.indexOf(entry)
+        dependencies.add(index, insert)
     }
 
 

@@ -25,7 +25,12 @@ class Classpath extends Path implements Dependency, Exportable
 
     List<Visitable> getChildren()
     {
-        return null;
+        list().collect {
+            def lib = new ModuleLibrary(getProject())
+            lib.setExported(exported)
+            lib.createClasses().setPath(it)
+            return lib
+        }
     }
 
     void validate() {
@@ -35,7 +40,7 @@ class Classpath extends Path implements Dependency, Exportable
 
     String toString()
     {
-        return "Classpath{}"
+        "Classpath{exported=${exported}, list=" + list() + "}"
     }
 }
 

@@ -15,6 +15,7 @@ import idea.conf.depend.GlobalLibrary
 import idea.conf.depend.IdeaLibrary
 import idea.conf.depend.Module
 import idea.conf.depend.Exportable
+import idea.conf.depend.Classpath
 
 /**
 *
@@ -122,7 +123,13 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(IdeaLibrary lib)
     {
-        visit(lib.asModuleLibrary())
+        super.visit(lib)
+    }
+
+
+    void visit(Classpath cp)
+    {
+        super.visit(cp)
     }
 
 

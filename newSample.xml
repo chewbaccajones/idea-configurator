@@ -12,7 +12,8 @@
 
     <target name="all"
             depends="simplest, has-source, has-module-lib, has-contents, global-lib,
-                     simple-module-lib, module-lib-with-all, module-dependency"/>
+                     simple-module-lib, module-lib-with-all, module-dependency,
+                     classpath, jdk-and-source"/>
 
 
     <target name="simplest">
@@ -123,6 +124,40 @@
         </ideajavamodule>
     </target>
 
+
+    <target name="classpath">
+        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
+            <src location="foobly"/>
+            <dependencies>
+                <classpath exported="true">
+                    <pathelement path="/lib/foo.jar"/>
+                    <pathelement path="/lib/bar.jar"/>
+                </classpath>
+            </dependencies>
+        </ideajavamodule>
+    </target>
+
+
+    <target name="jdk-and-source">
+        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
+            <src location="foobly"/>
+            <dependencies>
+                <jdk/>
+                <modulelibrary classes="/lib/foo.jar"/>
+                <modulesource/>
+            </dependencies>
+        </ideajavamodule>
+    </target>
+
+
+    <target name="idea-lib">
+        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
+            <src location="foobly"/>
+            <dependencies>
+                <idealib name="foo.jar"/>
+            </dependencies>
+        </ideajavamodule>
+    </target>
 
 </project>
 

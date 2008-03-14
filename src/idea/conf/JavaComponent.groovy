@@ -11,7 +11,7 @@ import idea.conf.depend.ClasspathFilter;
 
 
 /**
- * The innards of the basic java configuration. Used by multiple module types.
+ * The innards of the basic java configuration. To be used by multiple module types.
  *
  * @author tomichj
  */
