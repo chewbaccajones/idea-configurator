@@ -20,9 +20,12 @@ import idea.conf.url.UrlFactoryImpl
  */
 class JavaModule extends Task implements Visitable
 {
-    File rootDir;
-    private File moduleFile;
-    boolean relativePaths = false;
+    File rootDir
+    private File moduleFile
+    boolean relativePaths
+
+    // the entire groovy facet, one sweet little boolean
+    boolean groovyModule
 
     JavaComponent java;
 

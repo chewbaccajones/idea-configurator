@@ -177,7 +177,14 @@
     </target>
 
 
-    
+    <target name="groovy">
+        <ideajavamodule outputDir="build/classes"
+                        testsOutputDir="build/test-classes"
+                        groovyModule="true">
+            <src location="foobly"/>
+        </ideajavamodule>
+    </target>
+
 
 </project>
 
