@@ -17,6 +17,7 @@ class IdeaLibrary implements Dependency, Exportable
     String name
     boolean exported
 
+
     IdeaLibrary(Project project)
     {
         this.project = project
@@ -35,7 +36,8 @@ class IdeaLibrary implements Dependency, Exportable
         return [asModuleLibrary()];
     }
 
-    void validate() {
+    void validate()
+    {
         if (!name) throw new BuildException("IdeaLibrary name must not be null!")
     }
 

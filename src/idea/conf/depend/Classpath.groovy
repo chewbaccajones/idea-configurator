@@ -6,7 +6,7 @@ import org.apache.tools.ant.Project
 import org.apache.tools.ant.types.Path
 
 /**
- * Wrapper class that takes a classpath and will generate module library entries.
+ * An ant path that will generate module library entries for each entry in the path.
  *
  * @author tomichj
  */
@@ -19,6 +19,7 @@ class Classpath extends Path implements Dependency, Exportable
     String javadocUrlProperty;
 
     def log
+
     
     Classpath(Project project, sourceProperty, javadocProperty, javadocUrlProperty)
     {
@@ -49,6 +50,7 @@ class Classpath extends Path implements Dependency, Exportable
             return lib
         }
     }
+    
 
     String endWithDot(String property)
     {
@@ -118,7 +120,8 @@ class Classpath extends Path implements Dependency, Exportable
     }
     
 
-    void validate() {
+    void validate()
+    {
         // nothing to validate
     }
 

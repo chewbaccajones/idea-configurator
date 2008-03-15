@@ -4,7 +4,8 @@ import idea.conf.Visitable
 import org.apache.tools.ant.BuildException
 
 /**
-*
+* Specifies a jdk 1.5 regex pattern used to remove any matching classes from a
+* <classpath>.  
 *
 * @author tomichj
 */

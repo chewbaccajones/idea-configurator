@@ -4,14 +4,15 @@ import idea.conf.Visitable
 
 /**
  * ModuleSource asserts the order of the module's source in the
- * dependency order.
+ * dependency ordering.
  *
  * @author tomichj
  */
 class ModuleSource implements Dependency
 {
 
-    void validate() {
+    void validate()
+    {
         // absolutely nothing to validate
     }
     

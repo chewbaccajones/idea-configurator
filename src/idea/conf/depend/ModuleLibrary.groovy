@@ -9,7 +9,7 @@ import org.apache.tools.ant.Project
 
 
 /**
- * A module library.
+ * A module library. The most complex dependency available. 
  *
  * @author tomichj
  */
@@ -44,7 +44,8 @@ class ModuleLibrary implements Dependency, Exportable
     }
 
 
-    void validate() {
+    void validate()
+    {
         if (!classes.size()) throw new BuildException("ModuleLibrary requires classes")
     }
 

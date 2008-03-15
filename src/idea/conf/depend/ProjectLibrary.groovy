@@ -21,7 +21,8 @@ class ProjectLibrary implements Dependency, Exportable
         return null;
     }
 
-    void validate() {
+    void validate()
+    {
         if (!name) throw new BuildException("ProjectLibrary name must not be null!")
     }
 

@@ -1,15 +1,10 @@
 package idea.conf.depend
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.types.Path;
-import org.apache.tools.ant.types.Reference
-import idea.conf.Visitable;
-
+import idea.conf.Visitable
+import org.apache.tools.ant.Project
 
 /**
- *
+ * Containes all Dependency instances, squirts some logic into the processing of them.
  *
  * @author tomichj
  */
@@ -53,6 +48,9 @@ class Dependencies implements Visitable
     List<Visitable> getChildren()
     {
         completeJdkAndSourceOrderEntries()
+
+        dependencies.each { it.validate() }
+
         dependencies.findAll { it instanceof ModuleLibrary }.each {
             it.removeMatchingClasses(filters)
         }

@@ -5,10 +5,10 @@ import idea.conf.Visitable
 import org.apache.tools.ant.BuildException;
 
 /**
-*
-*
-* @author tomichj
-*/
+ * A global library declaration.
+ *
+ * @author tomichj
+ */
 class GlobalLibrary implements Dependency, Exportable
 {
     String name;
@@ -20,7 +20,8 @@ class GlobalLibrary implements Dependency, Exportable
         return null;
     }
 
-    void validate() {
+    void validate()
+    {
         if (!name) throw new BuildException("GlobalLibrary name must not be null!")
     }
 
