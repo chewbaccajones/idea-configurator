@@ -1,6 +1,7 @@
 package idea.conf.depend
 
 import idea.conf.Visitable
+import org.apache.tools.ant.BuildException
 
 /**
 *
@@ -11,20 +12,20 @@ class ClasspathFilter implements Dependency
 {
     String pattern;
 
-
-//    void filter(ModuleLibrary lib)
-//    {
-//
-//    }
-
+    
+    boolean matches(String jar)
+    {
+        return jar.matches(pattern)
+    }
 
     List<Visitable> getChildren()
     {
         return null;
     }
 
-    void validate() {
-        // check full null pattern?
+    void validate()
+    {
+        if (!pattern) throw new BuildException("ClasspathFilter pattern cannot be null!")
     }
 
 

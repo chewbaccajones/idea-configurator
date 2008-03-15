@@ -17,7 +17,9 @@ class Dependencies implements Visitable
 {
     Project project;
     def dependencies = []
+    def filters = []
 
+    
     /**
      * Set string that source properties must begin with to be automagically
      * identified as source for a corresponging library. Other ant properties
@@ -51,6 +53,9 @@ class Dependencies implements Visitable
     List<Visitable> getChildren()
     {
         completeJdkAndSourceOrderEntries()
+        dependencies.findAll { it instanceof ModuleLibrary }.each {
+            it.removeMatchingClasses(filters)
+        }
         return dependencies
     }
 
@@ -102,6 +107,14 @@ class Dependencies implements Visitable
     }
 
 
+    ClasspathFilter createFilter()
+    {
+        ClasspathFilter filter = new ClasspathFilter()
+        filters.add(filter)
+        return filter
+    }
+
+    
     IdeaLibrary createIdeaLib()
     {
         IdeaLibrary lib = new IdeaLibrary(project);
@@ -174,6 +187,7 @@ class Dependencies implements Visitable
                 ", javadocProperty=" + javadocProperty +
                 ", javadocUrlProperty=" + javadocUrlProperty +
                 ", dependencies.size()=" + dependencies.size() +
+                ", filters.size()=" + filters.size() +
                 "}"
     }
 

@@ -104,6 +104,27 @@ class ModuleLibrary implements Dependency, Exportable
     }
 
 
+    /**
+     * Remove any 'classes' that matches the given pattern. The pattern uses the
+     * jdk 1.5 java.util.regex.Pattern syntax.
+     *
+     * @param pattern matching 'classes' Roots are removed.
+     * @see java.util.regex.Pattern
+     */
+    void removeMatchingClasses(List<ClasspathFilter> filters)
+    {
+        def classesCopy = classes.list() as List
+        ListIterator iter = classesCopy.listIterator()
+        while (iter.hasNext())
+        {
+            String path = iter.next()
+            if (filters.any { filter -> filter.matches(path) } ) iter.remove()
+        }
+        classes = new Path( classes.getProject() )
+        classesCopy.each { path -> classes.createPathElement().setPath(path) }
+    }
+
+
     List<Visitable> getChildren()
     {
         return null;

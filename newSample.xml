@@ -164,6 +164,19 @@
     </target>
 
 
+    <target name="filters">
+        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
+            <src location="foobly"/>
+            <dependencies>
+                <modulelibrary classes="/lib/foo.jar"/>
+                <modulelibrary classes="/lib/foo2.jar"/>
+                <modulelibrary classes="/lib/bar.jar"/>
+                <filter pattern=".*foo.*jar"/>
+            </dependencies>
+        </ideajavamodule>
+    </target>
+
+
     
 
 </project>

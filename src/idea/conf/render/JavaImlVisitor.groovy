@@ -99,6 +99,8 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(ModuleLibrary lib)
     {
+        if (!lib.classes.list().size()) return;
+        
         xml.orderEntry(export([type:"module-library"], lib)) {
             xml.library(nonNulls(name:lib.getName())){
                 xml.CLASSES() {
