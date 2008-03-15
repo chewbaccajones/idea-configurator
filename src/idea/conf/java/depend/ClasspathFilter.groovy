@@ -1,4 +1,4 @@
-package idea.conf.depend
+package idea.conf.java.depend
 
 import idea.conf.Visitable
 import org.apache.tools.ant.BuildException

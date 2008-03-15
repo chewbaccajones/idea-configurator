@@ -1,9 +1,9 @@
-package idea.conf.depend
+package idea.conf.java.depend
 /**
  * Dumb little wrapper class to wrap a javadoc url. Used by ModuleLibrary.
  *
  * @author tomichj
- * @see idea.conf.depend.ModuleLibrary
+ * @see idea.conf.java.depend.ModuleLibrary
  */
 class JavadocUrl
 {

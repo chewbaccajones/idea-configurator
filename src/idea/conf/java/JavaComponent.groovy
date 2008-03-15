@@ -1,12 +1,13 @@
-package idea.conf
+package idea.conf.java
 
 import org.apache.tools.ant.BuildException
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path
 import org.apache.tools.ant.types.Reference
 
-import idea.conf.depend.Dependencies
-import idea.conf.depend.ClasspathFilter;
+import idea.conf.java.depend.Dependencies
+import idea.conf.java.depend.ClasspathFilter
+import idea.conf.Visitable;
 
 
 

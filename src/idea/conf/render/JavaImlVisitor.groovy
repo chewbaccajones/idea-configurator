@@ -3,19 +3,19 @@ package idea.conf.render
 import groovy.xml.MarkupBuilder
 
 import idea.conf.JavaModule
-import idea.conf.JavaComponent
+import idea.conf.java.JavaComponent
+import idea.conf.java.depend.Dependencies
+import idea.conf.java.depend.ModuleLibrary
+import idea.conf.java.depend.Jdk
+import idea.conf.java.depend.ModuleSource
+import idea.conf.java.depend.ProjectLibrary
+import idea.conf.java.depend.GlobalLibrary
+import idea.conf.java.depend.IdeaLibrary
+import idea.conf.java.depend.Module
+import idea.conf.java.depend.Exportable
+import idea.conf.java.depend.Classpath
 import idea.conf.url.UrlFactory
 import idea.conf.url.FileUrl
-import idea.conf.depend.Dependencies
-import idea.conf.depend.ModuleLibrary
-import idea.conf.depend.Jdk
-import idea.conf.depend.ModuleSource
-import idea.conf.depend.ProjectLibrary
-import idea.conf.depend.GlobalLibrary
-import idea.conf.depend.IdeaLibrary
-import idea.conf.depend.Module
-import idea.conf.depend.Exportable
-import idea.conf.depend.Classpath
 
 /**
 *

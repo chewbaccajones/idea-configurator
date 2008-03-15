@@ -1,4 +1,4 @@
-package idea.conf.depend
+package idea.conf.java.depend
 /**
  * Is this dependency capable of being exported?
  *

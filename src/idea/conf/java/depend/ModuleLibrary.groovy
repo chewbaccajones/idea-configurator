@@ -1,6 +1,6 @@
-package idea.conf.depend
+package idea.conf.java.depend
 
-import idea.conf.depend.JavadocUrl
+import idea.conf.java.depend.JavadocUrl
 import idea.conf.Visitable;
 
 import org.apache.tools.ant.BuildException;

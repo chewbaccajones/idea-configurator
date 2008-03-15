@@ -1,4 +1,4 @@
-package idea.conf.depend
+package idea.conf.java.depend
 
 /**
  *

@@ -8,10 +8,11 @@ import org.apache.tools.ant.types.Reference
 
 import idea.conf.render.DebugVisitor
 import idea.conf.render.JavaImlVisitor
-import idea.conf.depend.Dependencies
-import idea.conf.depend.ClasspathFilter
+import idea.conf.java.depend.Dependencies
+import idea.conf.java.depend.ClasspathFilter
 import idea.conf.url.UrlFactory
 import idea.conf.url.UrlFactoryImpl
+import idea.conf.java.JavaComponent
 
 /**
  *
