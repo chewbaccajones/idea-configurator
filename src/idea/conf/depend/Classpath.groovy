@@ -1,10 +1,9 @@
 package idea.conf.depend
 
-import org.apache.tools.ant.types.Path
-import org.apache.tools.ant.Project
-import org.apache.tools.ant.BuildException
 import idea.conf.Visitable
-
+import org.apache.tools.ant.BuildException
+import org.apache.tools.ant.Project
+import org.apache.tools.ant.types.Path
 
 /**
  * Wrapper class that takes a classpath and will generate module library entries.
@@ -23,8 +22,8 @@ class Classpath extends Path implements Dependency, Exportable
     
     Classpath(Project project, sourceProperty, javadocProperty, javadocUrlProperty)
     {
-        super(project);
-        if (project == null) throw new BuildException("null project!");
+        super(project)
+        if (project == null) throw new BuildException("null project!")
 
         log = { msg -> project.log(msg, Project.MSG_DEBUG) }
 
@@ -53,9 +52,9 @@ class Classpath extends Path implements Dependency, Exportable
 
     String endWithDot(String property)
     {
-        if (!property) return null;
-        if (property.endsWith(".")) return property;
-        return property + ".";
+        if (!property) return null
+        if (property.endsWith(".")) return property
+        return property + "."
     }
 
 
@@ -74,48 +73,48 @@ class Classpath extends Path implements Dependency, Exportable
     private String findPropertyNameForJar(String jar)
     {
         // could cache properties table...
-        Project project = getProject();
-        Set<Map.Entry> entries = project.getProperties().entrySet();
+        Project project = getProject()
+        Set<Map.Entry> entries = project.getProperties().entrySet()
 
         for (Map.Entry entry : entries)
         {
-            String key = (String) entry.getKey();
-            String value = (String) entry.getValue();
+            String key = (String) entry.getKey()
+            String value = (String) entry.getValue()
 //            log("key=${key}   value=${value}")
-            if (value == null) continue;
-            String[] paths = Path.translatePath(project, value);
+            if (value == null) continue
+            String[] paths = Path.translatePath(project, value)
 //            log("path=" + paths.join(":"))
-            if (paths.length == 0) continue;
-            if (paths.length > 1) continue;
-            if (jar.equals(paths[0])) return key;
+            if (paths.length == 0) continue
+            if (paths.length > 1) continue
+            if (jar.equals(paths[0])) return key
         }
-        return null;
+        return null
     }
 
 
     private String javadoc(String lib)
     {
-        return lookup(javadocProperty, lib);
+        return lookup(javadocProperty, lib)
     }
 
 
     private String javadocUrl(String lib)
     {
-        return lookup(javadocUrlProperty, lib);
+        return lookup(javadocUrlProperty, lib)
     }
 
 
     private String source(String lib)
     {
-        return lookup(sourceProperty, lib);
+        return lookup(sourceProperty, lib)
     }
 
 
     private String lookup(String propertyFrag, String lib)
     {
-        if (!propertyFrag) return null;
-        String property = propertyFrag + lib;
-        return getProject().getProperty(property);
+        if (!propertyFrag) return null
+        String property = propertyFrag + lib
+        return getProject().getProperty(property)
     }
     
 
