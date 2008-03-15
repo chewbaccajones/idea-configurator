@@ -41,7 +41,7 @@ class JavaImlVisitor extends DefaultVisitor
     void visit(JavaModule module)
     {
         xml.module(relativePaths:module.relativePaths, type:TYPE, version:VERSION) {
-            if (module.groovyModule) writeGroovyFacet()
+            if (module.groovyFacet) writeGroovyFacet()
             super.visit(module)
         }
     }

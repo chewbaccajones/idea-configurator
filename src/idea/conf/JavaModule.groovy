@@ -26,7 +26,7 @@ class JavaModule extends Task implements Visitable
     boolean relativePaths
 
     // the entire groovy facet, one sweet little boolean
-    boolean groovyModule
+    boolean groovyFacet
 
     JavaComponent java;
 
