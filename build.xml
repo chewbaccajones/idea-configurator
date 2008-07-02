@@ -20,15 +20,13 @@
   ~  */
   ~
   -->
-
 <project name="idea-configurator" default="all">
+
+  <property name="release" value="1.1.1"/>
 
   <!-- populate build properties with source and javadoc properties -->
   <property file="${user.home}/${ant.project.name}.build.properties"/>
   <property file="build.properties"/>
-
-
-  <!-- IMPORTANT: increment this for a new release. also build num/date? -->
 
 
   <!-- ============================================================== -->
@@ -37,19 +35,15 @@
 
   <!-- src -->
   <property name="src.dir" location="src"/>
-  <property name="src.test.dir" location="test"/>
+  <property name="test.dir" location="test"/>
   <property name="docs.dir" location="docs"/>
 
   <!-- build -->
   <property name="build.dir" location="build"/>
   <property name="build.classes.dir" location="${build.dir}/classes"/>
-  <property name="build.depcache.dir" location="${build.dir}/depcache"/>
   <property name="build.docs.dir" location="${build.dir}/docs"/>
   <property name="build.javadocs.dir" location="${build.docs.dir}/javadocs"/>
-  <property name="build.test.classes.dir"
-            location="${build.dir}/test-classes"/>
-  <property name="build.test.depcache.dir"
-            location="${build.dir}/test-depcache"/>
+  <property name="build.test.classes.dir" location="${build.dir}/test-classes"/>
 
   <!-- distribution -->
   <property name="dist.name" value="${ant.project.name}-${release}"/>
@@ -67,22 +61,20 @@
   <!--                  C  L  A  S  S  P  A  T  H                     -->
   <!-- ============================================================== -->
 
-  <!-- ant.jar is only needed for idea-conf, not for ant build itself. -->
   <property name="ant.jar" location="${ant.home}/lib/ant.jar"/>
-  <property name="easymock.jar" location="lib/easymock-2.2.jar"/>
+  <property name="junit.jar" location="lib/junit-4.4.jar"/>
+  <property name="groovy.jar" location="lib/groovy-all-1.5.6.jar"/>
+  <!--<property name="easymock.jar" location="lib/easymock-2.2.jar"/>-->
 
-  <!-- if this doesn't exist, over-ride it -->
-  <property name="junit.jar" location="${ant.home}/lib/junit.jar"/>
 
   
   <path id="build.classpath">
+    <pathelement location="${ant.jar}"/>
+    <pathelement location="${groovy.jar}"/>
   </path>
 
-  <!-- junit required to be in ant's lib dir to compile the tests -->
   <path id="build.test.libs.classpath">
     <path refid="build.classpath"/>
-    <pathelement location="${easymock.jar}"/>
-    <pathelement location="${ant.jar}"/>
     <pathelement location="${junit.jar}"/>
   </path>
 
@@ -100,6 +92,10 @@
     <!--<path refid="build.test.classpath"/>-->
     <pathelement location="${build.test.classes.dir}"/>
   </path>
+
+  <taskdef name="groovyc"
+           classname="org.codehaus.groovy.ant.Groovyc"
+           classpath="${groovy.jar}"/>
 
 
   <!-- ============================================================== -->
@@ -127,37 +123,28 @@
   <!-- ============================================================== -->
   <!--                      C  O  M  P  I  L  E                       -->
   <!-- ============================================================== -->
-  <target name="init">
-    <!-- make sure junit is available -->
-    <available classname="junit.framework.TestCase" property="junit.available"/>
-    <fail unless="junit.available">
-Make junit available to ant by adding junit.jar to your ant install's lib dir.
-    </fail>
 
+  <target name="init">
     <!-- construct build dirs -->
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
-    <mkdir dir="${build.depcache.dir}"/>
     <mkdir dir="${build.test.classes.dir}"/>
-    <mkdir dir="${build.test.depcache.dir}"/>
+    <mkdir dir="${build.docs.dir}"/>
   </target>
 
 
-  <target name="compile" depends="init" description="compile datadog">
+  <target name="compile" depends="init" description="compile idea configurator">
     <build srcdir="${src.dir}"
            destdir="${build.classes.dir}"
-           classpathref="build.classpath"
-           cachedir="${build.depcache.dir}"/>
+           classpathref="build.classpath"/>
   </target>
 
 
   <!-- deprecation is off because of Faux classes. -->
-  <target name="compile-tests" depends="init, compile"
-          description="compile tests">
-    <build srcdir="${src.test.dir}"
+  <target name="compile-tests" depends="init, compile" description="compile tests">
+    <build srcdir="${test.dir}"
            destdir="${build.test.classes.dir}"
-           classpathref="build.test.classpath"
-           cachedir="${build.test.depcache.dir}"/>
+           classpathref="build.test.classpath"/>
   </target>
 
 
@@ -172,21 +159,17 @@ Make junit available to ant by adding junit.jar to your ant install's lib dir.
     <attribute name="srcdir"/>
     <attribute name="destdir"/>
     <attribute name="classpathref"/>
-    <attribute name="cachedir"/>
     <sequential>
-      <depend srcdir="@{srcdir}"
-              destdir="@{destdir}"
-              cache="@{cachedir}"
-              closure="no"/>
-      <javac source="1.5"
-             srcdir="@{srcdir}"
-             destdir="@{destdir}"
-             classpathref="@{classpathref}"
-             debug="on"
-             deprecation="on"/>
+      <groovyc srcdir="@{srcdir}"
+               destdir="@{destdir}"
+               classpathref="@{classpathref}"
+               fork="no"
+               failonerror="true">
+          <javac source="1.5" target="1.5" debug="on"/>
+      </groovyc>
       <copy toDir="@{destdir}">
-        <fileset dir="@{srcdir}" includes="**/*.properties, **/*.dtd, **/*.xml,
-                                           **/*.xsd, **/*.conf"/>
+        <fileset dir="@{srcdir}"
+                 includes="**/*.properties, **/*.dtd, **/*.xml, **/*.xsd, **/*.conf"/>
       </copy>
     </sequential>
   </macrodef>
@@ -218,25 +201,27 @@ Make junit available to ant by adding junit.jar to your ant install's lib dir.
       </not>
     </condition>
 
-    <junit fork="yes" forkmode="perTest"
-           printsummary="false" failureproperty="test.failed">
-      <classpath refid="test.run.classpath"/>
+    <junit fork="yes"
+           forkmode="perTest"
+           printsummary="no"
+           failureproperty="test.failed">
       <formatter type="brief" usefile="false"/>
+      <classpath refid="test.run.classpath"/>
 
       <!-- single test case -->
-      <batchtest fork="yes" if="testcase">
-        <fileset dir="${src.test.dir}" includes="${testcase}"/>
+      <batchtest if="testcase">
+        <fileset dir="${build.test.classes.dir}" includes="${testcase}"/>
       </batchtest>
 
       <!-- test a package -->
-      <batchtest fork="yes" if="testpackage">
-        <fileset dir="${src.test.dir}" includes="${testpackage}/*Test.java"/>
+      <batchtest if="testpackage">
+        <fileset dir="${build.test.classes.dir}" includes="${testpackage}/*Test.class"/>
       </batchtest>
 
       <!-- run ALL tests -->
-      <batchtest fork="yes" if="run.all.tests">
-        <fileset dir="${src.test.dir}">
-          <include name="**/*Test.java"/>
+      <batchtest if="run.all.tests">
+        <fileset dir="${build.test.classes.dir}">
+          <include name="**/*Test.class"/>
         </fileset>
       </batchtest>
 
@@ -297,7 +282,7 @@ Make junit available to ant by adding junit.jar to your ant install's lib dir.
   <!--
   distro should contain:
       jar (with version number)
-      src jar (with version number)
+      src-jar (with version number)
       docs/
         api/
         ideamodule.html
@@ -315,14 +300,15 @@ Make junit available to ant by adding junit.jar to your ant install's lib dir.
 
 
   <target name="javadoc" depends="clean-javadocs, init-docs">
-    <javadoc packagenames="configurator.*"
-             sourcepath="${src.dir}"
-             destdir="${build.javadocs.dir}"
-             Use="yes"
-             classpathref="build.test.libs.classpath">
-      <link href="http://jakarta.apache.org/commons/logging/apidocs/"/>
-      <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
-    </javadoc>
+    <!--<javadoc packagenames="idea.conf"-->
+             <!--sourcepath="${src.dir}"-->
+             <!--destdir="${build.javadocs.dir}"-->
+             <!--use="yes"-->
+             <!--author="true"-->
+             <!--version="true"-->
+             <!--classpathref="test.run.classpath">-->
+      <!--<link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>-->
+    <!--</javadoc>-->
   </target>
 
 
@@ -332,7 +318,6 @@ Make junit available to ant by adding junit.jar to your ant install's lib dir.
   <target name="clean" description="clean build directories"
           depends="clean-tests">
     <delete dir="${build.classes.dir}"/>
-    <delete dir="${build.depcache.dir}"/>
     <delete dir="${build.javadocs.dir}"/>
     <delete dir="${build.docs.dir}"/>
     <delete dir="${build.dir}"/>
@@ -381,7 +366,8 @@ Make junit available to ant by adding junit.jar to your ant install's lib dir.
 
   <target name="idea-conf" description="create IDEA module config file">
     <taskdef classpath="${dist.jar}" resource="taskdef.properties"/>
-    <ideajavamodule moduleFile="idea-configurator.iml"
+
+    <ideajavaiml moduleFile="idea-configurator.iml"
                     outputDir="${build.classes.dir}"
                     testsoutputdir="${build.test.classes.dir}"
                     relativepaths="true"
@@ -389,7 +375,7 @@ Make junit available to ant by adding junit.jar to your ant install's lib dir.
                     sourceproperty="source"
                     javadocproperty="javadoc">
       <src path="${src.dir}"/>
-      <tests path="${src.test.dir}"/>
+      <tests path="${test.dir}"/>
       <excludes path="${build.dir}"/>
       <excludes path="${dist.dir}"/>
       <dependencies>
@@ -397,11 +383,9 @@ Make junit available to ant by adding junit.jar to your ant install's lib dir.
         <jdk/>
         <classpath>
           <path refid="build.test.libs.classpath"/>
-          <pathelement path="${ant.jar}"/>
-          <pathelement path="${junit.jar}"/>
         </classpath>
       </dependencies>
-    </ideajavamodule>
+    </ideajavaiml>
   </target>
 
 </project>
