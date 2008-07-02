@@ -24,6 +24,7 @@ import idea.conf.url.FileUrl
 */
 class JavaImlVisitor extends DefaultVisitor
 {
+    // todo move to JavaModule ??
     private final static int VERSION = 4;
     private final static String TYPE = "JAVA_MODULE";
 

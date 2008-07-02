@@ -15,7 +15,9 @@ import idea.conf.url.UrlFactoryImpl
 import idea.conf.java.JavaComponent
 
 /**
+ * The java module type.
  *
+ * Other module types in future versions: grails, ruby/rails.
  *
  * @author tomichj
  */

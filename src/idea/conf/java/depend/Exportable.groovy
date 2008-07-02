@@ -4,7 +4,8 @@ package idea.conf.java.depend
  *
  * @author tomichj
  */
-interface Exportable {
-    boolean getExported() // lame
+interface Exportable
+{
+    boolean getExported() // lame... hate the get/is mojination
 }
 

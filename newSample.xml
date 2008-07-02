@@ -1,189 +1,189 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="sample.build.xml" default="all">
 
-    <path id="cp">
-        <pathelement location="configurator.jar"/>
-        <fileset dir="/lib/groovy-current/embeddable">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
-    <taskdef classpathref="cp" resource="taskdef.properties"/>
+  <path id="cp">
+    <pathelement location="configurator.jar"/>
+    <fileset dir="/lib/groovy-current/embeddable">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+  <taskdef classpathref="cp" resource="taskdef.properties"/>
 
 
-    <target name="all"
-            depends="simplest, has-source, has-module-lib, has-contents, global-lib,
-                     simple-module-lib, module-lib-with-all, module-dependency,
-                     classpath, jdk-and-source"/>
+  <target name="all"
+          depends="simplest, has-source, has-module-lib, has-contents, global-lib,
+                   simple-module-lib, module-lib-with-all, module-dependency,
+                   classpath, jdk-and-source"/>
 
 
-    <target name="simplest">
-        <ideajavamodule/>
-    </target>
+  <target name="simplest">
+    <ideajavaiml/>
+  </target>
 
 
-    <target name="has-source">
-        <ideajavamodule>
-            <src location="foobly"/>
-        </ideajavamodule>
-    </target>
+  <target name="has-source">
+    <ideajavaiml>
+      <src location="foobly"/>
+    </ideajavaiml>
+  </target>
 
 
-    <target name="has-module-lib">
-        <ideajavamodule outputDir="build/classes"
-                        testsOutputDir="build/test-classes"
-                        relativepaths="false">
-            <src location="foobly"/>
-            <dependencies>
-                <modulelibrary>
-                    <classes>
-                        <pathelement path="/foo/bar/bibbity.jar"/>
-                        <pathelement path="/foo/bar/bobbity.jar"/>
-                    </classes>
-                    <jarDirectories>
-                        <pathelement path="/foo/bar/lib"/>
-                    </jarDirectories>
-                </modulelibrary>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+  <target name="has-module-lib">
+    <ideajavaiml outputDir="build/classes"
+                 testsOutputDir="build/test-classes"
+                 relativepaths="false">
+      <src location="foobly"/>
+      <dependencies>
+        <modulelibrary>
+          <classes>
+            <pathelement path="/foo/bar/bibbity.jar"/>
+            <pathelement path="/foo/bar/bobbity.jar"/>
+          </classes>
+          <jarDirectories>
+            <pathelement path="/foo/bar/lib"/>
+          </jarDirectories>
+        </modulelibrary>
+      </dependencies>
+    </ideajavaiml>
+  </target>
     
 
-    <target name="has-contents">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
-            <src location="src1"/>
-            <src location="src2"/>
-            <tests location="test1"/>
-            <tests location="test2"/>
-            <tests location="test3"/>
-            <excludes location="excludes1"/>
-            <excludes location="excludes2"/>
-            <excludes location="excludes3"/>
-            <dependencies>
-                <modulelibrary>
-                    <classes>
-                        <pathelement path="/foo/bar/bibbity.jar"/>
-                        <pathelement path="/foo/bar/bobbity.jar"/>
-                    </classes>
-                    <jarDirectories>
-                        <pathelement path="/foo/bar/lib"/>
-                    </jarDirectories>
-                </modulelibrary>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+  <target name="has-contents">
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+      <src location="src1"/>
+      <src location="src2"/>
+      <tests location="test1"/>
+      <tests location="test2"/>
+      <tests location="test3"/>
+      <excludes location="excludes1"/>
+      <excludes location="excludes2"/>
+      <excludes location="excludes3"/>
+      <dependencies>
+        <modulelibrary>
+          <classes>
+            <pathelement path="/foo/bar/bibbity.jar"/>
+            <pathelement path="/foo/bar/bobbity.jar"/>
+          </classes>
+          <jarDirectories>
+            <pathelement path="/foo/bar/lib"/>
+          </jarDirectories>
+        </modulelibrary>
+      </dependencies>
+    </ideajavaiml>
+  </target>
     
 
-    <target name="global-lib">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
-            <src location="foobly"/>
-            <dependencies>
-                <globalLibrary name="junit-4.4" exported="true"/>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+  <target name="global-lib">
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+      <src location="foobly"/>
+      <dependencies>
+        <globalLibrary name="junit-4.4" exported="true"/>
+      </dependencies>
+    </ideajavaiml>
+  </target>
 
 
-    <target name="simple-module-lib">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
-            <src location="foobly"/>
-            <dependencies>
-                <moduleLibrary classes="/foo/bar/baz.jar"/>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+  <target name="simple-module-lib">
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+      <src location="foobly"/>
+      <dependencies>
+        <moduleLibrary classes="/foo/bar/baz.jar"/>
+      </dependencies>
+    </ideajavaiml>
+  </target>
 
 
-    <target name="module-lib-with-all">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
-            <src location="foobly"/>
-            <dependencies>
-                <moduleLibrary>
-                    <classes>
-                        <pathelement path="/foo/bar/bibbity.jar"/>
-                        <pathelement path="/foo/bar/bobbity.jar"/>
-                    </classes>
-                    <sources>
-                        <pathelement path="/foo/bar/source.jar"/>
-                        <pathelement path="/foo/bar/src"/>
-                    </sources>
-                    <javadoc location="/foo/bar/javadoc/api"/>
-                    <javadocUrl url="http://foo.com/bar"/>
-                </moduleLibrary>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+  <target name="module-lib-with-all">
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+      <src location="foobly"/>
+      <dependencies>
+        <moduleLibrary>
+          <classes>
+            <pathelement path="/foo/bar/bibbity.jar"/>
+            <pathelement path="/foo/bar/bobbity.jar"/>
+          </classes>
+          <sources>
+            <pathelement path="/foo/bar/source.jar"/>
+            <pathelement path="/foo/bar/src"/>
+          </sources>
+          <javadoc location="/foo/bar/javadoc/api"/>
+          <javadocUrl url="http://foo.com/bar"/>
+        </moduleLibrary>
+      </dependencies>
+    </ideajavaiml>
+  </target>
 
 
-    <target name="module-dependency">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
-            <src location="foobly"/>
-            <dependencies>
-                <module name="someOtherModule"/>
-                <module name="AnotherModule" exported="true"/>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+  <target name="module-dependency">
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+      <src location="foobly"/>
+      <dependencies>
+        <module name="someOtherModule"/>
+        <module name="AnotherModule" exported="true"/>
+      </dependencies>
+    </ideajavaiml>
+  </target>
 
 
-    <target name="classpath">
-        <property name="source.foo.jar" value="/lib/foo-src.jar"/>
-        <property name="foo.jar" value="/lib/foo.jar"/>
+  <target name="classpath">
+    <property name="source.foo.jar" value="/lib/foo-src.jar"/>
+    <property name="foo.jar" value="/lib/foo.jar"/>
 
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes"
-                sourceProperty="source">
-            <src location="foobly"/>
-            <dependencies>
-                <classpath exported="true">
-                    <pathelement path="${foo.jar}"/>
-                    <pathelement path="/lib/bar.jar"/>
-                </classpath>
-            </dependencies>
-        </ideajavamodule>
-    </target>
-
-
-    <target name="jdk-and-source">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
-            <src location="foobly"/>
-            <dependencies>
-                <jdk/>
-                <modulelibrary classes="/lib/foo.jar"/>
-                <modulesource/>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes"
+                 sourceProperty="source">
+      <src location="foobly"/>
+      <dependencies>
+        <classpath exported="true">
+          <pathelement path="${foo.jar}"/>
+          <pathelement path="/lib/bar.jar"/>
+        </classpath>
+      </dependencies>
+    </ideajavaiml>
+  </target>
 
 
-    <target name="idea-lib">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
-            <src location="foobly"/>
-            <dependencies>
-                <idealib name="foo.jar"/>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+  <target name="jdk-and-source">
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+      <src location="foobly"/>
+      <dependencies>
+        <jdk/>
+        <modulelibrary classes="/lib/foo.jar"/>
+        <modulesource/>
+      </dependencies>
+    </ideajavaiml>
+  </target>
 
 
-    <target name="filters">
-        <ideajavamodule outputDir="build/classes" testsOutputDir="build/test-classes">
-            <src location="foobly"/>
-            <dependencies>
-                <modulelibrary classes="/lib/foo.jar"/>
-                <modulelibrary classes="/lib/foo2.jar"/>
-                <modulelibrary classes="/lib/bar.jar"/>
-                <filter pattern=".*foo.*jar"/>
-            </dependencies>
-        </ideajavamodule>
-    </target>
+  <target name="idea-lib">
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+      <src location="foobly"/>
+      <dependencies>
+        <idealib name="foo.jar"/>
+      </dependencies>
+    </ideajavaiml>
+  </target>
 
 
-    <target name="groovy">
-        <ideajavamodule outputDir="build/classes"
-                        testsOutputDir="build/test-classes"
-                        groovyModule="true">
-            <src location="foobly"/>
-        </ideajavamodule>
-    </target>
+  <target name="filters">
+    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+      <src location="foobly"/>
+      <dependencies>
+        <modulelibrary classes="/lib/foo.jar"/>
+        <modulelibrary classes="/lib/foo2.jar"/>
+        <modulelibrary classes="/lib/bar.jar"/>
+        <filter pattern=".*foo.*jar"/>
+      </dependencies>
+    </ideajavaiml>
+  </target>
+
+
+  <target name="groovy">
+    <ideajavaiml outputDir="build/classes"
+                 testsOutputDir="build/test-classes"
+                 groovyModule="true">
+      <src location="foobly"/>
+    </ideajavaiml>
+  </target>
 
 
 </project>
