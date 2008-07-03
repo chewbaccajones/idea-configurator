@@ -42,15 +42,16 @@
   <property name="build.dir" location="build"/>
   <property name="build.classes.dir" location="${build.dir}/classes"/>
   <property name="build.docs.dir" location="${build.dir}/docs"/>
-  <property name="build.javadocs.dir" location="${build.docs.dir}/javadocs"/>
+  <!--<property name="build.javadocs.dir" location="${build.docs.dir}/javadocs"/>-->
   <property name="build.test.classes.dir" location="${build.dir}/test-classes"/>
 
   <!-- distribution -->
   <property name="dist.name" value="${ant.project.name}-${release}"/>
 
-  <property name="dist.dir" location="dist/${dist.name}"/>
+  <!--<property name="dist.dir" location="dist/${dist.name}"/>-->
+  <property name="dist.dir" location="dist"/>
   <property name="dist.docs.dir" location="${dist.dir}/docs"/>
-  <property name="dist.javadocs.dir" location="${dist.docs.dir}/api"/>
+  <!--<property name="dist.javadocs.dir" location="${dist.docs.dir}/api"/>-->
 
   <property name="dist.jar" location="${dist.dir}/${dist.name}.jar"/>
   <property name="dist.src.jar" location="${dist.dir}/${dist.name}-src.jar"/>
@@ -60,23 +61,23 @@
   <!-- ============================================================== -->
   <!--                  C  L  A  S  S  P  A  T  H                     -->
   <!-- ============================================================== -->
-
   <property name="ant.jar" location="${ant.home}/lib/ant.jar"/>
   <property name="junit.jar" location="lib/junit-4.4.jar"/>
   <property name="groovy.jar" location="lib/groovy-all-1.5.6.jar"/>
   <!--<property name="easymock.jar" location="lib/easymock-2.2.jar"/>-->
-
-
+  
   
   <path id="build.classpath">
     <pathelement location="${ant.jar}"/>
     <pathelement location="${groovy.jar}"/>
   </path>
+  
 
   <path id="build.test.libs.classpath">
     <path refid="build.classpath"/>
     <pathelement location="${junit.jar}"/>
   </path>
+
 
   <path id="build.test.classpath">
     <path refid="build.classpath"/>
@@ -88,10 +89,11 @@
   <path id="test.run.classpath">
     <path refid="build.classpath"/>
     <path refid="build.test.libs.classpath"/>
-    <pathelement location="${build.classes.dir}"/>
     <!--<path refid="build.test.classpath"/>-->
+    <pathelement location="${build.classes.dir}"/>
     <pathelement location="${build.test.classes.dir}"/>
   </path>
+  
 
   <taskdef name="groovyc"
            classname="org.codehaus.groovy.ant.Groovyc"
@@ -123,7 +125,6 @@
   <!-- ============================================================== -->
   <!--                      C  O  M  P  I  L  E                       -->
   <!-- ============================================================== -->
-
   <target name="init">
     <!-- construct build dirs -->
     <mkdir dir="${build.dir}"/>
@@ -165,7 +166,7 @@
                classpathref="@{classpathref}"
                fork="no"
                failonerror="true">
-          <javac source="1.5" target="1.5" debug="on"/>
+        <javac source="1.5" target="1.5" debug="on"/>
       </groovyc>
       <copy toDir="@{destdir}">
         <fileset dir="@{srcdir}"
@@ -189,17 +190,7 @@
   <!-- example:                                                       -->
   <!--        ant test -Dtestcase=configurator/model/ModuleTest.java  -->
   <!-- ============================================================== -->
-
   <target name="test" depends="compile-tests" description="run tests">
-    <!-- run all tests, a testcase, or a testpackage -->
-    <condition property="run.all.tests">
-      <not>
-        <or>
-          <isset property="testcase"/>
-          <isset property="testpackage"/>
-        </or>
-      </not>
-    </condition>
 
     <junit fork="yes"
            forkmode="perTest"
@@ -207,25 +198,48 @@
            failureproperty="test.failed">
       <formatter type="brief" usefile="false"/>
       <classpath refid="test.run.classpath"/>
-
-      <!-- single test case -->
-      <batchtest if="testcase">
-        <fileset dir="${build.test.classes.dir}" includes="${testcase}"/>
-      </batchtest>
-
-      <!-- test a package -->
-      <batchtest if="testpackage">
-        <fileset dir="${build.test.classes.dir}" includes="${testpackage}/*Test.class"/>
-      </batchtest>
-
-      <!-- run ALL tests -->
-      <batchtest if="run.all.tests">
+      <batchtest>
         <fileset dir="${build.test.classes.dir}">
           <include name="**/*Test.class"/>
         </fileset>
       </batchtest>
-
     </junit>
+
+    <!-- run all tests, a testcase, or a testpackage -->
+    <!--<condition property="run.all.tests">-->
+      <!--<not>-->
+        <!--<or>-->
+          <!--<isset property="testcase"/>-->
+          <!--<isset property="testpackage"/>-->
+        <!--</or>-->
+      <!--</not>-->
+    <!--</condition>-->
+
+    <!--<junit fork="yes"-->
+           <!--forkmode="perTest"-->
+           <!--printsummary="no"-->
+           <!--failureproperty="test.failed">-->
+      <!--<formatter type="brief" usefile="false"/>-->
+      <!--<classpath refid="test.run.classpath"/>-->
+
+       <!--single test case-->
+      <!--<batchtest if="testcase">-->
+        <!--<fileset dir="${build.test.classes.dir}" includes="${testcase}"/>-->
+      <!--</batchtest>-->
+
+       <!--test a package-->
+      <!--<batchtest if="testpackage">-->
+        <!--<fileset dir="${build.test.classes.dir}" includes="${testpackage}/*Test.class"/>-->
+      <!--</batchtest>-->
+
+       <!--run ALL tests-->
+      <!--<batchtest if="run.all.tests">-->
+        <!--<fileset dir="${build.test.classes.dir}">-->
+          <!--<include name="**/*Test.class"/>-->
+        <!--</fileset>-->
+      <!--</batchtest>-->
+
+    <!--</junit>-->
 
     <fail if="test.failed">Tests Failed!!!!</fail>
   </target>
@@ -249,24 +263,24 @@
   </target>
 
 
-    <target name="jar-src" depends="jar-init">
-      <jar destfile="${dist.src.jar}" basedir="${src.dir}">
-        <metainf dir=".">
-          <include name="LICENSE.txt"/>
-        </metainf>
-      </jar>
-    </target>
+  <target name="jar-src" depends="jar-init">
+    <jar destfile="${dist.src.jar}" basedir="${src.dir}">
+      <metainf dir=".">
+        <include name="LICENSE.txt"/>
+      </metainf>
+    </jar>
+  </target>
 
   <!-- the docs don't go in a separate jar, just put in dir -->
   <target name="copy-docs" depends="javadoc, jar-init">
-    <delete dir="${dist.javadocs.dir}"/>
+    <!--<delete dir="${dist.javadocs.dir}"/>-->
     <delete dir="${dist.docs.dir}"/>
     <mkdir dir="${dist.docs.dir}"/>
-    <mkdir dir="${dist.javadocs.dir}"/>
+    <!--<mkdir dir="${dist.javadocs.dir}"/>-->
     <copy file="LICENSE.txt" todir="${dist.docs.dir}"/>
-    <copy todir="${dist.javadocs.dir}">
-      <fileset dir="${build.javadocs.dir}"/>
-    </copy>
+    <!--<copy todir="${dist.javadocs.dir}">-->
+      <!--<fileset dir="${build.javadocs.dir}"/>-->
+    <!--</copy>-->
     <copy todir="${dist.docs.dir}">
       <fileset dir="${docs.dir}"/>
     </copy>
@@ -295,19 +309,19 @@
   <!-- ============================================================== -->
   <target name="init-docs">
     <mkdir dir="${build.docs.dir}"/>
-    <mkdir dir="${build.javadocs.dir}"/>
+    <!--<mkdir dir="${build.javadocs.dir}"/>-->
   </target>
 
 
   <target name="javadoc" depends="clean-javadocs, init-docs">
     <!--<javadoc packagenames="idea.conf"-->
-             <!--sourcepath="${src.dir}"-->
-             <!--destdir="${build.javadocs.dir}"-->
-             <!--use="yes"-->
-             <!--author="true"-->
-             <!--version="true"-->
-             <!--classpathref="test.run.classpath">-->
-      <!--<link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>-->
+    <!--sourcepath="${src.dir}"-->
+    <!--destdir="${build.javadocs.dir}"-->
+    <!--use="yes"-->
+    <!--author="true"-->
+    <!--version="true"-->
+    <!--classpathref="test.run.classpath">-->
+    <!--<link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>-->
     <!--</javadoc>-->
   </target>
 
@@ -318,7 +332,7 @@
   <target name="clean" description="clean build directories"
           depends="clean-tests">
     <delete dir="${build.classes.dir}"/>
-    <delete dir="${build.javadocs.dir}"/>
+    <!--<delete dir="${build.javadocs.dir}"/>-->
     <delete dir="${build.docs.dir}"/>
     <delete dir="${build.dir}"/>
   </target>
@@ -350,12 +364,12 @@
 
 
   <target name="clean-javadocs">
-    <delete dir="${build.javadocs.dir}"/>
+    <!--<delete dir="${build.javadocs.dir}"/>-->
   </target>
 
 
   <target name="clean-dist">
-    <delete dir="${dist.javadocs.dir}"/>
+    <!--<delete dir="${dist.javadocs.dir}"/>-->
     <delete dir="${dist.docs.dir}"/>
     <delete dir="${dist.dir}"/>
   </target>
@@ -363,17 +377,16 @@
   <!-- ============================================================== -->
   <!--                     C  O  N  F  I  G                           -->
   <!-- ============================================================== -->
-
   <target name="idea-conf" description="create IDEA module config file">
     <taskdef classpath="${dist.jar}" resource="taskdef.properties"/>
 
     <ideajavaiml moduleFile="idea-configurator.iml"
-                    outputDir="${build.classes.dir}"
-                    testsoutputdir="${build.test.classes.dir}"
-                    relativepaths="true"
-                    excludeoutputpaths="true"
-                    sourceproperty="source"
-                    javadocproperty="javadoc">
+                 outputDir="${build.classes.dir}"
+                 testsoutputdir="${build.test.classes.dir}"
+                 relativepaths="true"
+                 excludeoutputpaths="true"
+                 sourceproperty="source"
+                 javadocproperty="javadoc">
       <src path="${src.dir}"/>
       <tests path="${test.dir}"/>
       <excludes path="${build.dir}"/>
@@ -387,6 +400,7 @@
       </dependencies>
     </ideajavaiml>
   </target>
+  
 
 </project>
-    
+

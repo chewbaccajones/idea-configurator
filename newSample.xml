@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="sample.build.xml" default="all">
 
-  <path id="cp">
-    <pathelement location="configurator.jar"/>
-    <fileset dir="/lib/groovy-current/embeddable">
-      <include name="*.jar"/>
-    </fileset>
+  <path id="configurator.classpath">
+    <pathelement location="dist/idea-configurator-1.1.1.jar"/>
+    <pathelement location="lib/groovy-all-1.5.6.jar"/>
+    <!--<fileset dir="lib">-->
+      <!--<include name="*.jar"/>-->
+    <!--</fileset>-->
   </path>
-  <taskdef classpathref="cp" resource="taskdef.properties"/>
+  <taskdef classpathref="configurator.classpath" resource="taskdef.properties"/>
 
 
   <target name="all"
@@ -19,6 +20,16 @@
   <target name="simplest">
     <ideajavaiml/>
   </target>
+
+  <target name="has-groovy">
+    <ideajavaiml>
+      <facets>
+        <groovy/>
+      </facets>
+      <src location="foobly"/>
+    </ideajavaiml>
+  </target>
+
 
 
   <target name="has-source">
