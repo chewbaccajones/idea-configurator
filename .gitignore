@@ -4,5 +4,6 @@ configurator.jar
 .DS_Store
 *~
 out/*
-
+build/*
+dist/*
 

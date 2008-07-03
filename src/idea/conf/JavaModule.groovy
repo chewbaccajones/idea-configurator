@@ -13,9 +13,12 @@ import idea.conf.java.depend.ClasspathFilter
 import idea.conf.url.UrlFactory
 import idea.conf.url.UrlFactoryImpl
 import idea.conf.java.JavaComponent
+import idea.conf.facets.FacetManager
 
 /**
+ * The java module type.
  *
+ * Other module types in future versions: grails, ruby/rails.
  *
  * @author tomichj
  */
@@ -24,11 +27,9 @@ class JavaModule extends Task implements Visitable
     File rootDir
     private File moduleFile
     boolean relativePaths
-
-    // the entire groovy facet, one sweet little boolean
-    boolean groovyFacet
-
+    
     JavaComponent java;
+    FacetManager facets;
 
 
     void execute()
@@ -45,7 +46,13 @@ class JavaModule extends Task implements Visitable
         println "\n"
     }
 
-    
+    /**
+     * <facets>
+     *   <groovy/>
+     *   <spring/>
+     * </facets>
+     */
+
     void setProject(Project project)
     {
         super.setProject(project)
@@ -82,6 +89,11 @@ class JavaModule extends Task implements Visitable
     }
 
 
+    def createFacets()
+    {
+        facets = new FacetManager();
+        return facets;
+    }
 
     /////////////////////////////////////////////////////////
     // Java stuff here
@@ -204,8 +216,12 @@ class JavaModule extends Task implements Visitable
 
     List<Visitable> getChildren()
     {
-        return [java] as List<Visitable>;
+        def kids = []
+        kids << java
+        if (facets) kids << facets
+        return kids as List<Visitable>;
     }
+    
 
     String toString()
     {
