@@ -56,6 +56,7 @@ class JavaImlVisitor extends DefaultVisitor
         }
     }
 
+    
     void visit(JavaComponent java)
     {
         xml.component(name:"NewModuleRootManager",
