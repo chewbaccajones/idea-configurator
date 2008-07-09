@@ -16,6 +16,8 @@ import idea.conf.java.depend.Exportable
 import idea.conf.java.depend.Classpath
 import idea.conf.url.UrlFactory
 import idea.conf.url.FileUrl
+import idea.conf.facets.GroovyFacet
+import idea.conf.facets.FacetManager
 
 /**
 *
@@ -25,11 +27,11 @@ import idea.conf.url.FileUrl
 class JavaImlVisitor extends DefaultVisitor
 {
     // todo move to JavaModule ??
-    private final static int VERSION = 4;
-    private final static String TYPE = "JAVA_MODULE";
+    static final int VERSION = 4;
+    static final String TYPE = "JAVA_MODULE";
 
-    private final StringWriter writer = new StringWriter()
-    private final MarkupBuilder xml = new MarkupBuilder(writer)
+    private final StringWriter writer = new StringWriter();
+    private final MarkupBuilder xml = new MarkupBuilder(writer);
     private final UrlFactory urls;
 
 
@@ -42,22 +44,27 @@ class JavaImlVisitor extends DefaultVisitor
     void visit(JavaModule module)
     {
         xml.module(relativePaths:module.relativePaths, type:TYPE, version:VERSION) {
-            if (module.groovyFacet) writeGroovyFacet()
             super.visit(module)
         }
     }
 
 
-    void writeGroovyFacet()
+    void visit(FacetManager facets)
     {
         xml.component(name:"FacetManager") {
-            xml.facet(type:"Groovy", name:"Groovy") {
-                xml.configuration()
-            }
+            super.visit(facets)
         }
     }
 
-    
+
+    void visit(GroovyFacet facet)
+    {
+        xml.facet(type:"Groovy", name:"Groovy") {
+            xml.configuration()
+        }
+    }
+
+
     void visit(JavaComponent java)
     {
         xml.component(name:"NewModuleRootManager",
@@ -76,7 +83,7 @@ class JavaImlVisitor extends DefaultVisitor
                 java.getTests().list().each { source(it, true) }
                 java.getExcludes().list().each{ exclude(it) }
             }
-            
+
             super.visit(java)
         }
     }
@@ -112,7 +119,7 @@ class JavaImlVisitor extends DefaultVisitor
     void visit(ModuleLibrary lib)
     {
         if (!lib.classes.list().size()) return;
-        
+
         xml.orderEntry(export([type:"module-library"], lib)) {
             xml.library(nonNulls(name:lib.getName())){
                 xml.CLASSES() {
@@ -189,8 +196,8 @@ class JavaImlVisitor extends DefaultVisitor
 
     void globalOrProjectLib(library, String level)
     {
-        Map args = export([type:"library", name:library.getName(), level:level], library)
-        xml.orderEntry(args){
+        Map a = export([type:"library", name:library.getName(), level:level], library);
+        xml.orderEntry(a){
             super.visit(library)
         }
     }
@@ -214,12 +221,13 @@ class JavaImlVisitor extends DefaultVisitor
         if(library.exported) map['exported']= ''
         return map
     }
-
+    
 
     Map nonNulls(Map map)
     {
+        // todo do this more groovyish
         Map nonNulls = [:]
-        map.each { k, v -> if (v) { nonNulls[k] = v } }
+        map.each { k, v -> if (v) { nonNulls[k] = v } };
         return nonNulls
     }
 
@@ -228,4 +236,6 @@ class JavaImlVisitor extends DefaultVisitor
     {
         return writer.toString()
     }
+
 }
+

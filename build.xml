@@ -273,14 +273,9 @@
 
   <!-- the docs don't go in a separate jar, just put in dir -->
   <target name="copy-docs" depends="javadoc, jar-init">
-    <!--<delete dir="${dist.javadocs.dir}"/>-->
     <delete dir="${dist.docs.dir}"/>
     <mkdir dir="${dist.docs.dir}"/>
-    <!--<mkdir dir="${dist.javadocs.dir}"/>-->
     <copy file="LICENSE.txt" todir="${dist.docs.dir}"/>
-    <!--<copy todir="${dist.javadocs.dir}">-->
-      <!--<fileset dir="${build.javadocs.dir}"/>-->
-    <!--</copy>-->
     <copy todir="${dist.docs.dir}">
       <fileset dir="${docs.dir}"/>
     </copy>
@@ -298,7 +293,6 @@
       jar (with version number)
       src-jar (with version number)
       docs/
-        api/
         ideamodule.html
         LICENSE
   -->

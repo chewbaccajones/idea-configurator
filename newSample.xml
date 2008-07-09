@@ -189,11 +189,13 @@
 
 
   <target name="groovy">
+<!--
     <ideajavaiml outputDir="build/classes"
                  testsOutputDir="build/test-classes"
                  groovyModule="true">
       <src location="foobly"/>
     </ideajavaiml>
+-->
   </target>
 
 
