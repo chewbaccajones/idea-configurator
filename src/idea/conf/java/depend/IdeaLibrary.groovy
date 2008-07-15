@@ -14,7 +14,7 @@ import org.apache.tools.ant.Project
 class IdeaLibrary implements Dependency, Exportable
 {
     Project project
-    String name
+    String name // name of the idea jar
     boolean exported
 
 

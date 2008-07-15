@@ -50,13 +50,16 @@ class Dependencies implements Visitable
         completeJdkAndSourceOrderEntries()
 
         dependencies.each { it.validate() }
+        
+        dependencies.findAll{} // eh?
 
-        dependencies.findAll { it instanceof ModuleLibrary }.each {
-            it.removeMatchingClasses(filters)
-        }
         return dependencies
     }
 
+    def moduleLibraries()
+    {
+        dependencies.findAll { it instanceof ModuleLibrary }
+    }
 
     void completeJdkAndSourceOrderEntries()
     {

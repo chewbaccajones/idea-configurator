@@ -18,6 +18,7 @@ import idea.conf.url.UrlFactory
 import idea.conf.url.FileUrl
 import idea.conf.facets.GroovyFacet
 import idea.conf.facets.FacetManager
+import org.apache.tools.ant.types.Path
 
 /**
 *
@@ -34,6 +35,8 @@ class JavaImlVisitor extends DefaultVisitor
     private final MarkupBuilder xml = new MarkupBuilder(writer);
     private final UrlFactory urls;
 
+    def filters = []
+    
 
     JavaImlVisitor(UrlFactory urlFactory)
     {
@@ -67,6 +70,9 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(JavaComponent java)
     {
+        // get a handle on the filters so we can apply them to lib entries
+        filters = java.filters
+
         xml.component(name:"NewModuleRootManager",
                 'inherit-compiler-output':java.inheritCompilerOutput) {
             File out = java.getOutputDir()
@@ -110,7 +116,7 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(Module module)
     {
-        xml.orderEntry(export(['module-name':module.getName(), type:"module"], module)) {
+        xml.orderEntry(addExport(['module-name':module.getName(), type:"module"], module)) {
             super.visit(module)
         }
     }
@@ -118,12 +124,18 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(ModuleLibrary lib)
     {
-        if (!lib.classes.list().size()) return;
+        println "filters=${filters}"
+        Path classes = lib.classes
+        filters.each { filter -> classes = filter.filter(classes) }
 
-        xml.orderEntry(export([type:"module-library"], lib)) {
+        if (!classes.list().size() && !lib.jarDirs.list().size()) return;
+
+        // todo apply filters here!!!!
+
+        xml.orderEntry(addExport([type:"module-library"], lib)) {
             xml.library(nonNulls(name:lib.getName())){
                 xml.CLASSES() {
-                    lib.classes.list().each{ classes -> xml.root(url:asUrl(classes)) }
+                    classes.list().each{ jar -> xml.root(url:asUrl(jar)) }
                     lib.jarDirs.list().each{ dir -> xml.root(url:asUrl(dir)) }
                 }
                 xml.JAVADOC() {
@@ -196,7 +208,7 @@ class JavaImlVisitor extends DefaultVisitor
 
     void globalOrProjectLib(library, String level)
     {
-        Map a = export([type:"library", name:library.getName(), level:level], library);
+        Map a = addExport([type:"library", name:library.getName(), level:level], library);
         xml.orderEntry(a){
             super.visit(library)
         }
@@ -216,7 +228,7 @@ class JavaImlVisitor extends DefaultVisitor
     /**
      * Add the exported flag if the Exportable is being exported.
      */
-    Map export(Map map, Exportable library)
+    Map addExport(Map map, Exportable library)
     {
         if(library.exported) map['exported']= ''
         return map
