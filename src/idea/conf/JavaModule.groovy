@@ -208,10 +208,10 @@ class JavaModule extends Task implements Visitable
     }
 
 
-    ClasspathFilter createClasspathFilter()
-    {
-        return java.createClasspathFilter();
-    }
+    //ClasspathFilter createClasspathFilter()
+    //{
+    //    return java.createClasspathFilter();
+    //}
 
 
     List<Visitable> getChildren()

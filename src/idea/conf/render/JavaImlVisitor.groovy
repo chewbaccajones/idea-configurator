@@ -70,9 +70,6 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(JavaComponent java)
     {
-        // get a handle on the filters so we can apply them to lib entries
-        filters = java.filters
-
         xml.component(name:"NewModuleRootManager",
                 'inherit-compiler-output':java.inheritCompilerOutput) {
             File out = java.getOutputDir()
@@ -109,7 +106,12 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(Dependencies dependencies)
     {
+        println "setting filters... Dependencies filters=" + dependencies.filters
+        // get a handle on the filters so we can apply them to lib entries
+        filters = dependencies.filters
+
         super.visit(dependencies)
+        
         xml.orderEntryProperties(){}
     }
 
@@ -124,13 +126,13 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(ModuleLibrary lib)
     {
-        println "filters=${filters}"
+        // apply classpath filters
         Path classes = lib.classes
+        println "classes=" + classes
+        println "filters=" + filters
         filters.each { filter -> classes = filter.filter(classes) }
 
         if (!classes.list().size() && !lib.jarDirs.list().size()) return;
-
-        // todo apply filters here!!!!
 
         xml.orderEntry(addExport([type:"module-library"], lib)) {
             xml.library(nonNulls(name:lib.getName())){

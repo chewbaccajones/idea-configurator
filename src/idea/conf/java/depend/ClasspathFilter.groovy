@@ -19,11 +19,6 @@ class ClasspathFilter implements Dependency
     String pattern;
     
 
-    boolean matches(String jar)
-    {
-        return jar.matches(pattern)
-    }
-
     /**
      * Remove any 'classes' that matches the given pattern. The pattern uses the
      * jdk 1.5 java.util.regex.Pattern syntax.
@@ -33,23 +28,22 @@ class ClasspathFilter implements Dependency
      */
     Path filter(Path classes)
     {
-        //def classesCopy = classes.list() as List
-        //ListIterator iter = classesCopy.listIterator()
-        //while (iter.hasNext())
-        //{
-        //    String path = iter.next()
-        //    if (filters.any { filter -> filter.matches(path) } ) iter.remove()
-        //}
-        //classes = new Path( classes.getProject() )
-        //classesCopy.each { path -> classes.createPathElement().setPath(path) }
-
-        Path filtered = new Path(classes.getProject())
-        List paths = classes.list() as List
-        paths.findAll { !matches(it) }.each { filtered.createPathElement().setPath(it) }
-        return filtered
+        println "before=" + classes.list()
+        def filtered = classes.list().findAll { !matches(it) }
+        println "after=" + filtered
+        Path path = new Path(classes.getProject())
+        filtered.each { path.createPathElement().setPath(it) }
+        return path
+        
+        // Path filtered = new Path(classes.getProject())
+        // filtered.createPathElement().setPath(it)
     }
-
-
+    
+    private boolean matches(String jar)
+    {
+        return jar.matches(pattern)
+    }
+    
     List<Visitable> getChildren()
     {
         return null;

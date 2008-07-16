@@ -51,9 +51,7 @@ class Dependencies implements Visitable
 
         dependencies.each { it.validate() }
         
-        dependencies.findAll{} // eh?
-
-        return dependencies
+        return dependencies + filters
     }
 
     def moduleLibraries()

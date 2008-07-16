@@ -2,11 +2,11 @@
 <project name="sample.build.xml" default="all">
 
   <path id="configurator.classpath">
-    <pathelement location="dist/idea-configurator-1.1.1.jar"/>
+    <fileset dir="dist">
+      <include name="idea-configurator*jar"/>
+    </fileset>
+    <!--<pathelement location="dist/idea-configurator-1.1.1.jar"/>-->
     <pathelement location="lib/groovy-all-1.5.6.jar"/>
-    <!--<fileset dir="lib">-->
-      <!--<include name="*.jar"/>-->
-    <!--</fileset>-->
   </path>
   <taskdef classpathref="configurator.classpath" resource="taskdef.properties"/>
 
@@ -14,7 +14,7 @@
   <target name="all"
           depends="simplest, has-source, has-module-lib, has-contents, global-lib,
                    simple-module-lib, module-lib-with-all, module-dependency,
-                   classpath, jdk-and-source"/>
+                   classpath, jdk-and-source, idea-lib, filters"/>
 
 
   <target name="simplest">

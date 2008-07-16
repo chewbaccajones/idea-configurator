@@ -29,8 +29,6 @@ class JavaComponent implements Visitable
     Path excludes
 
     Dependencies dependencies
-    List<ClasspathFilter> filters = [] // todo deal with filters
-
 
     JavaComponent(Project project)
     {
@@ -154,12 +152,12 @@ class JavaComponent implements Visitable
     }
 
 
-    ClasspathFilter createClasspathFilter()
-    {
-        ClasspathFilter filter = new ClasspathFilter()
-        filters.add(filter)
-        return filter
-    }
+    //ClasspathFilter createClasspathFilter()
+    //{
+    //    ClasspathFilter filter = new ClasspathFilter()
+    //    filters.add(filter)
+    //    return filter
+    //}
 
 
     void setClasspath(Path classpath)
@@ -194,7 +192,6 @@ class JavaComponent implements Visitable
                ", excludes=" + excludes +
                ", outputDir=" + outputDir +
                ", testsOutputDir=" + testsOutputDir +
-               ", filters=" + filters +
                ", inheritCompilerOutput=" + inheritCompilerOutput +
                ", dependencies.size()=" + dependencies.size() +
                '}'
