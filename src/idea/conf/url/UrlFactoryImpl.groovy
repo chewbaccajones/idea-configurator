@@ -3,10 +3,10 @@ package idea.conf.url
 import org.apache.tools.ant.BuildException
 
 /**
-*
-*
-* @author tomichj
-*/
+ *
+ *
+ * @author tomichj
+ */
 class UrlFactoryImpl implements UrlFactory
 {
     public static final String MODULE_DIR = '$MODULE_DIR$'
@@ -22,27 +22,30 @@ class UrlFactoryImpl implements UrlFactory
     }
 
 
-    public String file(File path) {
+    public String file(File path)
+    {
         return fileUrl(path).url()
     }
 
-    public String file(String path) {
+    public String file(String path)
+    {
         return fileUrl(path).url()
     }
 
-    public String http(String path) {
+    public String http(String path)
+    {
         return httpUrl(path).url()
     }
 
-    public String jar(File path) {
+    public String jar(File path)
+    {
         return jarUrl(path).url()
     }
 
-    public String jar(String path) {
+    public String jar(String path)
+    {
         return jarUrl(path).url()
     }
-
-
 
 
 
@@ -121,11 +124,13 @@ class UrlFactoryImpl implements UrlFactory
      */
     String relativePath(File home, File file)
     {
-        List<String> homelist;
-        List<String> filelist;
-
-        homelist = getPathList(home);
-        filelist = getPathList(file);
+        //List<String> homelist;
+        //List<String> filelist;
+        //
+        //homelist = getPathList(home);
+        //filelist = getPathList(file);
+        List<String> homelist = getPathList(home);
+        List<String> filelist = getPathList(file);
         return matchPathLists(homelist, filelist);
     }
 
@@ -136,37 +141,36 @@ class UrlFactoryImpl implements UrlFactory
      * string, at least on unix systems.
      *
      * @param f file or directory to create path list for.
-     * @return List<String> of components forming path
+     * @return List < String >  of components forming path
      */
     private List<String> getPathList(File f)
     {
-        List<String> pathParts = new ArrayList<String>();
         try
         {
+            List<String> pathParts = new ArrayList<String>();
             File r = f.getCanonicalFile();
             while (r != null)
             {
                 pathParts.add(r.getName());
                 r = r.getParentFile();
             }
+            return pathParts;
         }
         catch (IOException e)
         {
             throw new BuildException("Bad path problem!", e);
         }
-
-        return pathParts;
     }
 
 
     /**
-     * figure out a string representing the relative path of filePath with
-     * respect to homePath.
-     * <p/>
+     * Compute relative path to filePath from homePath.
+     *
      * todo this is a horror. For the love of all that is holy, do something!
      *
      * @param homePath home path
-     * @param filePath path of file
+     * @param filePath full path to file
+     * @return relative path to file
      */
     private String matchPathLists(List<String> homePath, List<String> filePath)
     {
@@ -178,7 +182,7 @@ class UrlFactoryImpl implements UrlFactory
 
         // first eliminate common root
         while ((homePathSize >= 0) && (filePathSize >= 0) &&
-               (homePath.get(homePathSize).equals(filePath.get(filePathSize))))
+                (homePath.get(homePathSize).equals(filePath.get(filePathSize))))
         {
             homePathSize--;
             filePathSize--;

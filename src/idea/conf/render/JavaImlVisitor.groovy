@@ -21,7 +21,7 @@ import idea.conf.facets.FacetManager
 import org.apache.tools.ant.types.Path
 
 /**
-*
+* The JavaImlVisitor creates an iml file for java projects.
 *
 * @author tomichj
 */
@@ -52,6 +52,7 @@ class JavaImlVisitor extends DefaultVisitor
     }
 
 
+    // eventually we'll extract the facets, i think
     void visit(FacetManager facets)
     {
         xml.component(name:"FacetManager") {
@@ -106,8 +107,7 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(Dependencies dependencies)
     {
-        println "setting filters... Dependencies filters=" + dependencies.filters
-        // get a handle on the filters so we can apply them to lib entries
+        // get a handle on the filters so we can apply them to module lib entries
         filters = dependencies.filters
 
         super.visit(dependencies)
@@ -126,10 +126,9 @@ class JavaImlVisitor extends DefaultVisitor
 
     void visit(ModuleLibrary lib)
     {
-        // apply classpath filters
         Path classes = lib.classes
-        println "classes=" + classes
-        println "filters=" + filters
+        
+        // apply filters
         filters.each { filter -> classes = filter.filter(classes) }
 
         if (!classes.list().size() && !lib.jarDirs.list().size()) return;
@@ -215,8 +214,10 @@ class JavaImlVisitor extends DefaultVisitor
             super.visit(library)
         }
     }
-
-
+    
+    /**
+     * Given a path as a String, return the appropriate Url type.
+     */
     String asUrl(String path)
     {
         assert path

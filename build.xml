@@ -204,43 +204,7 @@
         </fileset>
       </batchtest>
     </junit>
-
-    <!-- run all tests, a testcase, or a testpackage -->
-    <!--<condition property="run.all.tests">-->
-      <!--<not>-->
-        <!--<or>-->
-          <!--<isset property="testcase"/>-->
-          <!--<isset property="testpackage"/>-->
-        <!--</or>-->
-      <!--</not>-->
-    <!--</condition>-->
-
-    <!--<junit fork="yes"-->
-           <!--forkmode="perTest"-->
-           <!--printsummary="no"-->
-           <!--failureproperty="test.failed">-->
-      <!--<formatter type="brief" usefile="false"/>-->
-      <!--<classpath refid="test.run.classpath"/>-->
-
-       <!--single test case-->
-      <!--<batchtest if="testcase">-->
-        <!--<fileset dir="${build.test.classes.dir}" includes="${testcase}"/>-->
-      <!--</batchtest>-->
-
-       <!--test a package-->
-      <!--<batchtest if="testpackage">-->
-        <!--<fileset dir="${build.test.classes.dir}" includes="${testpackage}/*Test.class"/>-->
-      <!--</batchtest>-->
-
-       <!--run ALL tests-->
-      <!--<batchtest if="run.all.tests">-->
-        <!--<fileset dir="${build.test.classes.dir}">-->
-          <!--<include name="**/*Test.class"/>-->
-        <!--</fileset>-->
-      <!--</batchtest>-->
-
-    <!--</junit>-->
-
+    
     <fail if="test.failed">Tests Failed!!!!</fail>
   </target>
 

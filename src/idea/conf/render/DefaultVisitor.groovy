@@ -3,7 +3,7 @@ package idea.conf.render
 import idea.conf.Visitable
 
 /**
-*
+* Default implementation that doesn't actually do anything, other than count it's depth.
 *
 * @author tomichj
 */
