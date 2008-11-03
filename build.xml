@@ -356,6 +356,9 @@
           <path refid="build.test.libs.classpath"/>
         </classpath>
       </dependencies>
+      <facets>
+        <groovy/>
+      </facets>
     </ideajavaiml>
   </target>
   

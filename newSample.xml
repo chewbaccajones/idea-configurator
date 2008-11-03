@@ -21,6 +21,15 @@
     <ideajavaiml/>
   </target>
 
+  <!-- 
+	iml with default groovy SDK
+	  <orderEntry type="library" name="GROOVY" level="application" />
+	
+	iml with specific SDK (IDEA creates groovy project lib, i think, could b problem)
+	  <orderEntry type="library" name="groovy-1.5.4" level="application" />
+	
+	no-sdk specification yields no order entry
+  -->
   <target name="has-groovy">
     <ideajavaiml>
       <facets>
@@ -30,6 +39,14 @@
     </ideajavaiml>
   </target>
 
+  <target name="has-groovy-sdk">
+    <ideajavaiml>
+      <facets>
+        <groovy sdk="groovy-1.5.4"/>
+      </facets>
+      <src location="foobly"/>
+    </ideajavaiml>
+  </target>
 
 
   <target name="has-source">

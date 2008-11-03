@@ -16,7 +16,7 @@ import idea.conf.java.JavaComponent
 import idea.conf.facets.FacetManager
 
 /**
- * The java module type.
+ * The java module type. This is the top level ant task for Java Modules.
  *
  * Other module types in future versions: grails, ruby/rails.
  *
@@ -27,7 +27,6 @@ class JavaModule extends Task implements Visitable
     File rootDir
     private File moduleFile
     boolean relativePaths
-    
     JavaComponent java;
     FacetManager facets;
 
@@ -52,7 +51,6 @@ class JavaModule extends Task implements Visitable
      *   <spring/>
      * </facets>
      */
-
     void setProject(Project project)
     {
         super.setProject(project)
@@ -72,7 +70,7 @@ class JavaModule extends Task implements Visitable
         this.moduleFile = moduleFile;
     }
 
-    
+
     File getRootDir()
     {
         if (rootDir != null) return rootDir;
@@ -91,14 +89,14 @@ class JavaModule extends Task implements Visitable
 
     def createFacets()
     {
-        facets = new FacetManager();
+        facets = new FacetManager(java.dependencies);
         return facets;
     }
 
     /////////////////////////////////////////////////////////
     // Java stuff here
     // we could do some crazy property delegation stuff, but this might be simpler
-    
+
 
     void setSourceProperty(String sourceProperty)
     {
@@ -221,13 +219,13 @@ class JavaModule extends Task implements Visitable
         if (facets) kids << facets
         return kids as List<Visitable>;
     }
-    
+
 
     String toString()
     {
         "JavaModule{" <<
                 "rootDir=" << rootDir <<
-                ", moduleFile=" << moduleFile << 
+                ", moduleFile=" << moduleFile <<
                 ", relativePaths=" << relativePaths << "}"
     }
     

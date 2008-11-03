@@ -1,30 +1,38 @@
 package idea.conf.facets
 
 import idea.conf.Visitable
+import idea.conf.java.depend.Dependencies
 
 /**
- * Created by IntelliJ IDEA.
- * User: tomichj
- * Date: Jul 2, 2008
- * Time: 6:19:37 PM
- * To change this template use File | Settings | File Templates.
+ * FacetManager might disappear. It's an extra layer we probably don't need.
+ * @author tomichj
  */
 class FacetManager implements Visitable
 {
     def facets = []
+    Dependencies dependencies
 
-    
-    def createGroovy()
+    def FacetManager(dependencies)
     {
-        def groovy = new GroovyFacet()
-        facets << groovy
-        return groovy
+        this.dependencies = dependencies;
     }
-    
+
+    public void addConfiguredGroovy(GroovyFacet groovy)
+    {
+        println "addGroovy() called!"
+        facets << groovy
+        groovy.injectGroovyLibrary(dependencies)
+    }
 
     public List<Visitable> getChildren()
     {
         return facets;
     }
 
+    public String toString()
+    {
+        return "FacetManager{" +
+                "number of facets=" + facets.size() +
+                "}"
+    }
 }
