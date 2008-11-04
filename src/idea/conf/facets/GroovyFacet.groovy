@@ -14,18 +14,18 @@ class GroovyFacet implements Visitable
     private static final String DEFAULT = "GROOVY";
 
     // can be null, in which case lib is DEFAULT
-    def String sdk
+    String sdk
 
-    public void setSdk(String sdk)
-    {
-        println "setSdk(${sdk}) called!"
-        this.sdk = sdk
-    }
+    //public void setSdk(String sdk)
+    //{
+    //    println "setSdk(${sdk}) called!"
+    //    this.sdk = sdk
+    //}
 
     def injectGroovyLibrary(Dependencies dependencies)
     {
         println "groovy sdk name=${sdk}"
-        if (sdk == NONE) return;
+        if (NONE.equalsIgnoreCase(sdk)) return;
         if (sdk == null || sdk.equals(""))
         {
             sdk = DEFAULT;

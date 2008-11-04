@@ -27,9 +27,7 @@ class Dependencies implements Visitable
      * treated as the source accompanying "some-library-1.0.jar".
      */
     String sourceProperty
-    
     String javadocProperty
-
     String javadocUrlProperty
 
 
@@ -38,7 +36,7 @@ class Dependencies implements Visitable
         this.project = project
     }
 
-
+    
     int size()
     {
         return dependencies.size()
@@ -54,10 +52,12 @@ class Dependencies implements Visitable
         return dependencies + filters
     }
 
+
     def moduleLibraries()
     {
         dependencies.findAll { it instanceof ModuleLibrary }
     }
+
 
     void completeJdkAndSourceOrderEntries()
     {

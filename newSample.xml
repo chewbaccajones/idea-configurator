@@ -48,6 +48,15 @@
     </ideajavaiml>
   </target>
 
+  <target name="has-groovy-sdk-none">
+    <ideajavaiml>
+      <facets>
+        <groovy sdk="NONE"/>
+      </facets>
+      <src location="foobly"/>
+    </ideajavaiml>
+  </target>
+
 
   <target name="has-source">
     <ideajavaiml>
@@ -56,6 +65,30 @@
   </target>
 
 
+  <target name="has-module-lib-src-property">
+    <property name="source.bibbity.jar" location="bibbity.src.jar"/>
+    <property name="bibbity.jar" location="bibbity.jar"/>
+    <ideajavaiml sourceproperty="source">
+      <src location="foobly"/>
+      <dependencies>
+        <modulelibrary classes="/foo/bar/bibbity.jar"/>
+      </dependencies>
+    </ideajavaiml>
+  </target>
+
+
+  <target name="has-classpath-src-property">
+    <property name="source.bibbity.jar" location="lib/bibbity.src.jar"/>
+    <property name="bibbity.jar" location="lib/bibbity.jar"/>
+    <ideajavaiml sourceproperty="source">
+      <src location="foobly"/>
+      <dependencies>
+        <classpath path="${bibbity.jar}"/>
+      </dependencies>
+    </ideajavaiml>
+  </target>
+
+  
   <target name="has-module-lib">
     <ideajavaiml outputDir="build/classes"
                  testsOutputDir="build/test-classes"

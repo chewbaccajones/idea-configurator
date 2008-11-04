@@ -26,7 +26,7 @@ class Classpath extends Path implements Dependency, Exportable
         super(project)
         if (project == null) throw new BuildException("null project!")
 
-        log = { msg -> project.log(msg, Project.MSG_DEBUG) }
+        log = { msg -> project.log(msg, Project.MSG_ERR) }
 
         this.sourceProperty = endWithDot(sourceProperty)
         this.javadocProperty = endWithDot(javadocProperty)
@@ -58,9 +58,7 @@ class Classpath extends Path implements Dependency, Exportable
         if (property.endsWith(".")) return property
         return property + "."
     }
-
-
-
+    
     /**
      * Find the corresponding property name for a jar.
      * <p/>
@@ -82,10 +80,10 @@ class Classpath extends Path implements Dependency, Exportable
         {
             String key = (String) entry.getKey()
             String value = (String) entry.getValue()
-//            log("key=${key}   value=${value}")
+            //log("key=${key}   value=${value}")
             if (value == null) continue
             String[] paths = Path.translatePath(project, value)
-//            log("path=" + paths.join(":"))
+            //log("path=" + paths.join(":"))
             if (paths.length == 0) continue
             if (paths.length > 1) continue
             if (jar.equals(paths[0])) return key
@@ -114,6 +112,7 @@ class Classpath extends Path implements Dependency, Exportable
 
     private String lookup(String propertyFrag, String lib)
     {
+        log("lookup propertyFrag=${propertyFrag} lib=${lib}")
         if (!propertyFrag) return null
         String property = propertyFrag + lib
         return getProject().getProperty(property)

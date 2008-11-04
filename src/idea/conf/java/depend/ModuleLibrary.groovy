@@ -9,7 +9,7 @@ import org.apache.tools.ant.Project
 
 
 /**
- * A module library. The most complex dependency available. 
+ * A module library.
  *
  * @author tomichj
  */
@@ -27,11 +27,19 @@ class ModuleLibrary implements Dependency, Exportable
 
     ModuleLibrary(Project project)
     {
-        classes = new Path(project)
+        this.classes = new Path(project)
         jarDirs = new Path(project)
         sources = new Path(project)
         javadocs = new Path(project)
     }
+
+    //ModuleLibrary(Project project, Classpath classes)
+    //{
+    //    this.classes = classes
+    //    jarDirs = new Path(project)
+    //    sources = new Path(project)
+    //    javadocs = new Path(project)
+    //}
 
     Path getClasses() { return classes }
     Path getJarDirs() { return jarDirs }
