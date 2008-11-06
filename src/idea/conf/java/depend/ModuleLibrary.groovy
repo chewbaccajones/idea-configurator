@@ -41,6 +41,20 @@ class ModuleLibrary implements Dependency, Exportable
     //    javadocs = new Path(project)
     //}
 
+    def add(Classpath cp)
+    {
+        cp.getChildren().each { ModuleLibrary lib -> add(lib) }
+    }
+
+    def add(ModuleLibrary other)
+    {
+        classes.add(other.getClasses())
+        jarDirs.add(other.getJarDirs())
+        sources.add(other.getSources())
+        javadocs.add(other.getJavadocs())
+        javadocUrls.addAll(other.getJavadocUrls())
+    }
+    
     Path getClasses() { return classes }
     Path getJarDirs() { return jarDirs }
     Path getSources() { return sources }

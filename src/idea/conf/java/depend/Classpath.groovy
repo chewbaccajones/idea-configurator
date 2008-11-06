@@ -13,7 +13,6 @@ import org.apache.tools.ant.types.Path
 class Classpath extends Path implements Dependency, Exportable
 {
     boolean exported
-
     String sourceProperty;
     String javadocProperty;
     String javadocUrlProperty;

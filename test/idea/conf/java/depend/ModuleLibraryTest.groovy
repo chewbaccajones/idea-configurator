@@ -10,18 +10,19 @@ import org.apache.tools.ant.types.Path
 */
 class ModuleLibraryTest extends GroovyTestCase
 {
-    void testRemoveMathingClasses()
+    void testAdd()
     {
-        //ClasspathFilter filter = new ClasspathFilter()
-        //filter.setPattern(".*some.*\\.jar")
-        //
-        //ModuleLibrary lib = new ModuleLibrary([] as Project)
-        //Path classes = lib.createClasses()
-        //classes.createPathElement().setPath("/lib/someDumbLib.jar")
-        //classes.createPathElement().setPath("/lib/someOtherLib.jar")
-        //classes.createPathElement().setPath("/lib/retardo.jar")
-        //
-        //lib.removeMatchingClasses([filter])
-        //assertEquals(["/lib/retardo.jar"], lib.classes.list())
+        Project project = new Project()
+
+        Classpath classpath = new Classpath(project, "source", null, null)
+        classpath.createPath().setLocation(new File("/a"))
+
+        ModuleLibrary lib = new ModuleLibrary(project)
+        lib.createClasses().setLocation(new File("/b"))
+        lib.add(classpath)
+
+        Path classes = lib.getClasses()
+        assertNotNull(classes.list().find { it.equals("/b") })
+        assertNotNull(classes.list().find { it.equals("/a") })
     }
 }
