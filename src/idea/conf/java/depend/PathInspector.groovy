@@ -5,11 +5,12 @@ import org.apache.tools.ant.BuildException
 import org.apache.tools.ant.types.Path
 
 /**
- * Inspect an ant Path (intended to be a classpath). Each path element is assumed to be
- * a jar in a library. For each path element, find the first 
- * property that has that path element as it's value. Then look for corresponding
- * source, javadoc, and javadocurl properties defined for th
+ * Inspect an ant Path being used as a classpath. Each path element is assumed to be
+ * a jar in a library. For each path element jar, find the property defining that jar.
+ * Then find corresponding source, javadoc, and javadocurl properties.
  *
+ * @todo if no property found for jar, take the filename (minus .jar) as property name
+ * 
  * @author tomichj
  */
 class PathInspector

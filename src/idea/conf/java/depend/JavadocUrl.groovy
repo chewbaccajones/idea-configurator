@@ -9,6 +9,15 @@ class JavadocUrl
 {
     String url;
 
+    def JavadocUrl()
+    {
+    }
+
+    def JavadocUrl(url)
+    {
+        this.url = url;
+    }
+
     String toString()
     {
         return "JavadocUrl{url=${url}}"

@@ -13,7 +13,7 @@ import org.apache.tools.ant.Project
  *
  * @author tomichj
  */
-class ModuleLibrary implements Dependency, Exportable
+class ModuleLibrary implements ModuleLibraryType, Dependency, Exportable
 {
     String name
     private Path classes // roots with jar entries
@@ -32,15 +32,7 @@ class ModuleLibrary implements Dependency, Exportable
         sources = new Path(project)
         javadocs = new Path(project)
     }
-
-    //ModuleLibrary(Project project, Classpath classes)
-    //{
-    //    this.classes = classes
-    //    jarDirs = new Path(project)
-    //    sources = new Path(project)
-    //    javadocs = new Path(project)
-    //}
-
+    
     def add(Classpath cp)
     {
         cp.getChildren().each { ModuleLibrary lib -> add(lib) }

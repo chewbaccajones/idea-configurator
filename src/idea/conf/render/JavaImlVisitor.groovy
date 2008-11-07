@@ -19,6 +19,7 @@ import idea.conf.url.FileUrl
 import idea.conf.facets.GroovyFacet
 import idea.conf.facets.FacetManager
 import org.apache.tools.ant.types.Path
+import idea.conf.java.depend.ModuleLibraryType
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -124,7 +125,7 @@ class JavaImlVisitor extends DefaultVisitor
     }
 
 
-    void visit(ModuleLibrary lib)
+    void visit(ModuleLibraryType lib)
     {
         Path classes = lib.classes
         
