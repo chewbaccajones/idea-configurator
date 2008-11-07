@@ -135,7 +135,7 @@ class Dependencies implements Visitable
     {
         PathInspector inspector = new PathInspector(project, sourceProperty,
                 javadocProperty, javadocUrlProperty)
-        lib.addNamedProperties(inspector)
+        lib.addLibraryAssets(inspector)
         dependencies.add(lib)
     }
 

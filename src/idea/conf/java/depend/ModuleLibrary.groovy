@@ -37,7 +37,7 @@ class ModuleLibrary implements ModuleLibraryType
      * Dependencies calls this on a populated ModuleLibrary to search for properties
      * that are associated by names.
      */
-    def addNamedProperties(PathInspector inspector)
+    def addLibraryAssets(PathInspector inspector)
     {
         def addons = inspector.moduleLibsForPath(classes, exported)
         addons.each { ModuleLibraryType lib -> add(lib) }
