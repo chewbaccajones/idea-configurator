@@ -13,32 +13,37 @@ import org.apache.tools.ant.Project
  *
  * @author tomichj
  */
-class ModuleLibrary implements ModuleLibraryType, Dependency, Exportable
+class ModuleLibrary implements ModuleLibraryType
 {
     String name
+    boolean exported
     private Path classes // roots with jar entries
     private Path jarDirs // roots with file entries, plus separate jarDirectory directive
     private Path sources;
     private Path javadocs;
     private List<JavadocUrl> javadocUrls = []
 
-    boolean exported
 
 
     ModuleLibrary(Project project)
     {
         this.classes = new Path(project)
-        jarDirs = new Path(project)
-        sources = new Path(project)
-        javadocs = new Path(project)
-    }
-    
-    def add(Classpath cp)
-    {
-        cp.getChildren().each { ModuleLibrary lib -> add(lib) }
+        this.jarDirs = new Path(project)
+        this.sources = new Path(project)
+        this.javadocs = new Path(project)
     }
 
-    def add(ModuleLibrary other)
+    /**
+     * Dependencies calls this on a populated ModuleLibrary to search for properties
+     * that are associated by names.
+     */
+    def addNamedProperties(PathInspector inspector)
+    {
+        def addons = inspector.moduleLibsForPath(classes, exported)
+        addons.each { ModuleLibraryType lib -> add(lib) }
+    }
+
+    def add(ModuleLibraryType other)
     {
         classes.add(other.getClasses())
         jarDirs.add(other.getJarDirs())
@@ -67,43 +72,36 @@ class ModuleLibrary implements ModuleLibraryType, Dependency, Exportable
         this.sources.setLocation(sources)
     }
 
-
     void setJavadoc(File javadoc)
     {
         this.javadocs.setLocation(javadoc)
     }
 
-
     void setJavadocUrl(String javadocUrl)
     {
         javadocUrls.add(new JavadocUrl(url:javadocUrl))
     }
-
-
+    
     Path createClasses()
     {
         return classes.createPath()
     }
-    
 
     Path createJarDirectories()
     {
         return jarDirs.createPath()
     }
-
-
+    
     Path createSources()
     {
         return sources.createPath()
     }
-
-
+    
     Path createJavadoc()
     {
         return javadocs.createPath()
     }
-
-
+    
     JavadocUrl createJavadocUrl()
     {
         JavadocUrl ju = new JavadocUrl()

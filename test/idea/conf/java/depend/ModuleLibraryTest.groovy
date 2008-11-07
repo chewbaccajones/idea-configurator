@@ -10,19 +10,33 @@ import org.apache.tools.ant.types.Path
 */
 class ModuleLibraryTest extends GroovyTestCase
 {
-    void testAdd()
+    void testFindsSource()
     {
-        Project project = new Project()
+        final String fooJar = "/a/foo.jar"
+        final String fooSrcJar = "/a/foo.src.jar"
 
-        Classpath classpath = new Classpath(project, "source", null, null)
-        classpath.createPath().setLocation(new File("/a"))
+        Project project = new Project()
+        project.setInheritedProperty("foo.jar", fooJar)
+        project.setInheritedProperty("source.foo.jar", fooSrcJar)
 
         ModuleLibrary lib = new ModuleLibrary(project)
-        lib.createClasses().setLocation(new File("/b"))
-        lib.add(classpath)
+        lib.createClasses().setLocation(new File(fooJar))
 
         Path classes = lib.getClasses()
-        assertNotNull(classes.list().find { it.equals("/b") })
-        assertNotNull(classes.list().find { it.equals("/a") })
+        assertEquals(1, classes.list().size())
+        assertNotNull(classes.list().find { it.equals(fooJar) })
+
+        Path sources = lib.getSources()
+        assertEquals(1, sources.list().size())
+        assertNotNull(sources.list().find { it.equals(fooSrcJar) })
+    }
+
+    void testPathAdd()
+    {
+        Project p = new Project();
+        Path a = new Path(p, "/foo")
+        Path b = new Path(p, "/foo")
+        a.add(b)
+        println a
     }
 }

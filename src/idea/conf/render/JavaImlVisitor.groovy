@@ -128,10 +128,10 @@ class JavaImlVisitor extends DefaultVisitor
     void visit(ModuleLibraryType lib)
     {
         Path classes = lib.classes
-        
+
         // apply filters
         filters.each { filter -> classes = filter.filter(classes) }
-
+        
         if (!classes.list().size() && !lib.jarDirs.list().size()) return;
 
         xml.orderEntry(addExport([type:"module-library"], lib)) {
@@ -227,8 +227,7 @@ class JavaImlVisitor extends DefaultVisitor
         if (path.startsWith("http")) return urls.http(path)
         return urls.file(path)
     }
-
-
+    
     /**
      * Add the exported flag if the Exportable is being exported.
      */

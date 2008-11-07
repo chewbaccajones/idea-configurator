@@ -10,6 +10,23 @@ import org.apache.tools.ant.types.Path
  */
 class PathInspectorTest extends GroovyTestCase
 {
+    void testPropertyTypes()
+    {
+        final String fooJar = "/lib/foo.jar"
+        Project proj = new Project()
+        Path path = new Path(proj, fooJar)
+        PathInspector inspector = new PathInspector(proj, null, null, null)
+        def libs = inspector.moduleLibsForPath(path, false)
+        SimpleModuleLibrary lib = libs[0]
+        assertEquals(fooJar, lib.classes.list()[0])
+        assertNotNull(lib.sources)
+        assertEquals(0, lib.sources.size())
+        assertNotNull(lib.javadocs)
+        assertEquals(0, lib.javadocs.size())
+        assertNotNull(lib.javadocUrls)
+        assertEquals(0, lib.javadocUrls.size())
+    }
+
     void testSourceProperty()
     {
         final String fooJar = "/lib/foo.jar"
@@ -22,10 +39,9 @@ class PathInspectorTest extends GroovyTestCase
         Path path = new Path(proj, fooJar)
 
         PathInspector inspector = new PathInspector(proj, "source", null, null)
-        def libs = inspector.libs(path)
+        def libs = inspector.moduleLibsForPath(path, true)
         def lib = libs[0]
-        assertEquals(fooJar, lib.classes())
-        assertEquals(fooSrcJar, lib.sources())
-        //println lib.sources()
+        assertEquals(fooJar, lib.classes.list()[0])
+        assertEquals(fooSrcJar, lib.sources.list()[0])
     }
 }

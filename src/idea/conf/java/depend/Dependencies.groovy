@@ -122,13 +122,22 @@ class Dependencies implements Visitable
     }
 
 
-    ModuleLibrary createModuleLibrary()
-    {
-        ModuleLibrary lib = new ModuleLibrary(project);
-        dependencies.add(lib);
-        return lib;
-    }
+    //ModuleLibrary createModuleLibrary()
+    //{
+    //    PathInspector inspector = new PathInspector(project, sourceProperty,
+    //            javadocProperty, javadocUrlProperty)
+    //    ModuleLibrary lib = new ModuleLibrary(project);
+    //    dependencies.add(lib);
+    //    return lib;
+    //}
 
+    void addConfiguredModuleLibrary(ModuleLibrary lib)
+    {
+        PathInspector inspector = new PathInspector(project, sourceProperty,
+                javadocProperty, javadocUrlProperty)
+        lib.addNamedProperties(inspector)
+        dependencies.add(lib)
+    }
 
     ProjectLibrary createProjectLibrary()
     {
@@ -172,8 +181,9 @@ class Dependencies implements Visitable
 
     Classpath createClasspath()
     {
-        Classpath cp = new Classpath(project, sourceProperty, javadocProperty,
-                javadocUrlProperty);
+        PathInspector inspector = new PathInspector(project, sourceProperty,
+                javadocProperty, javadocUrlProperty)
+        Classpath cp = new Classpath(project, inspector)
         dependencies.add(cp);
         return cp;
     }

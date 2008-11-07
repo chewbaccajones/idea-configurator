@@ -15,13 +15,7 @@ class GroovyFacet implements Visitable
 
     // can be null, in which case lib is DEFAULT
     String sdk
-
-    //public void setSdk(String sdk)
-    //{
-    //    println "setSdk(${sdk}) called!"
-    //    this.sdk = sdk
-    //}
-
+    
     def injectGroovyLibrary(Dependencies dependencies)
     {
         println "groovy sdk name=${sdk}"

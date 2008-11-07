@@ -36,18 +36,24 @@ class PathInspector
     }
 
     /**
-     * @return list of little lib-lets, with classes() sources() javadoc() & javadocUrl()
+     * Inspect the ant Path. For each path element, assume it's a jar and see if there
+     * are corresponding sources, javadoc, and/or javadocUrl. Each jar and it's
+     * (potentially null) associeted sources, etc, are returned as a SimpleModuleLibrary
+     *
+     * @path Path to inspect
+     * @return list of SimpleModuleLibs
      */
-    def libs(Path path)
+    def moduleLibsForPath(Path path, boolean exported)
     {
-        path.list().collect {jar ->
+        path.list().collect { jar ->
             String jarProperty = findPropertyNameForJar(jar);
             log("jar=${jar} jarProperty=${jarProperty}")
             String src = source(jarProperty)
             String jdoc = javadoc(jarProperty)
             String jdocUrl = javadocUrl(jarProperty)
-            def lib = [classes:{jar}, sources:{src}, javadoc:{jdoc}, javadocUrl:{jdocUrl}]
-            return lib
+            new SimpleModuleLibrary(project, jar, src, jdoc, jdocUrl, exported)
+            //def lib = [classes:jar, sources:src, javadoc:jdoc, javadocUrl:jdocUrl]
+            //return lib
         }
     }
 

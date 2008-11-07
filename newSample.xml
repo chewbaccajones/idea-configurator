@@ -65,19 +65,19 @@
   </target>
 
 
-  <target name="has-module-lib-src-property">
+  <target name="module-lib-src-property">
     <property name="source.bibbity.jar" location="bibbity.src.jar"/>
     <property name="bibbity.jar" location="bibbity.jar"/>
     <ideajavaiml sourceproperty="source">
       <src location="foobly"/>
       <dependencies>
-        <modulelibrary classes="/foo/bar/bibbity.jar"/>
+        <modulelibrary classes="${bibbity.jar}"/>
       </dependencies>
     </ideajavaiml>
   </target>
 
 
-  <target name="has-classpath-src-property">
+  <target name="classpath-src-property">
     <property name="source.bibbity.jar" location="lib/bibbity.src.jar"/>
     <property name="bibbity.jar" location="lib/bibbity.jar"/>
     <ideajavaiml sourceproperty="source">

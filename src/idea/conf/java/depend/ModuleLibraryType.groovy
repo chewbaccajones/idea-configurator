@@ -7,7 +7,7 @@ import org.apache.tools.ant.types.Path
  *
  * @author tomichj
  */
-interface ModuleLibraryType
+interface ModuleLibraryType extends Dependency, Exportable
 {
     String getName()
     Path getClasses()
