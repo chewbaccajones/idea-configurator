@@ -44,4 +44,31 @@ class PathInspectorTest extends GroovyTestCase
         assertEquals(fooJar, lib.classes.list()[0])
         assertEquals(fooSrcJar, lib.sources.list()[0])
     }
+
+    void testNoProperty()
+    {
+        final String fooJar = "foo.jar"
+        final String fooJarPath = "/lib/" + fooJar
+        Project proj = new Project()
+        PathInspector inspector = new PathInspector(proj, "source", null, null)
+        assertEquals(fooJar, inspector.findPropertyNameForJar(fooJarPath))
+    }
+
+    void testFindSourceJarByJarName()
+    {
+        final String fooJar = "/lib/foo.jar"
+        final String fooSrcJar = "/lib/foo.src.jar"
+
+        Project proj = new Project()
+        proj.setInheritedProperty("source.foo.jar", fooSrcJar)
+
+        Path path = new Path(proj, fooJar)
+
+        PathInspector inspector = new PathInspector(proj, "source", null, null)
+        def modules = inspector.moduleLibsForPath(path, false)
+        def module = modules[0]
+
+        assertEquals(fooJar, module.classes.toString())
+        assertEquals(fooSrcJar, module.sources.toString())
+    }
 }

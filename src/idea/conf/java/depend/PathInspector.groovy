@@ -93,7 +93,10 @@ class PathInspector
             if (paths.length > 1) continue
             if (jar.equals(paths[0])) return key
         }
-        return null
+
+        // if we didn't find the jar property, return the jar's filename
+        return new File(jar).name
+//        return null
     }
 
     private String javadoc(String libProperty)
