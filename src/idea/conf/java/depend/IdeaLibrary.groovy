@@ -14,7 +14,7 @@ import org.apache.tools.ant.Project
 class IdeaLibrary implements Dependency, Exportable
 {
     Project project
-    String name // name of the idea jar
+    String name // name of the jar in idea's lib dir
     boolean exported
 
 
@@ -23,7 +23,7 @@ class IdeaLibrary implements Dependency, Exportable
         this.project = project
     }
 
-    ModuleLibrary asModuleLibrary()
+    ModuleLibraryType asModuleLibrary()
     {
         String path = '$APPLICATION_HOME_DIR$/lib/' + name
         def lib = new ModuleLibrary(project)

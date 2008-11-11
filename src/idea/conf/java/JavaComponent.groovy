@@ -93,7 +93,6 @@ class JavaComponent implements Visitable
         dependencies.setJavadocUrlProperty(javadocUrlProperty);
     }
 
-
     
     void setSrcDir(File sourceDir)
     {
@@ -150,14 +149,6 @@ class JavaComponent implements Visitable
     {
         return excludes.createPath()
     }
-
-
-    //ClasspathFilter createClasspathFilter()
-    //{
-    //    ClasspathFilter filter = new ClasspathFilter()
-    //    filters.add(filter)
-    //    return filter
-    //}
 
 
     void setClasspath(Path classpath)

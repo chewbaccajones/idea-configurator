@@ -24,6 +24,5 @@ class DefaultVisitor
         v?.children.each { visit(it) };
         depth--
     }
-    
 }
 

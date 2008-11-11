@@ -10,7 +10,6 @@ import idea.conf.Visitable
  */
 class ModuleSource implements Dependency
 {
-
     void validate()
     {
         // absolutely nothing to validate

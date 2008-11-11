@@ -28,15 +28,12 @@ class ClasspathFilter implements Dependency
      */
     Path filter(Path classes)
     {
-        println "before=" + classes.list()
+        //println "before=" + classes.list()
         def filtered = classes.list().findAll { !matches(it) }
-        println "after=" + filtered
+        //println "after=" + filtered
         Path path = new Path(classes.getProject())
         filtered.each { path.createPathElement().setPath(it) }
         return path
-        
-        // Path filtered = new Path(classes.getProject())
-        // filtered.createPathElement().setPath(it)
     }
     
     private boolean matches(String jar)
@@ -57,6 +54,6 @@ class ClasspathFilter implements Dependency
 
     String toString()
     {
-        "ClasspathFilter{" << "pattern=" << pattern << "}"
+        "ClasspathFilter{pattern=${pattern}}"
     }
 }

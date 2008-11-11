@@ -14,7 +14,7 @@ class Dependencies implements Visitable
     def dependencies = []
     def filters = []
 
-    
+
     /**
      * Set string that source properties must begin with to be automagically
      * identified as source for a corresponging library. Other ant properties
@@ -36,7 +36,7 @@ class Dependencies implements Visitable
         this.project = project
     }
 
-    
+
     int size()
     {
         return dependencies.size()
@@ -48,7 +48,7 @@ class Dependencies implements Visitable
         completeJdkAndSourceOrderEntries()
 
         dependencies.each { it.validate() }
-        
+
         return dependencies + filters
     }
 
@@ -94,7 +94,7 @@ class Dependencies implements Visitable
     {
         def entry = dependencies.find { clazz.isInstance(it) }
         int index = dependencies.indexOf(entry)
-        dependencies.add(index+1, insert)
+        dependencies.add(index + 1, insert)
     }
 
 
@@ -113,14 +113,13 @@ class Dependencies implements Visitable
         return filter
     }
 
-    
+
     IdeaLibrary createIdeaLib()
     {
         IdeaLibrary lib = new IdeaLibrary(project);
         dependencies.add(lib);
         return lib;
     }
-
 
     //ModuleLibrary createModuleLibrary()
     //{
@@ -133,9 +132,7 @@ class Dependencies implements Visitable
 
     void addConfiguredModuleLibrary(ModuleLibrary lib)
     {
-        PathInspector inspector = new PathInspector(project, sourceProperty,
-                javadocProperty, javadocUrlProperty)
-        lib.addLibraryAssets(inspector)
+        lib.addLibraryAssets(pathInspector())
         dependencies.add(lib)
     }
 
@@ -181,11 +178,16 @@ class Dependencies implements Visitable
 
     Classpath createClasspath()
     {
-        PathInspector inspector = new PathInspector(project, sourceProperty,
-                javadocProperty, javadocUrlProperty)
-        Classpath cp = new Classpath(project, inspector)
+        Classpath cp = new Classpath(project, pathInspector())
         dependencies.add(cp);
         return cp;
+    }
+
+    private PathInspector pathInspector()
+    {
+        PathInspector inspector = new PathInspector(project, sourceProperty,
+                javadocProperty, javadocUrlProperty)
+        return inspector
     }
 
 
@@ -199,7 +201,6 @@ class Dependencies implements Visitable
                 ", filters.size()=" + filters.size() +
                 "}"
     }
-
 
 
 }

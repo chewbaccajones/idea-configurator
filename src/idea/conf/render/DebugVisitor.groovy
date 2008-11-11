@@ -12,11 +12,11 @@ class DebugVisitor  extends DefaultVisitor
 {
     def out = new StringBuffer()
 
+    
     private def indent()
     {
         return '\t' * getDepth();
     }
-
 
     void visit(Visitable v)
     {

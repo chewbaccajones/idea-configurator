@@ -24,7 +24,6 @@ class ModuleLibrary implements ModuleLibraryType
     private List<JavadocUrl> javadocUrls = []
 
 
-
     ModuleLibrary(Project project)
     {
         this.classes = new Path(project)

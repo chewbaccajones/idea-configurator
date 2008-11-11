@@ -13,19 +13,13 @@ import org.apache.tools.ant.types.Path
 class Classpath extends Path implements Dependency, Exportable
 {
     boolean exported
-
     private PathInspector inspector
-    def log
-
 
     Classpath(Project project, PathInspector inspector)
     {
         super(project)
         this.inspector = inspector
-
         if (project == null) throw new BuildException("null project!")
-
-        log = { msg -> project.log(msg, Project.MSG_ERR) }
     }
 
     List<Visitable> getChildren()

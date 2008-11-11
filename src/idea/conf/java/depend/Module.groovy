@@ -6,7 +6,7 @@ import org.apache.tools.ant.BuildException;
 
 
 /**
- * A reference to another module. 
+ * A Dependency to another module. 
  *
  * @author tomichj
  */
@@ -21,7 +21,8 @@ class Module implements Dependency, Exportable
         return null;
     }
 
-    void validate() {
+    void validate()
+    {
         if (!name) throw new BuildException("Module dependency requires name attribute")
     }
 

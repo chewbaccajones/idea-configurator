@@ -18,7 +18,7 @@ import idea.conf.facets.FacetManager
 /**
  * The java module type. This is the top level ant task for Java Modules.
  *
- * Other module types in future versions: grails, ruby/rails.
+ * Most of the methods are proxying to JavaComponent.  
  *
  * @author tomichj
  */
@@ -205,13 +205,7 @@ class JavaModule extends Task implements Visitable
         return java.createDependencies();
     }
 
-
-    //ClasspathFilter createClasspathFilter()
-    //{
-    //    return java.createClasspathFilter();
-    //}
-
-
+    
     List<Visitable> getChildren()
     {
         def kids = []
