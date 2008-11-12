@@ -2,7 +2,7 @@ package idea.conf.render
 
 import groovy.xml.MarkupBuilder
 
-import idea.conf.JavaModule
+import idea.conf.Module
 import idea.conf.java.JavaComponent
 import idea.conf.java.depend.Dependencies
 import idea.conf.java.depend.ModuleLibrary
@@ -26,9 +26,9 @@ import idea.conf.java.depend.ModuleLibraryType
 *
 * @author tomichj
 */
-class JavaImlVisitor extends DefaultVisitor
+class ImlVisitor extends DefaultVisitor
 {
-    // todo move to JavaModule ??
+    // todo move to Module ??
     static final int VERSION = 4;
     static final String TYPE = "JAVA_MODULE";
 
@@ -39,13 +39,14 @@ class JavaImlVisitor extends DefaultVisitor
     def filters = []
     
 
-    JavaImlVisitor(UrlFactory urlFactory)
+    ImlVisitor(UrlFactory urlFactory)
     {
         this.urls = urlFactory
     }
 
 
-    void visit(JavaModule module)
+
+    void visit(idea.conf.Module module)
     {
         xml.module(relativePaths:module.relativePaths, type:TYPE, version:VERSION) {
             super.visit(module)

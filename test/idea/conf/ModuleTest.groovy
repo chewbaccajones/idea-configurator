@@ -8,24 +8,24 @@ import idea.conf.render.DebugVisitor
 *
 * @author tomichj
 */
-class JavaModuleTest extends GroovyTestCase
+class ModuleTest extends GroovyTestCase
 {
     void testConstructor()
     {
-        JavaModule module = new JavaModule()
+        Module module = new Module()
         println module
     }
 
     void testSetProject()
     {
-        JavaModule module = new JavaModule()
+        Module module = new Module()
         module.setProject([] as Project)
         println module
     }
 
     void testDebug()
     {
-        JavaModule module = new JavaModule()
+        Module module = new Module()
         module.setProject([] as Project)
         DebugVisitor v = new DebugVisitor();
         v.visit module

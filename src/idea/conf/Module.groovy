@@ -7,7 +7,7 @@ import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference
 
 import idea.conf.render.DebugVisitor
-import idea.conf.render.JavaImlVisitor
+import idea.conf.render.ImlVisitor
 import idea.conf.java.depend.Dependencies
 import idea.conf.java.depend.ClasspathFilter
 import idea.conf.url.UrlFactory
@@ -22,7 +22,7 @@ import idea.conf.facets.FacetManager
  *
  * @author tomichj
  */
-class JavaModule extends Task implements Visitable
+class Module extends Task implements Visitable
 {
     File rootDir
     private File moduleFile
@@ -39,7 +39,7 @@ class JavaModule extends Task implements Visitable
         println debug
 
         UrlFactory urlFactory = new UrlFactoryImpl(getRootDir(), relativePaths)
-        def xml = new JavaImlVisitor(urlFactory);
+        def xml = new ImlVisitor(urlFactory);
         xml.visit(this)
         println xml
         println "\n"
@@ -217,7 +217,7 @@ class JavaModule extends Task implements Visitable
 
     String toString()
     {
-        "JavaModule{" <<
+        "Module{" <<
                 "rootDir=" << rootDir <<
                 ", moduleFile=" << moduleFile <<
                 ", relativePaths=" << relativePaths << "}"
