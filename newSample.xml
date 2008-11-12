@@ -18,7 +18,7 @@
 
 
   <target name="simplest">
-    <ideajavaiml/>
+    <ideamodule/>
   </target>
 
   <!-- 
@@ -31,76 +31,76 @@
 	no-sdk specification yields no order entry
   -->
   <target name="has-groovy">
-    <ideajavaiml>
+    <ideamodule>
       <facets>
         <groovy/>
       </facets>
       <src location="foobly"/>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
   <target name="has-groovy-sdk">
-    <ideajavaiml>
+    <ideamodule>
       <facets>
         <groovy sdk="groovy-1.5.4"/>
       </facets>
       <src location="foobly"/>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
   <target name="has-groovy-sdk-none">
-    <ideajavaiml>
+    <ideamodule>
       <facets>
         <groovy sdk="NONE"/>
       </facets>
       <src location="foobly"/>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="has-source">
-    <ideajavaiml>
+    <ideamodule>
       <src location="foobly"/>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="module-lib-src-property">
     <property name="source.bibbity.jar" location="bibbity.src.jar"/>
     <property name="bibbity.jar" location="bibbity.jar"/>
-    <ideajavaiml sourceproperty="source">
+    <ideamodule sourceproperty="source">
       <src location="foobly"/>
       <dependencies>
         <modulelibrary classes="${bibbity.jar}"/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="classpath-src-property">
     <property name="source.bibbity.jar" location="lib/bibbity.src.jar"/>
     <property name="bibbity.jar" location="lib/bibbity.jar"/>
-    <ideajavaiml sourceproperty="source">
+    <ideamodule sourceproperty="source">
       <src location="foobly"/>
       <dependencies>
         <classpath path="${bibbity.jar}"/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
   <target name="classpath-src-no-property">
     <property name="source.bibbity.jar" location="lib/bibbity.src.jar"/>
-    <ideajavaiml sourceproperty="source">
+    <ideamodule sourceproperty="source">
       <src location="foobly"/>
       <dependencies>
         <classpath path="lib/bibbity.jar"/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
   
   <target name="has-module-lib">
-    <ideajavaiml outputDir="build/classes"
+    <ideamodule outputDir="build/classes"
                  testsOutputDir="build/test-classes"
                  relativepaths="false">
       <src location="foobly"/>
@@ -115,12 +115,12 @@
           </jarDirectories>
         </modulelibrary>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
     
 
   <target name="has-contents">
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="src1"/>
       <src location="src2"/>
       <tests location="test1"/>
@@ -140,32 +140,32 @@
           </jarDirectories>
         </modulelibrary>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
     
 
   <target name="global-lib">
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="foobly"/>
       <dependencies>
         <globalLibrary name="junit-4.4" exported="true"/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="simple-module-lib">
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="foobly"/>
       <dependencies>
         <moduleLibrary classes="/foo/bar/baz.jar"/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="module-lib-with-all">
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="foobly"/>
       <dependencies>
         <moduleLibrary>
@@ -181,18 +181,18 @@
           <javadocUrl url="http://foo.com/bar"/>
         </moduleLibrary>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="module-dependency">
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="foobly"/>
       <dependencies>
         <module name="someOtherModule"/>
         <module name="AnotherModule" exported="true"/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
@@ -200,7 +200,7 @@
     <property name="source.foo.jar" value="/lib/foo-src.jar"/>
     <property name="foo.jar" value="/lib/foo.jar"/>
 
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes"
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes"
                  sourceProperty="source">
       <src location="foobly"/>
       <dependencies>
@@ -209,34 +209,34 @@
           <pathelement path="/lib/bar.jar"/>
         </classpath>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="jdk-and-source">
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="foobly"/>
       <dependencies>
         <jdk/>
         <modulelibrary classes="/lib/foo.jar"/>
         <modulesource/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="idea-lib">
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="foobly"/>
       <dependencies>
         <idealib name="foo.jar"/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="filters">
-    <ideajavaiml outputDir="build/classes" testsOutputDir="build/test-classes">
+    <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="foobly"/>
       <dependencies>
         <modulelibrary classes="/lib/foo.jar"/>
@@ -244,17 +244,17 @@
         <modulelibrary classes="/lib/bar.jar"/>
         <filter pattern=".*foo.*jar"/>
       </dependencies>
-    </ideajavaiml>
+    </ideamodule>
   </target>
 
 
   <target name="groovy">
 <!--
-    <ideajavaiml outputDir="build/classes"
+    <ideamodule outputDir="build/classes"
                  testsOutputDir="build/test-classes"
                  groovyModule="true">
       <src location="foobly"/>
-    </ideajavaiml>
+    </ideamodule>
 -->
   </target>
 
