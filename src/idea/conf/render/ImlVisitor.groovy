@@ -2,7 +2,7 @@ package idea.conf.render
 
 import groovy.xml.MarkupBuilder
 
-import idea.conf.Module
+import idea.conf.JavaModule
 import idea.conf.java.JavaComponent
 import idea.conf.java.depend.Dependencies
 import idea.conf.java.depend.ModuleLibrary
@@ -20,6 +20,8 @@ import idea.conf.facets.GroovyFacet
 import idea.conf.facets.FacetManager
 import org.apache.tools.ant.types.Path
 import idea.conf.java.depend.ModuleLibraryType
+import idea.conf.JavaModule
+import idea.conf.facets.GwtFacet
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -28,9 +30,9 @@ import idea.conf.java.depend.ModuleLibraryType
 */
 class ImlVisitor extends DefaultVisitor
 {
-    // todo move to Module ??
+    // todo move to JavaModule ??
     static final int VERSION = 4;
-    static final String TYPE = "JAVA_MODULE";
+    static final String JAVA_TYPE = "JAVA_MODULE";
 
     private final StringWriter writer = new StringWriter();
     private final MarkupBuilder xml = new MarkupBuilder(writer);
@@ -45,10 +47,9 @@ class ImlVisitor extends DefaultVisitor
     }
 
 
-
-    void visit(idea.conf.Module module)
+    void visit(idea.conf.JavaModule module)
     {
-        xml.module(relativePaths:module.relativePaths, type:TYPE, version:VERSION) {
+        xml.module(relativePaths:module.relativePaths, type:JAVA_TYPE, version:VERSION) {
             super.visit(module)
         }
     }
@@ -63,10 +64,26 @@ class ImlVisitor extends DefaultVisitor
     }
 
 
-    void visit(GroovyFacet facet)
+    void visit(GroovyFacet groovy)
     {
         xml.facet(type:"Groovy", name:"Groovy") {
             xml.configuration()
+        }
+    }
+
+    void visit(GwtFacet gwt)
+    {
+        String path = gwt.gwtSdkUrl != null ? gwt.gwtSdkUrl.absolutePath : ""
+        def sdkUrl = new FileUrl(path)
+
+        xml.facet(type:"gwt", name:"GWT") {
+            xml.setting(name:"additionalCompilerParameters", value:gwt.compilerParams)
+            xml.setting(name:"compilerMaxHeapSize", value:gwt.compilerMaxHeap)
+            xml.setting(name:"compilerOutputPath", value:gwt.compilerOutputPath)
+            xml.setting(name:"gwtScriptOutputStyle", value:gwt.scriptOutputStyle)
+            xml.setting(name:"gwtSdkUrl", value:sdkUrl.url())
+            xml.setting(name:"runGwtCompilerOnMake", value:gwt.runGwtCompilerOnMake)
+            if (gwt.intoWebFacet) xml.setting(name:"webFacet", value:gwt.intoWebFacet)
         }
     }
 

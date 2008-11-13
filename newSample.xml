@@ -10,6 +10,7 @@
   </path>
   <taskdef classpathref="configurator.classpath" resource="taskdef.properties"/>
 
+  
 
   <target name="all"
           depends="simplest, has-source, has-module-lib, has-contents, global-lib,
@@ -19,6 +20,23 @@
 
   <target name="simplest">
     <ideamodule/>
+  </target>
+
+
+
+  <target name="has-gwt">
+    <ideamodule>
+      <facets>
+        <gwt compilerParams="-Dfoo=1 -Dbar=2"
+             compilerMaxHeap="256"
+             compilerOutputPath="/foo/bar/output"
+             scriptOutputStyle="DETAILED"
+             gwtSdkUrl="/path/to/gwt-1.5"
+             runGwtCompilerOnMake="on"
+             intoWebFacet="web-facet-name"/>
+      </facets>
+      <src location="foobly"/>
+    </ideamodule>
   </target>
 
   <!-- 

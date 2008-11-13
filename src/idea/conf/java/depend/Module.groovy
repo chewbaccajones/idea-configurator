@@ -23,7 +23,7 @@ class Module implements Dependency, Exportable
 
     void validate()
     {
-        if (!name) throw new BuildException("Module dependency requires name attribute")
+        if (!name) throw new BuildException("JavaModule dependency requires name attribute")
     }
 
     String toString()

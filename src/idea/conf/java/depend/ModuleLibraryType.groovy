@@ -15,5 +15,4 @@ interface ModuleLibraryType extends Dependency, Exportable
     Path getSources()
     Path getJavadocs()
     List<JavadocUrl> getJavadocUrls()
-    boolean isExported()
 }

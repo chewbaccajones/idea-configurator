@@ -36,4 +36,13 @@ class SimpleModuleLibraryTest extends GroovyTestCase
         assertEquals(2, lib.getSources().size())
     }
 
+    void testIsExported()
+    {
+        final Project project = new Project()
+        final String jar = "/lib/jar.jar"
+        def thing = new SimpleModuleLibrary(project, jar, null, null, null, false)
+        println "isExported=${thing.isExported()}"
+        println "thing=${thing}"
+    }
+
 }

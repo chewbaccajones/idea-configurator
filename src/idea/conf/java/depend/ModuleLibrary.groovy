@@ -15,7 +15,7 @@ import org.apache.tools.ant.Project
  */
 class ModuleLibrary implements ModuleLibraryType
 {
-    String name
+    String name;
     boolean exported
     private Path classes // roots with jar entries
     private Path jarDirs // roots with file entries, plus separate jarDirectory directive

@@ -13,7 +13,7 @@ class GroovyFacet implements Visitable
     public static final String NONE = "NONE";
     private static final String DEFAULT = "GROOVY";
 
-    // can be null, in which case lib is DEFAULT
+    // can be null, in which case lib is DEFAULT. Or can be any arbitrary thing.
     String sdk
     
     def injectGroovyLibrary(Dependencies dependencies)

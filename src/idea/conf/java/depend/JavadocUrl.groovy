@@ -9,6 +9,7 @@ class JavadocUrl
 {
     String url;
 
+    
     def JavadocUrl()
     {
     }

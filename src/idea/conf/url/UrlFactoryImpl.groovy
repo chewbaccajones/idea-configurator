@@ -51,13 +51,16 @@ class UrlFactoryImpl implements UrlFactory
 
     FileUrl fileUrl(File path)
     {
-        if (path == null) throw new BuildException("Null path!")
+        println "ONE ${path}"
+//        if (path == null) throw new BuildException("Null path!")
+        if (!path) return fileUrl("")
         return fileUrl(path.getAbsolutePath());
     }
 
 
     FileUrl fileUrl(String path)
     {
+        println "TWO ${path}"
         String computed = computePath(path)
         return new FileUrl(computed)
 //        String relative = relativePath(path);
@@ -94,6 +97,8 @@ class UrlFactoryImpl implements UrlFactory
      */
     String computePath(String path)
     {
+        println "path=${path}"
+        if (!path) return ""
         String relativePath = relativePath(path);
         if (relativeOutsideRoot) return relativePath;
         if (isOutsideModuleDir(relativePath)) return path;

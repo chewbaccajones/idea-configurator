@@ -22,7 +22,7 @@ import idea.conf.facets.FacetManager
  *
  * @author tomichj
  */
-class Module extends Task implements Visitable
+class JavaModule extends Task implements Visitable
 {
     File rootDir
     private File moduleFile
@@ -89,7 +89,8 @@ class Module extends Task implements Visitable
 
     def createFacets()
     {
-        facets = new FacetManager(java.dependencies);
+        final Dependencies dependencies = java.dependencies
+        facets = new FacetManager(dependencies);
         return facets;
     }
 
@@ -217,7 +218,7 @@ class Module extends Task implements Visitable
 
     String toString()
     {
-        "Module{" <<
+        "JavaModule{" <<
                 "rootDir=" << rootDir <<
                 ", moduleFile=" << moduleFile <<
                 ", relativePaths=" << relativePaths << "}"

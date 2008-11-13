@@ -16,7 +16,7 @@ class SimpleModuleLibrary implements ModuleLibraryType
     Path sources
     Path javadocs
     List<JavadocUrl> javadocUrls
-    boolean exported // add to constructor
+    boolean exported
 
     def SimpleModuleLibrary(project, jar, source, javadoc, javadocUrl, exported)
     {
@@ -31,18 +31,12 @@ class SimpleModuleLibrary implements ModuleLibraryType
     }
 
     String getName() { null }
-    
+
     Path getJarDirs() { new Path(project) }
 
-    public void validate()
-    {
-        // check for non-empty classes?
-    }
+    void validate()  { } // check for non-empty classes?
 
-    public List<Visitable> getChildren()
-    {
-        return null;
-    }
+    List<Visitable> getChildren() { return null }
 
     String toString()
     {

@@ -12,20 +12,20 @@ class ModuleTest extends GroovyTestCase
 {
     void testConstructor()
     {
-        Module module = new Module()
+        JavaModule module = new JavaModule()
         println module
     }
 
     void testSetProject()
     {
-        Module module = new Module()
+        JavaModule module = new JavaModule()
         module.setProject([] as Project)
         println module
     }
 
     void testDebug()
     {
-        Module module = new Module()
+        JavaModule module = new JavaModule()
         module.setProject([] as Project)
         DebugVisitor v = new DebugVisitor();
         v.visit module

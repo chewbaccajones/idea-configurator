@@ -12,17 +12,22 @@ class FacetManager implements Visitable
     def facets = []
     Dependencies dependencies
 
-    def FacetManager(dependencies)
+    FacetManager(Dependencies dependencies)
     {
         this.dependencies = dependencies;
     }
 
     public void addConfiguredGroovy(GroovyFacet groovy)
     {
-        println "addGroovy() called!"
         facets << groovy
         groovy.injectGroovyLibrary(dependencies)
     }
+
+    public void addConfiguredGwt(GwtFacet gwt)
+    {
+        facets << gwt
+    }
+
 
     public List<Visitable> getChildren()
     {
