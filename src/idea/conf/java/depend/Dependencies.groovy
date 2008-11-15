@@ -105,18 +105,12 @@ class Dependencies implements Visitable
     ClasspathFilter createFilter()
     {
         add new ClasspathFilter()
-//        ClasspathFilter filter = new ClasspathFilter()
-//        filters << filter
-//        return filter
     }
 
 
     IdeaLibrary createIdeaLib()
     {
         add new IdeaLibrary(project)
-//        IdeaLibrary lib = new IdeaLibrary(project)
-//        deps << lib
-//        return lib
     }
 
     void addConfiguredModuleLibrary(ModuleLibrary lib)
@@ -128,54 +122,36 @@ class Dependencies implements Visitable
     ProjectLibrary createProjectLibrary()
     {
         add new ProjectLibrary()
-//        ProjectLibrary lib = new ProjectLibrary()
-//        deps << lib
-//        return lib
     }
 
 
     GlobalLibrary createGlobalLibrary()
     {
         add new GlobalLibrary()
-//        GlobalLibrary lib = new GlobalLibrary()
-//        deps << lib
-//        return lib;
     }
 
 
     Jdk createJdk()
     {
         add new Jdk()
-//        Jdk jdk = new Jdk();
-//        deps << jdk
-//        return jdk;
     }
 
 
     ModuleSource createModuleSource()
     {
         add new ModuleSource()
-//        ModuleSource source = new ModuleSource()
-//        deps << source
-//        return source
     }
 
 
     Module createModule()
     {
         add new Module()
-//        Module module = new Module();
-//        deps << module
-//        return module
     }
 
 
     Classpath createClasspath()
     {
         add new Classpath(project, moduleLibGenerator)
-//        Classpath cp = new Classpath(project, moduleLibGenerator)
-//        deps << cp
-//        return cp
     }
 
     def add(dependency)
