@@ -14,8 +14,7 @@ class UrlFactoryImplTest extends GroovyTestCase
 
         UrlFactoryImpl f = new UrlFactoryImpl(home, true);
 
-        String relativePath = f.relativePath(home, file1)
-        assertEquals("main/src", relativePath);
+        assertEquals("main/src", f.relativePath(home, file1));
         assertEquals("main/src/core/web/stuff", f.relativePath(home, file2));
         assertEquals("../../rws/adobefacade/web", f.relativePath(home, file3));
     }
@@ -23,19 +22,19 @@ class UrlFactoryImplTest extends GroovyTestCase
 
     void testRelativeOutsideRoot()
     {
-        File home = new File("/vobs/ssp/cci");
-        String file = "/vobs/rws/adobefacade/web";
+        File home = new File("/vobs/ssp");
+        String file = "/vobs/rws";
 
         UrlFactoryImpl f = new UrlFactoryImpl(home, false);
 
         // should be relative... (we're using protected api, always relative)
         String path = f.relativePath(file);
-        assertTrue(path.contains(".."));
+        assertEquals('$MODULE_DIR$/../rws', path) 
 
-        // should NOT be relative, constructor specifies no relative paths
+        // computePath should NOT be relative, constructor specifies no relative paths
         // outside of root directory.
         String computed = f.computePath(file);
-        assertFalse(computed.contains(".."));
+        assertEquals(file, computed)
     }
     
 
@@ -57,5 +56,37 @@ class UrlFactoryImplTest extends GroovyTestCase
         String path3 = f.file(file3)
         assertEquals('file:///vobs/rws/adobefacade/web', path3)
     }
+
+
+    void testPathParts()
+    {
+        File home = new File("/vobs/ssp/cci");
+        File file1 = new File("/vobs/ssp/cci/web");
+
+        UrlFactoryImpl f = new UrlFactoryImpl(home, false);
+
+        assertEquals(["web", "cci", "ssp", "vobs", ""], f.pathParts(file1))
+    }
+    
+
+    void testMathPathLists()
+    {
+        File home = new File("/vobs/ssp/cci");
+        UrlFactoryImpl f = new UrlFactoryImpl(home, false);
+
+        def p1 = f.pathParts(home)
+        def p2 = f.pathParts(new File("/vobs/ssp/cci/web"))
+        def p3 = f.pathParts(new File("/vobs/ssp"))
+        def p4 = f.pathParts(new File("/vobs/ssp/toby"))
+        def p5 = f.pathParts(new File("/trent/was/here"))
+
+
+        assertEquals("web", f.matchPathLists(p1, p2))
+        assertEquals("../", f.matchPathLists(p1, p3))
+        assertEquals("../toby", f.matchPathLists(p1, p4))
+        assertEquals("../../../trent/was/here", f.matchPathLists(p1, p5))
+    }
+
+
 
 }

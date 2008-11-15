@@ -16,21 +16,15 @@ import org.apache.tools.ant.types.Path
 class ModuleLibGenerator
 {
     final Project project
-    final String sourceProperty
-    final String javadocProperty
-    final String javadocUrlProperty
+    private String sourceProperty = "source."
+    private String javadocProperty = "javadoc."
+    private String javadocUrlProperty = "javadocurl."
+
     final def log
 
-    ModuleLibGenerator(Project project,
-                  String sourceProperty,
-                  String javadocProperty,
-                  String javadocUrlProperty)
+    ModuleLibGenerator(Project project)
     {
         this.project = project;
-        this.sourceProperty = endWithDot(sourceProperty)
-        this.javadocProperty = endWithDot(javadocProperty)
-        this.javadocUrlProperty = endWithDot(javadocUrlProperty)
-
         if (project == null) throw new BuildException("null project!")
         log = {msg -> project.log(msg, Project.MSG_ERR) }
     }
@@ -56,6 +50,22 @@ class ModuleLibGenerator
             //return lib
         }
     }
+
+    def setSourceProperty(String sourceProperty)
+    {
+        this.sourceProperty = endWithDot(sourceProperty)
+    }
+
+    def setJavadocProperty(String javadocProperty)
+    {
+        this.javadocProperty = endWithDot(javadocProperty)
+    }
+
+    def setJavadocUrlProperty(String javadocUrlProperty)
+    {
+        this.javadocUrlProperty = endWithDot(javadocUrlProperty)
+    }
+
 
     private String endWithDot(String property)
     {

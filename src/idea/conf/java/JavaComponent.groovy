@@ -7,7 +7,8 @@ import org.apache.tools.ant.types.Reference
 
 import idea.conf.java.depend.Dependencies
 import idea.conf.java.depend.ClasspathFilter
-import idea.conf.Visitable;
+import idea.conf.Visitable
+import idea.conf.java.depend.ModuleLibGenerator;
 
 
 
@@ -29,15 +30,19 @@ class JavaComponent implements Visitable
     Path excludes
 
     Dependencies dependencies
+    ModuleLibGenerator moduleLibGenerator
 
+    
     JavaComponent(Project project)
     {
         sources = new Path(project);
         tests = new Path(project);
         excludes = new Path(project);
-        dependencies = new Dependencies(project);
+        moduleLibGenerator = new ModuleLibGenerator(project)
+        dependencies = new Dependencies(project, moduleLibGenerator);
     }
 
+    
     List<Visitable> getChildren()
     {
         return [dependencies];
@@ -65,7 +70,7 @@ class JavaComponent implements Visitable
      */
     void setSourceProperty(String sourceProperty)
     {
-        dependencies.setSourceProperty(sourceProperty);
+        moduleLibGenerator.setSourceProperty(sourceProperty);
     }
 
 
@@ -78,7 +83,7 @@ class JavaComponent implements Visitable
      */
     void setJavadocProperty(String javadocProperty)
     {
-        dependencies.setJavadocProperty(javadocProperty);
+        moduleLibGenerator.setJavadocProperty(javadocProperty);
     }
 
 
@@ -90,7 +95,7 @@ class JavaComponent implements Visitable
      */
     void setJavadocUrlProperty(String javadocUrlProperty)
     {
-        dependencies.setJavadocUrlProperty(javadocUrlProperty);
+        moduleLibGenerator.setJavadocUrlProperty(javadocUrlProperty);
     }
 
     

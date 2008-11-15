@@ -191,7 +191,7 @@
 
 
   <!-- classpath attribute, classpath nested element, module lib element -->
-  <!-- note: classpath nest elements go at end of dependencies -->
+  <!-- note: classpath nest elements go at end of deps -->
   <target name="crazy-classpath" description="uses all classpath setters">
     <ideajavamodule moduleFile="crazy-classpath.build.sample.iml"
                 classpath="lib6.jar:lib7.jar"
