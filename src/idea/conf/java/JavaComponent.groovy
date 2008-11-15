@@ -102,8 +102,7 @@ class JavaComponent implements Visitable
 
     void setSrcPathRef(Reference srcPathRef)
     {
-        Path p = (Path) srcPathRef.getReferencedObject();
-        sources.append(p);
+        sources.append(path(srcPathRef))
     }
 
 
@@ -121,8 +120,7 @@ class JavaComponent implements Visitable
 
     void setTestsPathRef(Reference testsPathRef)
     {
-        Path p = (Path) testsPathRef.getReferencedObject();
-        tests.append(p);
+        tests.append(path(testsPathRef));
     }
 
 
@@ -134,8 +132,7 @@ class JavaComponent implements Visitable
 
     void setExcludesPathRef(Reference excludesPathRef)
     {
-        Path p = (Path) excludesPathRef.getReferencedObject()
-        excludes.append(p);
+        excludes.append(path(excludesPathRef));
     }
     
 
@@ -162,6 +159,10 @@ class JavaComponent implements Visitable
         dependencies.createClasspath()
     }
 
+    private Path path(Reference ref)
+    {
+        return (Path) ref.referencedObject
+    }
 
     private void validateInheritOrSetOutput()
     {

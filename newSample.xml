@@ -82,6 +82,16 @@
     </ideamodule>
   </target>
 
+  <target name="has-src-ref">
+    <path id="sources">
+      <pathelement location="src1"/>
+      <pathelement location="src2"/>
+    </path>
+    <ideamodule>
+      <src refid="sources"/>
+    </ideamodule>
+  </target>
+
 
   <target name="module-lib-src-property">
     <property name="source.bibbity.jar" location="bibbity.src.jar"/>

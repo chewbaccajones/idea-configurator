@@ -26,9 +26,9 @@ class Dependencies implements Visitable
      * name "source./lib/some-library-1.0.jar", the source property will be
      * treated as the source accompanying "some-library-1.0.jar".
      */
-    String sourceProperty
-    String javadocProperty
-    String javadocUrlProperty
+    String sourceProperty = "source"
+    String javadocProperty = "javadoc"
+    String javadocUrlProperty = "javadocurl"
 
 
     public Dependencies(Project project)
