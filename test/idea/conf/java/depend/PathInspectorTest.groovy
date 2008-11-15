@@ -15,7 +15,7 @@ class PathInspectorTest extends GroovyTestCase
         final String fooJar = "/lib/foo.jar"
         Project proj = new Project()
         Path path = new Path(proj, fooJar)
-        PathInspector inspector = new PathInspector(proj, null, null, null)
+        ModuleLibGenerator inspector = new ModuleLibGenerator(proj, null, null, null)
         def libs = inspector.moduleLibsForPath(path, false)
         SimpleModuleLibrary lib = libs[0]
         assertEquals(fooJar, lib.classes.list()[0])
@@ -38,7 +38,7 @@ class PathInspectorTest extends GroovyTestCase
 
         Path path = new Path(proj, fooJar)
 
-        PathInspector inspector = new PathInspector(proj, "source", null, null)
+        ModuleLibGenerator inspector = new ModuleLibGenerator(proj, "source", null, null)
         def libs = inspector.moduleLibsForPath(path, true)
         def lib = libs[0]
         assertEquals(fooJar, lib.classes.list()[0])
@@ -50,7 +50,7 @@ class PathInspectorTest extends GroovyTestCase
         final String fooJar = "foo.jar"
         final String fooJarPath = "/lib/" + fooJar
         Project proj = new Project()
-        PathInspector inspector = new PathInspector(proj, "source", null, null)
+        ModuleLibGenerator inspector = new ModuleLibGenerator(proj, "source", null, null)
         assertEquals(fooJar, inspector.findPropertyNameForJar(fooJarPath))
     }
 
@@ -64,7 +64,7 @@ class PathInspectorTest extends GroovyTestCase
 
         Path path = new Path(proj, fooJar)
 
-        PathInspector inspector = new PathInspector(proj, "source", null, null)
+        ModuleLibGenerator inspector = new ModuleLibGenerator(proj, "source", null, null)
         def modules = inspector.moduleLibsForPath(path, false)
         def module = modules[0]
 

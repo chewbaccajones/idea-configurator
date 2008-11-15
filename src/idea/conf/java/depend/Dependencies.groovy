@@ -123,7 +123,7 @@ class Dependencies implements Visitable
 
     //ModuleLibrary createModuleLibrary()
     //{
-    //    PathInspector inspector = new PathInspector(project, sourceProperty,
+    //    ModuleLibGenerator inspector = new ModuleLibGenerator(project, sourceProperty,
     //            javadocProperty, javadocUrlProperty)
     //    ModuleLibrary lib = new ModuleLibrary(project);
     //    dependencies.add(lib);
@@ -183,9 +183,9 @@ class Dependencies implements Visitable
         return cp;
     }
 
-    private PathInspector pathInspector()
+    private ModuleLibGenerator pathInspector()
     {
-        PathInspector inspector = new PathInspector(project, sourceProperty,
+        ModuleLibGenerator inspector = new ModuleLibGenerator(project, sourceProperty,
                 javadocProperty, javadocUrlProperty)
         return inspector
     }

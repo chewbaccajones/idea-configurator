@@ -13,7 +13,7 @@ import org.apache.tools.ant.types.Path
  * 
  * @author tomichj
  */
-class PathInspector
+class ModuleLibGenerator
 {
     final Project project
     final String sourceProperty
@@ -21,7 +21,7 @@ class PathInspector
     final String javadocUrlProperty
     final def log
 
-    PathInspector(Project project,
+    ModuleLibGenerator(Project project,
                   String sourceProperty,
                   String javadocProperty,
                   String javadocUrlProperty)
@@ -126,7 +126,7 @@ class PathInspector
 
     String toString()
     {
-        "PathInspector{" +
+        "ModuleLibGenerator{" +
                 "sourceProperty=${sourceProperty}," +
                 "javadocProperty=${javadocProperty}," +
                 "javadocUrlProperty=${javadocUrlProperty}}"

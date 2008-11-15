@@ -13,9 +13,9 @@ import org.apache.tools.ant.types.Path
 class Classpath extends Path implements Dependency, Exportable
 {
     boolean exported
-    private PathInspector inspector
+    private ModuleLibGenerator inspector
 
-    Classpath(Project project, PathInspector inspector)
+    Classpath(Project project, ModuleLibGenerator inspector)
     {
         super(project)
         this.inspector = inspector
