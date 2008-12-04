@@ -19,9 +19,12 @@ class ModuleLibraryTest extends GroovyTestCase
         project.setInheritedProperty("foo.jar", fooJar)
         project.setInheritedProperty("source.foo.jar", fooSrcJar)
 
+        ModuleLibGenerator libGen = new ModuleLibGenerator(project)
+
         ModuleLibrary lib = new ModuleLibrary(project)
         lib.createClasses().setLocation(new File(fooJar))
-
+        lib.addLibraryAssets(libGen)
+        
         Path classes = lib.getClasses()
         assertEquals(1, classes.list().size())
         assertNotNull(classes.list().find { it.equals(fooJar) })

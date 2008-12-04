@@ -27,6 +27,7 @@ class Dependencies implements Visitable
      * treated as the source accompanying "some-library-1.0.jar".
      */
     ModuleLibGenerator moduleLibGenerator
+    
 
     public Dependencies(Project project, ModuleLibGenerator moduleLibGenerator)
     {

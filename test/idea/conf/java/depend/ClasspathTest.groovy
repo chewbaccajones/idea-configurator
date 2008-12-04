@@ -9,10 +9,15 @@ import org.apache.tools.ant.Project
 */
 class ClasspathTest extends GroovyTestCase
 {
-    void testEndWithDot()
+    void testGetChildrenNoStuff()
     {
-        def cp = new Classpath([] as Project, "", "", "")
-        assertNull(cp.endWithDot(null))
-        assertNull(cp.endWithDot(""))
+        Project p = new Project()
+        ModuleLibGenerator libGen = [p]
+
+        Classpath cp = new Classpath(p, libGen)
+        cp.createPathElement().setPath("/foo/bar") 
+        def kids = cp.getChildren()
+
+        assertTrue(kids.size() == 1)
     }
 }

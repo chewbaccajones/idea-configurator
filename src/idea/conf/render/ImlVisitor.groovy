@@ -137,7 +137,7 @@ class ImlVisitor extends DefaultVisitor
 
     void visit(Module module)
     {
-        xml.orderEntry(addExport(['module-name':module.getName(), type:"module"], module)) {
+        xml.orderEntry(addExport(['module-name':module.name, type:"module"], module)) {
             super.visit(module)
         }
     }

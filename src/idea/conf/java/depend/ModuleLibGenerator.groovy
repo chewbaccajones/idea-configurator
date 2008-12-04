@@ -22,6 +22,15 @@ class ModuleLibGenerator
 
     final def log
 
+
+    static String endWithDot(String property)
+    {
+        if (!property) return null
+        if (property.endsWith(".")) return property
+        return property + "."
+    }
+    
+
     ModuleLibGenerator(Project project)
     {
         this.project = project;
@@ -66,13 +75,6 @@ class ModuleLibGenerator
         this.javadocUrlProperty = endWithDot(javadocUrlProperty)
     }
 
-
-    private String endWithDot(String property)
-    {
-        if (!property) return null
-        if (property.endsWith(".")) return property
-        return property + "."
-    }
 
     /**
      * Find the corresponding property name for a jar.

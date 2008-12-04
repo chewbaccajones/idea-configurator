@@ -34,7 +34,9 @@ class ModuleLibrary implements ModuleLibraryType
 
     /**
      * Dependencies calls this on a populated ModuleLibrary to search for properties
-     * that are associated by names.
+     * that are associated by names. This should be called AFTER the library is otherwise
+     * populated.
+     *
      */
     def addLibraryAssets(ModuleLibGenerator inspector)
     {

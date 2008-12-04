@@ -69,7 +69,7 @@ class UrlFactoryImplTest extends GroovyTestCase
     }
     
 
-    void testMathPathLists()
+    void testMatchPathLists()
     {
         File home = new File("/vobs/ssp/cci");
         UrlFactoryImpl f = new UrlFactoryImpl(home, false);
@@ -80,11 +80,10 @@ class UrlFactoryImplTest extends GroovyTestCase
         def p4 = f.pathParts(new File("/vobs/ssp/toby"))
         def p5 = f.pathParts(new File("/trent/was/here"))
 
-
-        assertEquals("web", f.matchPathLists(p1, p2))
-        assertEquals("../", f.matchPathLists(p1, p3))
-        assertEquals("../toby", f.matchPathLists(p1, p4))
-        assertEquals("../../../trent/was/here", f.matchPathLists(p1, p5))
+        assertEquals("web", f.relativePath(p1, p2))
+        assertEquals("../", f.relativePath(p1, p3))
+        assertEquals("../toby", f.relativePath(p1, p4))
+        assertEquals("../../../trent/was/here", f.relativePath(p1, p5))
     }
 
 
