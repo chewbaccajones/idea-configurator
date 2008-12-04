@@ -38,6 +38,7 @@ class ClasspathFilter implements Dependency
     
     private boolean matches(String jar)
     {
+        if (pattern == null) return false
         return jar.matches(pattern)
     }
     
@@ -48,6 +49,7 @@ class ClasspathFilter implements Dependency
 
     void validate()
     {
+        // consider allowing pattern to be null
         if (!pattern) throw new BuildException("ClasspathFilter pattern cannot be null!")
     }
 

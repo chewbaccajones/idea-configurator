@@ -11,6 +11,5 @@ import idea.conf.Visitable
  */
 interface Dependency extends Visitable
 {
-    // add a validate() method
     void validate()
 }

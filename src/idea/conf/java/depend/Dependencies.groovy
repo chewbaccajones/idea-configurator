@@ -50,10 +50,10 @@ class Dependencies implements Visitable
     }
 
 
-    def moduleLibraries()
-    {
-        deps.findAll { it instanceof ModuleLibrary }
-    }
+//    def moduleLibraries()
+//    {
+//        deps.findAll { it instanceof ModuleLibrary }
+//    }
 
 
     void completeJdkAndSourceOrderEntries()

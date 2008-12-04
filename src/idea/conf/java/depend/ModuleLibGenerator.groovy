@@ -127,10 +127,11 @@ class ModuleLibGenerator
         return lookup(sourceProperty, libProperty)
     }
 
-    // propertyTypeFragment is sourceproperty, etc
+    /**
+     * 
+     */
     private String lookup(String propertyTypeFragment, String libProperty)
     {
-        //println("lookup propertyTypeFrag=${propertyTypeFragment} lib=${libProperty}")
         if (!propertyTypeFragment) return null
         String property = propertyTypeFragment + libProperty
         return getProject().getProperty(property)

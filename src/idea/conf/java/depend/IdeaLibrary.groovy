@@ -13,6 +13,8 @@ import org.apache.tools.ant.Project
  */
 class IdeaLibrary implements Dependency, Exportable
 {
+    private static final String LIB_DIR = '$APPLICATION_HOME_DIR$/lib/'
+
     Project project
     String name // name of the jar in idea's lib dir
     boolean exported
@@ -25,10 +27,14 @@ class IdeaLibrary implements Dependency, Exportable
 
     ModuleLibraryType asModuleLibrary()
     {
-        String path = '$APPLICATION_HOME_DIR$/lib/' + name
         def lib = new ModuleLibrary(project)
-        lib.createClasses().setPath(path)
+        lib.createClasses().setPath(path())
         return lib
+    }
+
+    def path()
+    {
+        return LIB_DIR + name
     }
 
     List<Visitable> getChildren()
@@ -39,11 +45,12 @@ class IdeaLibrary implements Dependency, Exportable
     void validate()
     {
         if (!name) throw new BuildException("IdeaLibrary name must not be null!")
+        // don't check to see if library actually exists
     }
 
     String toString()
     {
-        "IdeaLibrary{name=${name}, exported=${exported}"
+        "IdeaLibrary{name=${name}, exported=${exported}}"
     }
 }
 
