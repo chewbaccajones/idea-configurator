@@ -15,12 +15,12 @@ import org.apache.tools.ant.types.Path
  */
 class ModuleLibGenerator
 {
-    final Project project
-    private String sourceProperty = "source."
+    private final Project project
+    private final def log
+    private String sourceProperty = "source." // default value
     private String javadocProperty = "javadoc."
     private String javadocUrlProperty = "javadocurl."
 
-    final def log
 
 
     static String endWithDot(String property)
@@ -90,20 +90,19 @@ class ModuleLibGenerator
     private String findPropertyNameForJar(String jar)
     {
         if (!jar.endsWith(".jar")) return null;
-        
-        // could cache properties table...
-        Project project = getProject()
-        Set<Map.Entry> entries = project.getProperties().entrySet()
 
-        for (Map.Entry entry: entries)
+        // could cache properties table...?
+        Set<Map.Entry> properties = project.getProperties().entrySet()
+
+        for (Map.Entry property: properties)
         {
-            String key = (String) entry.getKey()
-            String value = (String) entry.getValue()
+            String name = (String) property.getKey()
+            String value = (String) property.getValue()
             if (value == null) continue
             String[] paths = Path.translatePath(project, value)
             if (paths.length == 0) continue
             if (paths.length > 1) continue
-            if (jar.equals(paths[0])) return key
+            if (jar.equals(paths[0])) return name
         }
 
         // if we didn't find the jar property, return the jar's filename

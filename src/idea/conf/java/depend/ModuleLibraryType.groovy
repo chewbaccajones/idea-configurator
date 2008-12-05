@@ -9,7 +9,11 @@ import org.apache.tools.ant.types.Path
  */
 interface ModuleLibraryType extends Dependency, Exportable
 {
+    /** @Nullable */
     String getName()
+
+    List<String> getIdeaLibs()
+    
     Path getClasses()
     Path getJarDirs()
     Path getSources()

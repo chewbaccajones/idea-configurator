@@ -40,6 +40,6 @@ class ModuleLibraryTest extends GroovyTestCase
         Path a = new Path(p, "/foo")
         Path b = new Path(p, "/foo")
         a.add(b)
-        println a
+//        println a
     }
 }

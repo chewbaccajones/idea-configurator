@@ -17,6 +17,8 @@ class SimpleModuleLibrary implements ModuleLibraryType
     Path javadocs
     List<JavadocUrl> javadocUrls
     boolean exported
+    List<String> ideaLibs = []
+    
 
     def SimpleModuleLibrary(project, jar, source, javadoc, javadocUrl, exported)
     {
@@ -42,6 +44,7 @@ class SimpleModuleLibrary implements ModuleLibraryType
     {
         return "SimpleModuleLibrary{" +
                 "classes=" + classes +
+                ", ideaLibs=${ideaLibs}" +
                 ", sources=" + sources +
                 ", javadocs=" + javadocs +
                 ", javadocUrls=" + javadocUrls +

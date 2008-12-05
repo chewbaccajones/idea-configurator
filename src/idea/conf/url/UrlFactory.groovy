@@ -6,6 +6,7 @@ package idea.conf.url
  */
 interface UrlFactory
 {
+    String ideaLib(String libName)
     String file(File path)
     String file(String path)
     String http(String path)

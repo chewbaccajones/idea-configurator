@@ -41,8 +41,9 @@ class SimpleModuleLibraryTest extends GroovyTestCase
         final Project project = new Project()
         final String jar = "/lib/jar.jar"
         def thing = new SimpleModuleLibrary(project, jar, null, null, null, false)
-        println "isExported=${thing.isExported()}"
-        println "thing=${thing}"
+//        println "isExported=${thing.isExported()}"
+//        println "thing=${thing}"
+        assertFalse(thing.isExported())
     }
 
 }

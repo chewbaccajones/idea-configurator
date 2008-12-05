@@ -150,13 +150,16 @@ class ImlVisitor extends DefaultVisitor
         // apply filters
         filters.each { filter -> classes = filter.filter(classes) }
         
-        if (!classes.list().size() && !lib.jarDirs.list().size()) return;
+        if (!classes.list().size() &&
+                !lib.jarDirs.list().size() &&
+                !lib.getIdeaLibs().size()) return;
 
         xml.orderEntry(addExport([type:"module-library"], lib)) {
             xml.library(nonNulls(name:lib.getName())){
                 xml.CLASSES() {
                     classes.list().each{ jar -> xml.root(url:asUrl(jar)) }
                     lib.jarDirs.list().each{ dir -> xml.root(url:asUrl(dir)) }
+                    lib.ideaLibs.each { jar -> xml.root(url:urls.ideaLib(jar)) }
                 }
                 xml.JAVADOC() {
                     lib.javadocs.list().each { javadoc -> xml.root(url:asUrl(javadoc)) }

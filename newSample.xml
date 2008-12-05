@@ -255,10 +255,12 @@
 
 
   <target name="idea-lib">
+    <property name="foo.jar" value="foo.jar"/>
+    <property name="source.foo.jar" location="/lib/foo.src.jar"/>
     <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="foobly"/>
       <dependencies>
-        <idealib name="foo.jar"/>
+        <idealib name="${foo.jar}"/>
       </dependencies>
     </ideamodule>
   </target>

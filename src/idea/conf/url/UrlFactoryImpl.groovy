@@ -14,6 +14,7 @@ class UrlFactoryImpl implements UrlFactory
 {
 
     public static final String MODULE_DIR = '$MODULE_DIR$'
+    public static final String APPLICATION_LIB_DIR = '$APPLICATION_HOME_DIR$/lib/'
 
     private File rootDir;
     private boolean relativeOutsideRoot;
@@ -25,6 +26,10 @@ class UrlFactoryImpl implements UrlFactory
         this.relativeOutsideRoot = relativeOutsideRoot;
     }
 
+    public String ideaLib(String libName)
+    {
+        return APPLICATION_LIB_DIR + libName
+    }
 
     public String file(File path)
     {
@@ -55,7 +60,6 @@ class UrlFactoryImpl implements UrlFactory
 
     private FileUrl fileUrl(File path)
     {
-//        if (path == null) throw new BuildException("Null path!")
         if (!path) return fileUrl("")
         return fileUrl(path.getAbsolutePath());
     }

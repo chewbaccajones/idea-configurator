@@ -22,7 +22,8 @@ class ModuleLibrary implements ModuleLibraryType
     private Path sources;
     private Path javadocs;
     private List<JavadocUrl> javadocUrls = []
-
+    List<String> ideaLibs = []
+    
 
     ModuleLibrary(Project project)
     {
@@ -31,6 +32,7 @@ class ModuleLibrary implements ModuleLibraryType
         this.sources = new Path(project)
         this.javadocs = new Path(project)
     }
+
 
     /**
      * Dependencies calls this on a populated ModuleLibrary to search for properties
@@ -46,6 +48,7 @@ class ModuleLibrary implements ModuleLibraryType
 
     def add(ModuleLibraryType other)
     {
+        ideaLibs.addAll(other.getIdeaLibs())
         classes.add(other.getClasses())
         jarDirs.add(other.getJarDirs())
         sources.add(other.getSources())
@@ -122,6 +125,7 @@ class ModuleLibrary implements ModuleLibraryType
 
     boolean isValid()
     {
+        if (ideaLibs.size() > 0) return true;
         if (classes.size() > 0) return true
         if (jarDirs.size() > 0) return true
         return false
@@ -131,6 +135,7 @@ class ModuleLibrary implements ModuleLibraryType
     {
         "ModuleLibrary{" <<
                 "classes=${classes}" <<
+                ", ideaLibs=${ideaLibs}" <<
                 ", jarDirs=${jarDirs}" <<
                 ", sources=${sources}" <<
                 ", javadocs=${javadocs}" <<
