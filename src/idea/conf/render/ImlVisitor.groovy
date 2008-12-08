@@ -80,7 +80,7 @@ class ImlVisitor extends DefaultVisitor
             xml.setting(name:"additionalCompilerParameters", value:gwt.compilerParams)
             xml.setting(name:"compilerMaxHeapSize", value:gwt.compilerMaxHeap)
             xml.setting(name:"compilerOutputPath", value:gwt.compilerOutputPath)
-            xml.setting(name:"gwtScriptOutputStyle", value:gwt.scriptOutputStyle)
+            xml.setting(name:"gwtScriptOutputStyle", value:gwt.outputStyle)
             xml.setting(name:"gwtSdkUrl", value:sdkUrl.url())
             xml.setting(name:"runGwtCompilerOnMake", value:gwt.runGwtCompilerOnMake)
             if (gwt.intoWebFacet) xml.setting(name:"webFacet", value:gwt.intoWebFacet)

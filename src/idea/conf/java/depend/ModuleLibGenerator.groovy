@@ -48,16 +48,31 @@ class ModuleLibGenerator
      */
     def moduleLibsForPath(Path path, boolean exported)
     {
-        path.list().collect { jar ->
-            String jarProperty = findPropertyNameForJar(jar);
-            log("jar=${jar} jarProperty=${jarProperty}")
+        path.list().collect { jar -> moduleLibForJar(jar, exported) }
+    }
+
+    def moduleLibsForIdeaLibs(ideaLibs, boolean exported)
+    {
+        ideaLibs.collect { lib ->
+            String jarProperty = findPropertyNameForJar(lib);
+//            println "lib=${lib} property=${jarProperty}"
             String src = source(jarProperty)
+//            println "src=${src}"
             String jdoc = javadoc(jarProperty)
             String jdocUrl = javadocUrl(jarProperty)
-            new SimpleModuleLibrary(project, jar, src, jdoc, jdocUrl, exported)
-            //def lib = [classes:jar, sources:src, javadoc:jdoc, javadocUrl:jdocUrl]
-            //return lib
+            return new SimpleModuleLibrary(project, lib, null, src, jdoc, jdocUrl, exported)
         }
+    }
+
+    def moduleLibForJar(String jar, boolean exported)
+    {
+        String jarProperty = findPropertyNameForJar(jar);
+//        println "jar=${jar} jarProperty=${jarProperty}"
+        String src = source(jarProperty)
+//        println "src=${src}"
+        String jdoc = javadoc(jarProperty)
+        String jdocUrl = javadocUrl(jarProperty)
+        return new SimpleModuleLibrary(project, jar, src, jdoc, jdocUrl, exported)        
     }
 
     def setSourceProperty(String sourceProperty)
@@ -133,7 +148,7 @@ class ModuleLibGenerator
     {
         if (!propertyTypeFragment) return null
         String property = propertyTypeFragment + libProperty
-        return getProject().getProperty(property)
+        return project.getProperty(property)
     }
 
     String toString()

@@ -111,8 +111,11 @@ class Dependencies implements Visitable
 
     IdeaLibrary createIdeaLib()
     {
-        add new IdeaLibrary(project)
+        IdeaLibrary lib = new IdeaLibrary(project)
+        lib.setLibGenerator(moduleLibGenerator)
+        add lib
     }
+
 
     void addConfiguredModuleLibrary(ModuleLibrary lib)
     {
@@ -120,6 +123,7 @@ class Dependencies implements Visitable
         deps << lib
     }
 
+    
     ProjectLibrary createProjectLibrary()
     {
         add new ProjectLibrary()

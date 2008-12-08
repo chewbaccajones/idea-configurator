@@ -53,9 +53,9 @@ public class ModuleLibGeneratorTest extends GroovyTestCase
         final String fooJar = "foo.jar"
         final String fooJarPath = "/lib/" + fooJar
         Project proj = new Project()
-        ModuleLibGenerator inspector = new ModuleLibGenerator(proj)
-        inspector.setSourceProperty("source")
-        assertEquals(fooJar, inspector.findPropertyNameForJar(fooJarPath))
+        ModuleLibGenerator libGenerator = new ModuleLibGenerator(proj)
+        libGenerator.setSourceProperty("source")
+        assertEquals(fooJar, libGenerator.findPropertyNameForJar(fooJarPath))
     }
 
     void testFindSourceJarByJarName()

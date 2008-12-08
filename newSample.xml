@@ -31,7 +31,7 @@
         <gwt compilerParams="-Dfoo=1 -Dbar=2"
              compilerMaxHeap="256"
              compilerOutputPath="/foo/bar/output"
-             scriptOutputStyle="DETAILED"
+             outputStyle="DETAILED"
              gwtSdkUrl="/path/to/gwt-1.5"
              runGwtCompilerOnMake="on"
              intoWebFacet="web-facet-name"/>

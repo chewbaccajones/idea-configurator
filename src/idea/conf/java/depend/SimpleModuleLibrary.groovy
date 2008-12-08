@@ -18,11 +18,24 @@ class SimpleModuleLibrary implements ModuleLibraryType
     List<JavadocUrl> javadocUrls
     boolean exported
     List<String> ideaLibs = []
-    
 
-    def SimpleModuleLibrary(project, jar, source, javadoc, javadocUrl, exported)
+
+    SimpleModuleLibrary(project, jar, source, javadoc, javadocUrl, exported)
     {
         this.project = project;
+        this.classes = new Path(project, jar)
+        this.sources = new Path(project, source)
+        this.javadocs = new Path(project, javadoc)
+        this.javadocUrls = []
+        this.exported = exported
+
+        if (javadocUrl != null) javadocUrls << new JavadocUrl(javadocUrl)
+    }
+
+    SimpleModuleLibrary(project, ideaLib, jar, source, javadoc, javadocUrl, exported)
+    {
+        this.project = project;
+        this.ideaLibs = [ideaLib]
         this.classes = new Path(project, jar)
         this.sources = new Path(project, source)
         this.javadocs = new Path(project, javadoc)
@@ -49,6 +62,7 @@ class SimpleModuleLibrary implements ModuleLibraryType
                 ", javadocs=" + javadocs +
                 ", javadocUrls=" + javadocUrls +
                 ", exported=" + exported +
+                ", ideaLibs=" + ideaLibs +
                 "}"
     }
 }

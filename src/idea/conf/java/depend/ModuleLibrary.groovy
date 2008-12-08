@@ -40,15 +40,19 @@ class ModuleLibrary implements ModuleLibraryType
      * populated.
      *
      */
-    def addLibraryAssets(ModuleLibGenerator inspector)
+    def addLibraryAssets(ModuleLibGenerator libGenerator)
     {
-        def addons = inspector.moduleLibsForPath(classes, exported)
+        def addons = libGenerator.moduleLibsForPath(classes, exported)
         addons.each { ModuleLibraryType lib -> add(lib) }
+
+        def ideaLibAddons = libGenerator.moduleLibsForIdeaLibs(ideaLibs, exported)
+        ideaLibAddons.each { ModuleLibraryType lib -> add(lib) }
     }
 
     def add(ModuleLibraryType other)
     {
         ideaLibs.addAll(other.getIdeaLibs())
+        ideaLibs = ideaLibs.unique()
         classes.add(other.getClasses())
         jarDirs.add(other.getJarDirs())
         sources.add(other.getSources())

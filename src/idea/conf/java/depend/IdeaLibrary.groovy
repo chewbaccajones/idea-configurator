@@ -16,6 +16,7 @@ class IdeaLibrary implements Dependency, Exportable
     Project project
     String name // name of the jar in idea's lib dir
     boolean exported
+    ModuleLibGenerator libGenerator
 
 
     IdeaLibrary(Project project)
@@ -27,9 +28,9 @@ class IdeaLibrary implements Dependency, Exportable
     {
         def lib = new ModuleLibrary(project)
         lib.ideaLibs.add(name)
+        lib.addLibraryAssets(libGenerator)
         return lib
     }
-
 
     List<Visitable> getChildren()
     {
@@ -44,7 +45,7 @@ class IdeaLibrary implements Dependency, Exportable
 
     String toString()
     {
-        "IdeaLibrary{name=${name}, exported=${exported}}"
+        return "IdeaLibrary{name=${name}, exported=${exported}}"
     }
 }
 
