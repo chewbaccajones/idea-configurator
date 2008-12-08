@@ -20,10 +20,6 @@ class GwtFacet implements Visitable
     String intoWebFacet  // drop from iml unless empty
 
 
-    GwtFacet()
-    {
-    }
-
     List<Visitable> getChildren()
     {
         return null;
