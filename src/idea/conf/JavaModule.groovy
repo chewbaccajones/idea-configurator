@@ -27,22 +27,41 @@ class JavaModule extends Task implements Visitable
     File rootDir
     private File moduleFile
     boolean relativePaths
-    JavaComponent java;
-    FacetManager facets;
+    JavaComponent java
+    FacetManager facets
+    boolean debug
 
 
     void execute()
     {
         super.execute();
-        def debug = new DebugVisitor()
-        debug.visit(this)
-        println debug
+
+        // check for debug flag
+        if (!debug && project.getProperty("debug")) {
+            debug = Boolean.parseBoolean(project.getProperty("debug"))
+        }
+
+        if (debug)
+        {
+            def debuggery = new DebugVisitor()
+            debuggery.visit(this)
+            println debuggery
+            println ""
+        }
 
         UrlFactory urlFactory = new UrlFactoryImpl(getRootDir(), relativePaths)
         def xml = new ImlVisitor(urlFactory);
         xml.visit(this)
-        println xml
-        println "\n"
+
+        if (debug)
+        {
+            println xml
+            println "\n"
+        }
+        else
+        {
+            getModuleFile().write(xml.toString())
+        }
     }
 
     /**

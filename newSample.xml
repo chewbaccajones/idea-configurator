@@ -11,6 +11,8 @@
   <taskdef classpathref="configurator.classpath" resource="taskdef.properties"/>
 
   
+  <property name="debug" value="true"/>
+
 
   <target name="all"
           depends="simplest, has-gwt, has-groovy, has-groovy-sdk, has-groovy-sdk-none,
@@ -129,7 +131,8 @@
 
   
   <target name="has-module-lib">
-    <ideamodule outputDir="build/classes"
+    <ideamodule modulefile="has-module-lib.iml"
+                outputDir="build/classes"
                 testsOutputDir="build/test-classes"
                 relativepaths="false">
       <src location="foobly"/>
