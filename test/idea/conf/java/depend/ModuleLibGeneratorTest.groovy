@@ -2,7 +2,7 @@ package idea.conf.java.depend
 
 import static idea.conf.java.depend.ModuleLibGenerator.*
 import org.apache.tools.ant.Project
-import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Path
 
 /**
  *
@@ -29,6 +29,7 @@ public class ModuleLibGeneratorTest extends GroovyTestCase
         assertEquals(0, lib.javadocUrls.size())
     }
 
+
     void testSourceProperty()
     {
         final String fooJar = "/lib/foo.jar"
@@ -48,15 +49,16 @@ public class ModuleLibGeneratorTest extends GroovyTestCase
         assertEquals(fooSrcJar, lib.sources.list()[0])
     }
 
+
     void testNoProperty()
     {
         final String fooJar = "foo.jar"
         final String fooJarPath = "/lib/" + fooJar
-        Project proj = new Project()
-        ModuleLibGenerator libGenerator = new ModuleLibGenerator(proj)
-        libGenerator.setSourceProperty("source")
+
+        ModuleLibGenerator libGenerator = new ModuleLibGenerator(new Project())
         assertEquals(fooJar, libGenerator.findPropertyNameForJar(fooJarPath))
     }
+
 
     void testFindSourceJarByJarName()
     {
@@ -77,6 +79,15 @@ public class ModuleLibGeneratorTest extends GroovyTestCase
         assertEquals(fooSrcJar, module.sources.toString())
     }
 
+    void testFindSourceJarByDir()
+    {
+        Project proj = new Project()
+        ModuleLibGenerator libGen = new ModuleLibGenerator(proj)
+
+        String answer = libGen.findSourceJarByDir("/lib/junit4.4/junit-4.4.jar")
+        println "answer=" + answer
+    }
+    
     void testEndWithDot()
     {
         assertNull(endWithDot(null))

@@ -15,12 +15,12 @@ import org.apache.tools.ant.types.Path
  */
 class ModuleLibGenerator
 {
+
     private final Project project
     private final def log
-    private String sourceProperty = "source." // default value
+    private String sourceProperty = "source." // default values
     private String javadocProperty = "javadoc."
     private String javadocUrlProperty = "javadocurl."
-
 
 
     static String endWithDot(String property)
@@ -48,31 +48,26 @@ class ModuleLibGenerator
      */
     def moduleLibsForPath(Path path, boolean exported)
     {
-        path.list().collect { jar -> moduleLibForJar(jar, exported) }
+        path.list().collect { jarPath ->
+            String jarProperty = findPropertyNameForJar(jarPath)
+            String src = source(jarProperty)
+            if (src == null) src = findSourceJarByDir(jarPath)
+            String jdoc = javadoc(jarProperty)
+            String jdocUrl = javadocUrl(jarProperty)
+            return new SimpleModuleLibrary(project, jarPath, src, jdoc, jdocUrl, exported)
+        }
     }
 
     def moduleLibsForIdeaLibs(ideaLibs, boolean exported)
     {
         ideaLibs.collect { lib ->
-            String jarProperty = findPropertyNameForJar(lib);
-//            println "lib=${lib} property=${jarProperty}"
+            String jarProperty = findPropertyNameForJar(lib)
             String src = source(jarProperty)
-//            println "src=${src}"
             String jdoc = javadoc(jarProperty)
             String jdocUrl = javadocUrl(jarProperty)
-            return new SimpleModuleLibrary(project, lib, null, src, jdoc, jdocUrl, exported)
+            return new SimpleModuleLibrary(project, lib, null, src, jdoc, jdocUrl,
+                    exported)
         }
-    }
-
-    def moduleLibForJar(String jar, boolean exported)
-    {
-        String jarProperty = findPropertyNameForJar(jar);
-//        println "jar=${jar} jarProperty=${jarProperty}"
-        String src = source(jarProperty)
-//        println "src=${src}"
-        String jdoc = javadoc(jarProperty)
-        String jdocUrl = javadocUrl(jarProperty)
-        return new SimpleModuleLibrary(project, jar, src, jdoc, jdocUrl, exported)        
     }
 
     def setSourceProperty(String sourceProperty)
@@ -89,7 +84,19 @@ class ModuleLibGenerator
     {
         this.javadocUrlProperty = endWithDot(javadocUrlProperty)
     }
-
+    
+    def findSourceJarByDir(String jarPath)
+    {
+        File jarFile = new File(jarPath)
+        File parentDir = jarFile.getParentFile()
+        String jarName = jarFile.getName()
+        
+        String srcJarName = jarName.replace('.jar', '-src.jar')
+        File srcJarFile = new File(parentDir, srcJarName)
+        
+        if (srcJarFile.exists()) return srcJarFile.getAbsolutePath()
+        return null
+    }
 
     /**
      * Find the corresponding property name for a jar.
@@ -102,9 +109,9 @@ class ModuleLibGenerator
      * @param jar fully qualified path to the jar
      * @return name of jar's defining property, or null if not found.
      */
-    private String findPropertyNameForJar(String jar)
+    protected String findPropertyNameForJar(String jarPath)
     {
-        if (!jar.endsWith(".jar")) return null;
+        if (!jarPath.endsWith(".jar")) return null;
 
         // could cache properties table...?
         Set<Map.Entry> properties = project.getProperties().entrySet()
@@ -117,40 +124,41 @@ class ModuleLibGenerator
             String[] paths = Path.translatePath(project, value)
             if (paths.length == 0) continue
             if (paths.length > 1) continue
-            if (jar.equals(paths[0])) return name
+            if (jarPath.equals(paths[0])) return name
         }
 
-        // if we didn't find the jar property, return the jar's filename
-        return new File(jar).name
-//        return null
+        // if we didn't find a property defining the jar, return the jar's filename.
+        return new File(jarPath).name
     }
 
     private String javadoc(String libProperty)
     {
-        return lookup(javadocProperty, libProperty)
+        return propertyLookup(javadocProperty, libProperty)
     }
 
     private String javadocUrl(String libProperty)
     {
-        return lookup(javadocUrlProperty, libProperty)
+        return propertyLookup(javadocUrlProperty, libProperty)
     }
 
     private String source(String libProperty)
     {
         //println "calling source(${libProperty})"
-        return lookup(sourceProperty, libProperty)
+        return propertyLookup(sourceProperty, libProperty)
     }
-
-    /**
-     * 
-     */
-    private String lookup(String propertyTypeFragment, String libProperty)
+    
+   /**
+    * @attribute propertyDescriptor source, javadoc, or javadocUrl identifier
+    * @attribute libPropertyName the library's property name
+    */
+    private String propertyLookup(String propertyDescriptor, String libPropertyName)
     {
-        if (!propertyTypeFragment) return null
-        String property = propertyTypeFragment + libProperty
+        println "propertyDescriptor=${propertyDescriptor} libPropertyName=${libPropertyName}}"
+        if (!propertyDescriptor) return null
+        String property = propertyDescriptor + libPropertyName
         return project.getProperty(property)
     }
-
+    
     String toString()
     {
         "ModuleLibGenerator{" +

@@ -108,6 +108,16 @@
   </target>
 
 
+  <target name="classpath-src-jar-in-dir">
+    <ideamodule>
+      <src location="foobly"/>
+      <dependencies>
+        <classpath path="test-lib/foo.jar"/>
+      </dependencies>
+    </ideamodule>
+  </target>
+
+
   <target name="classpath-src-property">
     <property name="source.bibbity.jar" location="lib/bibbity.src.jar"/>
     <property name="bibbity.jar" location="lib/bibbity.jar"/>
