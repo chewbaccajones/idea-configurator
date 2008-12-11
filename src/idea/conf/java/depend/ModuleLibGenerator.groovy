@@ -15,7 +15,6 @@ import org.apache.tools.ant.types.Path
  */
 class ModuleLibGenerator
 {
-
     private final Project project
     private final def log
     private String sourceProperty = "source." // default values
