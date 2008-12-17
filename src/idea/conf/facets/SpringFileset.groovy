@@ -12,6 +12,9 @@ public class SpringFileset implements Visitable
 {
     String name              // required
     String parentFilesetName
+
+    String springFiles       // this or files
+
     protected String id
     protected String parentFilesetId
     def files = []
@@ -26,7 +29,17 @@ public class SpringFileset implements Visitable
 
     public List<Visitable> getChildren()
     {
-        return files
+        def list
+        if (springFiles)
+        {
+            def springFilesList = springFiles.split(",")
+            list = springFilesList.collect {
+                def f = new SpringFile()
+                f.location = new File(it.trim())
+                return f
+            }
+        }
+        return files + list
     }
 
     String toString()
