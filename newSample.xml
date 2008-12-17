@@ -21,6 +21,24 @@
             classpath, jdk-and-source, idea-lib, filters"/>
 
 
+
+  <target name="has-spring">
+    <ideamodule>
+      <facets>
+        <spring>
+          <fileset name="Production Fileset">
+            <file location="src/spring-conf.xml"/>
+            <file location="src/spring-conf2.xml"/>
+          </fileset>
+          <fileset name="test fileset" parentFilesetName="Production Fileset">
+            <file location="src/spring-conf3.xml"/>
+          </fileset>
+        </spring>
+      </facets>
+    </ideamodule>
+  </target>
+  
+
   <target name="simplest">
     <ideamodule/>
   </target>
@@ -291,16 +309,6 @@
     </ideamodule>
   </target>
 
-
-  <target name="groovy">
-<!--
-    <ideamodule outputDir="build/classes"
-                 testsOutputDir="build/test-classes"
-                 groovyModule="true">
-      <src location="foobly"/>
-    </ideamodule>
--->
-  </target>
 
 
 </project>

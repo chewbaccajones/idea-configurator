@@ -28,7 +28,11 @@ class FacetManager implements Visitable
         facets << gwt
     }
 
-
+    public void addConfiguredSpring(SpringFacet spring)
+    {
+        facets << spring
+    }
+    
     public List<Visitable> getChildren()
     {
         return facets;
@@ -36,8 +40,6 @@ class FacetManager implements Visitable
 
     public String toString()
     {
-        return "FacetManager{" +
-                "number of facets=" + facets.size() +
-                "}"
+        return "FacetManager{facets.size()=${facets.size()}}"
     }
 }

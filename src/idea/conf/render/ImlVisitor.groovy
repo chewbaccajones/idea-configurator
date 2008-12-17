@@ -22,6 +22,9 @@ import org.apache.tools.ant.types.Path
 import idea.conf.java.depend.ModuleLibraryType
 import idea.conf.JavaModule
 import idea.conf.facets.GwtFacet
+import idea.conf.facets.SpringFacet
+import idea.conf.facets.SpringFileset
+import idea.conf.facets.SpringFile
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -60,6 +63,34 @@ class ImlVisitor extends DefaultVisitor
     {
         xml.component(name:"FacetManager") {
             super.visit(facets)
+        }
+    }
+
+
+    void visit(SpringFacet spring)
+    {
+        xml.facet(type:"Spring", name:"Spring") {
+            xml.configuration() {
+                super.visit(spring)
+            }
+        }
+    }
+
+    void visit(SpringFileset fileset)
+    {
+        xml.fileset(id:fileset.id, name:fileset.name, removed:false) {
+            if (fileset.parentFilesetName) {
+                xml.dependency(fileset.parentFilesetId)
+            }
+            super.visit(fileset)
+        }
+    }
+
+    void visit(SpringFile file)
+    {
+        String url = urls.file(file.location)
+        xml.file(url) {
+            super.visit(file)
         }
     }
 
