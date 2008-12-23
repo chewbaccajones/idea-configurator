@@ -3,11 +3,13 @@ package idea.conf.facets
 import idea.conf.Visitable
 
 /**
+ * Bundle of spring files.
  *
+ * @todo should we add an "include"?
+ * @todo should filesets be able to contain filesets? Would eliminate parentFilesetName.
  *
  * @author tomichj
  */
-
 public class SpringFileset implements Visitable
 {
     String name              // required

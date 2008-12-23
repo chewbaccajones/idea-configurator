@@ -20,7 +20,7 @@ public class SpringFacet implements Visitable
     def filesets = []
 
     
-    void addConfiguredFileset(SpringFileset fileset)
+    void addConfiguredFiles(SpringFileset fileset)
     {
         filesets << fileset
         fileset.id = getId(fileset)

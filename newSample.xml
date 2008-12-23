@@ -31,15 +31,15 @@
     <ideamodule>
       <facets>
         <spring>
-          <fileset name="Production Fileset">
+          <files name="Production Fileset">
             <file location="src/spring-conf.xml"/>
             <file location="src/spring-conf2.xml"/>
-          </fileset>
-          <fileset name="test fileset" parentFilesetName="Production Fileset">
+          </files>
+          <files name="test fileset" parentFilesetName="Production Fileset">
             <file location="src/spring-conf3.xml"/>
-          </fileset>
-          <fileset name="another fileset"
-                   springFiles="src/spring-conf4.xml, src/springconf5.xml"/>
+          </files>
+          <files name="another fileset"
+                 springFiles="src/spring-conf4.xml, src/springconf5.xml"/>
         </spring>
       </facets>
     </ideamodule>
