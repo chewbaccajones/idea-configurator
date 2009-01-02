@@ -152,7 +152,7 @@ class ModuleLibGenerator
     */
     private String propertyLookup(String propertyDescriptor, String libPropertyName)
     {
-        println "propertyDescriptor=${propertyDescriptor} libPropertyName=${libPropertyName}}"
+//        println "propertyDescriptor=${propertyDescriptor} libPropertyName=${libPropertyName}}"
         if (!propertyDescriptor) return null
         String property = propertyDescriptor + libPropertyName
         return project.getProperty(property)
