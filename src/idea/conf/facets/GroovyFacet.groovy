@@ -18,7 +18,6 @@ class GroovyFacet implements Visitable
     
     def injectGroovyLibrary(Dependencies dependencies)
     {
-        println "groovy sdk name=${sdk}"
         if (NONE.equalsIgnoreCase(sdk)) return;
         if (sdk == null || sdk.equals(""))
         {
@@ -37,7 +36,7 @@ class GroovyFacet implements Visitable
     String toString()
     {
         return "GroovyFacet{" +
-                "sdkname=" + sdk +
+                "sdk=" + sdk +
                 "}"
     }
 }
