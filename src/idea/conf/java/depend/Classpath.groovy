@@ -13,18 +13,18 @@ import org.apache.tools.ant.types.Path
 class Classpath extends Path implements Dependency, Exportable
 {
     boolean exported
-    private ModuleLibGenerator inspector
+    private ModuleLibGenerator modLibGenerator
 
-    Classpath(Project project, ModuleLibGenerator inspector)
+    Classpath(Project project, ModuleLibGenerator modLibGenerator)
     {
         super(project)
-        this.inspector = inspector
+        this.modLibGenerator = modLibGenerator
         if (project == null) throw new BuildException("null project!")
     }
 
     List<Visitable> getChildren()
     {
-        return inspector.moduleLibsForPath(this, exported)
+        return modLibGenerator.moduleLibsForPath(this, exported)
     }
 
     void validate()

@@ -27,6 +27,20 @@
   </target>
   
 
+  <target name="has-build">
+    <property name="lib1.jar" location="lib/lib1.jar"/>
+    <property name="lib2.jar" location="lib/lib2.jar"/>
+    <ideamodule>
+      <src location="foobly"/>
+      <build jar="foo.jar" buildOnMake="false">
+        <libraries>
+          <pathelement location="${lib1.jar}"/>
+          <pathelement location="${lib2.jar}"/>
+        </libraries>
+      </build>
+    </ideamodule>
+  </target>
+
   <target name="has-spring">
     <ideamodule>
       <facets>

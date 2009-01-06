@@ -25,6 +25,7 @@ import idea.conf.facets.GwtFacet
 import idea.conf.facets.SpringFacet
 import idea.conf.facets.SpringFileset
 import idea.conf.facets.SpringFile
+import idea.conf.build.BuildComponent
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -267,6 +268,27 @@ class ImlVisitor extends DefaultVisitor
             super.visit(library)
         }
     }
+
+
+    void visit(BuildComponent build)
+    {
+        xml.component(name:"BuildJarSettings"){
+            // first do libraries and module dependencies
+            setting("jarUrl", urls.file(build.getJar()))
+            setting("buildJar", build.getBuildOnMake())
+            setting("mainClass", build.getMainClass())
+        }
+    }
+
+    void setting(name, value)
+    {
+        xml.setting(name:name, value:value)
+    }
+
+
+
+
+
     
     /**
      * Given a path as a String, return the appropriate Url type.

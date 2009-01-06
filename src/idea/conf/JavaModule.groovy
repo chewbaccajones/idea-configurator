@@ -13,6 +13,7 @@ import idea.conf.url.UrlFactory
 import idea.conf.url.UrlFactoryImpl
 import idea.conf.java.JavaComponent
 import idea.conf.facets.FacetManager
+import idea.conf.build.BuildComponent
 
 /**
  * The java module type. This is the top level ant task for Java Modules.
@@ -28,6 +29,7 @@ class JavaModule extends Task implements Visitable
     boolean relativePaths
     JavaComponent java
     FacetManager facets
+    BuildComponent build
     boolean debug
 
 
@@ -111,6 +113,14 @@ class JavaModule extends Task implements Visitable
         facets = new FacetManager(dependencies);
         return facets;
     }
+
+    
+    BuildComponent createBuild()
+    {
+        build = new BuildComponent(project)
+        return build
+    }
+    
 
     /////////////////////////////////////////////////////////
     // Java stuff here
@@ -230,16 +240,15 @@ class JavaModule extends Task implements Visitable
         def kids = []
         kids << java
         if (facets) kids << facets
+        if (build) kids << build
         return kids as List<Visitable>;
     }
 
 
     String toString()
     {
-        "JavaModule{" <<
-                "rootDir=" << rootDir <<
-                ", moduleFile=" << moduleFile <<
-                ", relativePaths=" << relativePaths << "}"
+        "JavaModule{rootDir=${rootDir},moduleFile=moduleFile," +
+                "relativePaths=${relativePaths}}"
     }
     
 }
