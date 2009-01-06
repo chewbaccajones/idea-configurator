@@ -80,8 +80,8 @@ class UrlFactoryImpl implements UrlFactory
 
     private JarUrl jarUrl(String path)
     {
-        // looks like these are always full paths, never relative
-        return new JarUrl(path);
+        String computed = computePath(path)
+        return new JarUrl(computed);
     }
 
 
