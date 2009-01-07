@@ -19,6 +19,7 @@ import idea.conf.java.depend.ModuleLibGenerator;
  */
 class JavaComponent implements Visitable
 {
+    Project project
     File outputDir
     File testsOutputDir
     boolean excludeOutputPaths
@@ -35,6 +36,7 @@ class JavaComponent implements Visitable
     
     JavaComponent(Project project)
     {
+        this.project = project
         sources = new Path(project);
         tests = new Path(project);
         excludes = new Path(project);
@@ -152,9 +154,16 @@ class JavaComponent implements Visitable
         return excludes.createPath()
     }
 
+    void setClasspathRef(Reference ref)
+    {
+        def obj = ref.getReferencedObject()
+        println "********** obj=${obj}"
+    }
+
 
     void setClasspath(Path classpath)
     {
+        println "************** appending classpath ${classpath.list()}"
         dependencies.createClasspath().append(classpath)
     }
 

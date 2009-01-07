@@ -25,7 +25,15 @@
   <target name="simplest">
     <ideamodule/>
   </target>
-  
+
+  <target name="has-jar-to-module-dep">
+    <path id="dumb.path">
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumb.jar"/>
+    </path>
+    <ideamodule srcDir="src" classpath="dumb.path">
+    </ideamodule>
+  </target>
 
   <target name="has-build">
     <property name="lib1.jar" location="lib/lib1.jar"/>
