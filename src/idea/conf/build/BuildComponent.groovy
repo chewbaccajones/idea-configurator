@@ -12,50 +12,65 @@ import idea.conf.Visitable
 
 public class BuildComponent implements Visitable
 {
+    Project project
+
     // default jar to moduleName.jar in module root dir 
     File jar
 
     String mainClass
 
-    // modules to jar - list of modules
-    boolean buildOnMake
+    def kids = []
 
-    // as children:
-    // modules and libraries
-
-    // <modules name="foo, bar, baz"/>
-    // <library>
-
-    String modules
-    Path libraries
-
-
+    
     BuildComponent(Project project)
     {
-        this.libraries = new Path(project)
+        this.project = project
     }
 
-    void setLibraries(Path libraries)
+    Path createClasspath()
     {
-        libraries.createPath().append(libraries) 
+        ClasspathContainer lib = new ClasspathContainer(project)
+        kids << lib
+        return lib.createPath()
     }
 
-    Path createLibraries()
+    ModuleContainer createModule()
     {
-        return libraries.createPath()
+        addKid(new ModuleContainer())
     }
 
+    ModuleLibraryContainer createModuleLibrary()
+    {
+        addKid(new ModuleLibraryContainer())
+    }
+
+    ProjectLibraryContainer createProjectLibrary()
+    {
+        addKid(new ProjectLibraryContainer())
+    }
+
+    GlobalLibraryContainer createGlobalLibrary()
+    {
+        addKid(new GlobalLibraryContainer())
+    }
+
+
+    def addKid(kid)
+    {
+        kids << kid
+        return kid
+    }
 
     // add an "all dependencies" flag?
     // add a filter to all dependencies?
     
     List<Visitable> getChildren()
     {
-        return null; // turn setting and libraries into children?
+        return kids
     }
 
     String toString()
     {
-        "BuildComponent{jar=${jar},mainClass=${mainClass},buildOnMake=${buildOnMake}}"
+        "BuildComponent{jar=${jar},mainClass=${mainClass}}"
     }
 }

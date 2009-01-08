@@ -26,6 +26,12 @@ import idea.conf.facets.SpringFacet
 import idea.conf.facets.SpringFileset
 import idea.conf.facets.SpringFile
 import idea.conf.build.BuildComponent
+import idea.conf.build.ClasspathContainer
+import idea.conf.build.ClasspathContainer
+import idea.conf.build.GlobalLibraryContainer
+import idea.conf.build.ModuleContainer
+import idea.conf.build.ModuleLibraryContainer
+import idea.conf.build.ProjectLibraryContainer
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -179,7 +185,7 @@ class ImlVisitor extends DefaultVisitor
     {
         Path classes = lib.classes
 
-        // apply filters
+        // apply filters - this application is whack... todo fixme
         filters.each { filter -> classes = filter.filter(classes) }
         
         if (!classes.list().size() &&
@@ -273,9 +279,11 @@ class ImlVisitor extends DefaultVisitor
     void visit(BuildComponent build)
     {
         xml.component(name:"BuildJarSettings"){
+            super.visit(build)
+            println "build.size = ${build.getChildren().size()}"
             // first do libraries and module dependencies
             setting("jarUrl", urls.file(build.getJar()))
-            setting("buildJar", build.getBuildOnMake())
+            setting("buildJar", "true") // always true... what is it?
             setting("mainClass", build.getMainClass())
         }
     }
@@ -284,8 +292,61 @@ class ImlVisitor extends DefaultVisitor
     {
         xml.setting(name:name, value:value)
     }
-    
-    
+
+    void visit(ClasspathContainer cp)
+    {
+        // todo probably need to apply filters
+        cp.list().each{ jar ->
+            xml.containerElement(type:"library", level:"module") {
+                attribute("method", "1")
+                attribute("URI", "/")
+                xml.url() {
+                    xml.yield urls.jar(jar)
+                }
+            }
+        }
+    }
+
+    void visit(GlobalLibraryContainer lib)
+    {
+        namedContainer(lib.name, "library", "application")
+        super.visit(lib)
+    }
+
+    void visit(ModuleContainer module)
+    {
+        namedContainer(module.name, "module", null)
+    }
+
+    void visit(ModuleLibraryContainer lib)
+    {
+        namedContainer(lib.name, "library", "module")
+    }
+
+    void visit(ProjectLibraryContainer lib)
+    {
+        namedContainer(lib.name, "library", "project")
+    }
+
+    void attribute(name, value)
+    {
+        xml.attribute(name:name, value:value)
+    }
+
+    def namedContainer(String name, String type, String level)
+    {
+        def attrs = [:]
+        attrs["name"] = name
+        attrs["type"] = type
+        if (level) attrs["level"] = level
+
+        xml.containerElement(attrs){
+            attribute("method", "1")
+            attribute("URI", "/")
+        }        
+    }
+
+
     /**
      * Given a path as a String, return the appropriate Url type.
      */

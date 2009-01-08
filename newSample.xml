@@ -32,11 +32,15 @@
     <property name="lib2.jar" location="lib/lib2.jar"/>
     <ideamodule>
       <src location="foobly"/>
-      <build jar="foo.jar" buildOnMake="false">
-        <libraries>
+      <build jar="foo.jar">
+        <classpath>
           <pathelement location="${lib1.jar}"/>
           <pathelement location="${lib2.jar}"/>
-        </libraries>
+        </classpath>
+        <module name="fooModule"/>
+        <moduleLibrary name="someNamedModuleLibrary"/>
+        <projectLibrary name="someProjectLibrary"/>
+        <globalLibrary name="someGlobalLibrary"/>
       </build>
     </ideamodule>
   </target>
