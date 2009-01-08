@@ -284,11 +284,7 @@ class ImlVisitor extends DefaultVisitor
     {
         xml.setting(name:name, value:value)
     }
-
-
-
-
-
+    
     
     /**
      * Given a path as a String, return the appropriate Url type.
