@@ -228,6 +228,10 @@ class JavaModule extends Task implements Visitable
         java.setClasspath(classpath);
     }
 
+    void setClasspathRef(Reference ref)
+    {
+        java.setClasspathRef(ref);
+    }
 
     Dependencies createDependencies()
     {

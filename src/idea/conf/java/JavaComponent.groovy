@@ -156,14 +156,13 @@ class JavaComponent implements Visitable
 
     void setClasspathRef(Reference ref)
     {
-        def obj = ref.getReferencedObject()
-        println "********** obj=${obj}"
+        Path p = path(ref)
+        dependencies.createClasspath().append(p)
     }
 
 
     void setClasspath(Path classpath)
     {
-        println "************** appending classpath ${classpath.list()}"
         dependencies.createClasspath().append(classpath)
     }
 
