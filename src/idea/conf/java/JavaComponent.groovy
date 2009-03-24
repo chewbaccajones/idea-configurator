@@ -6,10 +6,9 @@ import org.apache.tools.ant.types.Path
 import org.apache.tools.ant.types.Reference
 
 import idea.conf.java.depend.Dependencies
-import idea.conf.java.depend.ClasspathFilter
 import idea.conf.Visitable
 import idea.conf.java.depend.ModuleLibGenerator;
-
+import static idea.conf.Validator.*
 
 
 /**
@@ -179,10 +178,9 @@ class JavaComponent implements Visitable
 
     private void validateInheritOrSetOutput()
     {
-        if (inheritCompilerOutput && (output != null || outputTest != null))
+        if (inheritCompilerOutput && (outputDir != null || testsOutputDir != null))
         {
-            throw new BuildException("Set either inheritCompilerOutput or " +
-                                     "output/outputTest, not both.")
+            huck("Set either inheritCompilerOutput or outputDir/testOutputDir, not both.")
         }
     }
 

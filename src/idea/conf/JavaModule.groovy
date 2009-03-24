@@ -14,6 +14,7 @@ import idea.conf.url.UrlFactoryImpl
 import idea.conf.java.JavaComponent
 import idea.conf.facets.FacetManager
 import idea.conf.build.BuildComponent
+import static idea.conf.Validator.*
 
 /**
  * The java module type. This is the top level ant task for Java Modules.
@@ -80,7 +81,8 @@ class JavaModule extends Task implements Visitable
 
     void setModuleFile(File moduleFile)
     {
-        if (moduleFile == null) throw new BuildException("Null moduleFile!")
+        notNull(moduleFile, "Null moduleFile!")
+        //if (moduleFile == null) huck("Null moduleFile!")
         if (!moduleFile.getAbsolutePath().endsWith(".iml"))
         {
             String p = moduleFile.getAbsolutePath() + ".iml";

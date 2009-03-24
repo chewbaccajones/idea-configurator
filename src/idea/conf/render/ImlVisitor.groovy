@@ -165,7 +165,7 @@ class ImlVisitor extends DefaultVisitor
     void visit(Dependencies dependencies)
     {
         // get a handle on the filters so we can apply them to module lib entries
-        filters = dependencies.filters
+        filters = dependencies.filters()
 
         super.visit(dependencies)
         
@@ -185,12 +185,14 @@ class ImlVisitor extends DefaultVisitor
     {
         Path classes = lib.classes
 
+        println "filters=${filters}" 
+
         // apply filters - this application is whack... todo fixme
         filters.each { filter -> classes = filter.filter(classes) }
-        
+
         if (!classes.list().size() &&
-                !lib.jarDirs.list().size() &&
-                !lib.getIdeaLibs().size()) return;
+            !lib.jarDirs.list().size() &&
+            !lib.getIdeaLibs().size()) return;
 
         xml.orderEntry(addExport([type:"module-library"], lib)) {
             xml.library(nonNulls(name:lib.getName())){

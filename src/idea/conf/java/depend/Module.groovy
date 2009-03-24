@@ -3,7 +3,7 @@ package idea.conf.java.depend
 import idea.conf.Visitable
 
 import org.apache.tools.ant.BuildException;
-
+import static idea.conf.Validator.*
 
 /**
  * A Dependency to another module. 
@@ -23,7 +23,8 @@ class Module implements Dependency, Exportable
 
     void validate()
     {
-        if (!name) throw new BuildException("JavaModule dependency requires name attribute")
+        notNull(name, "JavaModule requires name attribute be set")
+        //if (!name) throw new BuildException("JavaModule dependency requires name attribute")
     }
 
     String toString()

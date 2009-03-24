@@ -3,6 +3,7 @@ package idea.conf.java.depend
 import idea.conf.Visitable
 
 import org.apache.tools.ant.BuildException;
+import static idea.conf.Validator.*
 
 /**
  * A global library declaration.
@@ -22,7 +23,8 @@ class GlobalLibrary implements Dependency, Exportable
 
     void validate()
     {
-        if (!name) throw new BuildException("GlobalLibrary name must not be null!")
+        //if (!name) throw new BuildException("GlobalLibrary name must not be null!")
+        notNull(name, "GlobalLibrary name must not be null!")
     }
 
     String toString()
