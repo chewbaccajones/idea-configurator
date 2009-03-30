@@ -38,14 +38,18 @@ class Dependencies implements Visitable
     private Path list()
     {
         Path path = new Path(project)
-        list(deps, path)
+        list(this, path)
+        println "list() done generating path"
         return path
     }
 
     private void list(Visitable obj, Path path)
     {
+        if (obj == null) return
+        if (obj instanceof JarToModule) return
         if (obj instanceof Classpathed) path.add(obj.getClasspath())
-        list(obj.getChildren(), path)
+        def kids = obj.getChildren()
+        kids?.each { list(it, path) }
     }
 
 

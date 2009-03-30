@@ -5,7 +5,7 @@ import org.apache.tools.ant.Project
 import idea.conf.Visitable
 
 /**
- *
+ * The <build> element.
  *
  * @author tomichj
  */

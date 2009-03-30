@@ -9,6 +9,7 @@ import idea.conf.java.depend.Dependencies
 import idea.conf.Visitable
 import idea.conf.java.depend.ModuleLibGenerator;
 import static idea.conf.Validator.*
+import idea.conf.java.depend.JarToModule
 
 
 /**
@@ -55,6 +56,17 @@ class JavaComponent implements Visitable
         return dependencies
     }
     
+
+    void setJarsToModules(String jarsToModules)
+    {
+        jarsToModules.split(",").each {
+            String jarName = it.trim()
+            JarToModule jarToModule = new JarToModule(this)
+            jarToModule.setJarName(jarName)
+            dependencies << jarToModule
+        }
+    }
+
 
     /**
      * Set string that source properties must begin with to be automagically

@@ -56,6 +56,15 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="groovy-lib-1.5.6" level="application" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///lib/apache-ant-1.7.1/lib/ant-testutil.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
   <component name="RSpecModuleSettingsStorage">
     <RSPEC_MODULE_SETTINGS_STORAGE_ID NAME="RSPEC_SUPPORT_TYPE" VALUE="NONE" />

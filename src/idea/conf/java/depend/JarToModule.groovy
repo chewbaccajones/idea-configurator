@@ -3,6 +3,7 @@ package idea.conf.java.depend
 import idea.conf.Visitable
 import org.apache.tools.ant.types.Path
 import static idea.conf.Validator.*
+import org.apache.tools.ant.BuildException
 
 
 /**
@@ -13,6 +14,7 @@ public class JarToModule implements Dependency, Exportable, Filter
 {
     boolean exported
     String jarPattern
+    String jarName
     String moduleName
     PathFilter filter
     Dependencies deps
@@ -29,10 +31,25 @@ public class JarToModule implements Dependency, Exportable, Filter
         filter = new PathFilter(jarPattern);
     }
 
+    public void setJarName(String jarName)
+    {
+        this.jarName = jarName
+        filter = new PathFilter(".*${jarName}")
+    }
+
+    public String getModuleName()
+    {
+        if (this.moduleName != null) return this.moduleName
+        if (jarName != null) return jarName.replace(".jar", "")
+        throw new BuildException("populate moduleName or jarName")
+    }
+    
     public void validate()
     {
-        notNull(jarPattern, "jarToModule jarPattern cannot be empty")
-        notNull(moduleName, "jarToModule moduleName cannot be empty")
+        if (jarName && jarPattern) huck("<jarToModule> requires jarPatten OR jarName")
+        if (!jarName && !jarPattern) huck("<jarToModule> requires jarPatten or jarName")
+        if (jarPattern)
+            notNull(moduleName, "<jarToModule> with jarPattern requires moduleName")
     }
 
     public Path filter(Path classes)
@@ -40,10 +57,15 @@ public class JarToModule implements Dependency, Exportable, Filter
         return filter.filter(classes)
     }
 
-
     public List<Visitable> getChildren()
     {
-        if (filter.matches(deps.list)) return new Module(moduleName)
+        if (filter.matches(deps.list()))
+        {
+            def module = new Module()
+            module.name = getModuleName()
+            module.exported = exported
+            return [module]
+        }
         return null
     }
 
