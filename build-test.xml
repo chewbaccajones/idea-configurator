@@ -3,6 +3,7 @@
 
 
   <target name="empty">
+    <echo>foo</echo>
   </target>
   
 </project>
