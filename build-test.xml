@@ -1,9 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="build-test">
 
+  <path id="configurator.classpath">
+    <fileset dir="dist">
+      <include name="idea-configurator*jar"/>
+    </fileset>
+    <!--<pathelement location="dist/idea-configurator-1.1.1.jar"/>-->
+    <pathelement location="lib/groovy-all-1.5.6.jar"/>
+  </path>
+  <taskdef classpathref="configurator.classpath" resource="taskdef.properties"/>
 
-  <target name="empty">
-    <echo>foo</echo>
+
+  <property name="stdout.only" value="true"/>
+
+
+  <target name="source.folder">
+    <ideamodule>
+      <src location="src"/>
+    </ideamodule>
   </target>
+
+  
+  <target name="source.folders">
+    <ideamodule>
+      <src location="src1"/>
+      <src location="src2"/>
+    </ideamodule>
+  </target>
+
+  <target name="source.tests.folders">
+    <ideamodule>
+      <src location="src"/>
+      <tests location="test1"/>
+    </ideamodule>
+  </target>
+
+
+
+  <target name="jar.to.module">
+    <path id="dumb.path">
+      <pathelement location="survives.jar"/>
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumb.jar"/>
+      <pathelement location="lib/garble.jar"/>
+    </path>
+    <ideamodule classpathref="dumb.path">
+      <dependencies>
+        <jartomodule  jarName="garble.jar"/>
+        <jarToModule jarPattern=".*module2.jar" moduleName="dumbModule2" exported="true"/>
+        <jarToModule jarPattern=".*dumb.jar" moduleName="dumbModule"/> <!-- maps name -->
+      </dependencies>
+    </ideamodule>
+  </target>
+
+
   
 </project>

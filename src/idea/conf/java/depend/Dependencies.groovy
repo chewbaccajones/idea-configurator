@@ -39,7 +39,6 @@ class Dependencies implements Visitable
     {
         Path path = new Path(project)
         list(this, path)
-        println "list() done generating path"
         return path
     }
 

@@ -32,6 +32,7 @@ import idea.conf.build.GlobalLibraryContainer
 import idea.conf.build.ModuleContainer
 import idea.conf.build.ModuleLibraryContainer
 import idea.conf.build.ProjectLibraryContainer
+import idea.conf.Logger
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -185,7 +186,7 @@ class ImlVisitor extends DefaultVisitor
     {
         Path classes = lib.classes
 
-        println "filters=${filters}" 
+        //Logger.verbose("filters=${filters}")
 
         // apply filters - this application is whack... todo fixme
         filters.each { filter -> classes = filter.filter(classes) }

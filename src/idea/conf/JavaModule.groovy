@@ -25,37 +25,34 @@ import static idea.conf.Validator.*
  */
 class JavaModule extends Task implements Visitable
 {
+
     File rootDir
     private File moduleFile
     boolean relativePaths
     JavaComponent java
     FacetManager facets
     BuildComponent build
-    boolean debug
-
+    Boolean stdoutOnly
+    
 
     void execute()
     {
         super.execute();
 
-        // check for debug flag
-        if (!debug && project.getProperty("debug")) {
-            debug = Boolean.parseBoolean(project.getProperty("debug"))
-        }
+        Logger.init(project)
 
-        if (debug)
-        {
-            def debuggery = new DebugVisitor()
-            debuggery.visit(this)
-            println debuggery
-            println ""
-        }
+        stdoutOnly = isStdoutOnly()
+
+        def debuggery = new DebugVisitor()
+        debuggery.visit(this)
+        Logger.verbose(debuggery.toString() + "\n\n")
+
 
         UrlFactory urlFactory = new UrlFactoryImpl(getRootDir(), relativePaths)
         def xml = new ImlVisitor(urlFactory);
         xml.visit(this)
 
-        if (debug)
+        if (stdoutOnly)
         {
             println xml
             println "\n"
@@ -64,6 +61,13 @@ class JavaModule extends Task implements Visitable
         {
             getModuleFile().write(xml.toString())
         }
+    }
+
+    boolean isStdoutOnly()
+    {
+        Map m = project.getProperties()
+        if (m.containsKey("stdout.only")) return true
+        return false
     }
 
     /**

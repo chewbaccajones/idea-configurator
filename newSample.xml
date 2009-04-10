@@ -11,7 +11,7 @@
   <taskdef classpathref="configurator.classpath" resource="taskdef.properties"/>
 
   
-  <property name="debug" value="true"/>
+  <property name="stdout.only" value="true"/>
 
 
   <target name="all"
