@@ -133,6 +133,11 @@ class JavaModule extends Task implements Visitable
     // we could do some crazy property delegation stuff, but this might be simpler
 
 
+    void setJarsToModules(String jarsToModules)
+    {
+        java.setJarsToModules jarsToModules 
+    }
+
     void setSourceProperty(String sourceProperty)
     {
         java.setSourceProperty(sourceProperty);

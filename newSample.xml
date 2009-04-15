@@ -48,6 +48,16 @@
     </ideamodule>
   </target>
 
+  <target name="jars-to-modules">
+    <path id="dumb.path">
+      <pathelement location="wedding.jar"/>
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumb.jar"/>
+      <pathelement location="lib/garble.jar"/>
+    </path>
+    <ideamodule classpathref="dumb.path" jarsToModules="dumb.jar, garble.jar">
+    </ideamodule>
+  </target>
 
   <target name="simplest">
     <ideamodule/>

@@ -36,23 +36,29 @@
   </target>
 
 
+  <path id="dumb.path">
+    <pathelement location="survives.jar"/>
+    <pathelement location="lib/module2.jar"/>
+    <pathelement location="lib/dumb.jar"/>
+    <pathelement location="lib/garble.jar"/>
+  </path>
+
 
   <target name="jar.to.module">
-    <path id="dumb.path">
-      <pathelement location="survives.jar"/>
-      <pathelement location="lib/module2.jar"/>
-      <pathelement location="lib/dumb.jar"/>
-      <pathelement location="lib/garble.jar"/>
-    </path>
     <ideamodule classpathref="dumb.path">
       <dependencies>
-        <jartomodule  jarName="garble.jar"/>
+        <jartomodule jarName="garble.jar"/>
         <jarToModule jarPattern=".*module2.jar" moduleName="dumbModule2" exported="true"/>
         <jarToModule jarPattern=".*dumb.jar" moduleName="dumbModule"/> <!-- maps name -->
       </dependencies>
     </ideamodule>
   </target>
 
+
+  <target name="jarsToModules.top.level.declaration">
+    <ideamodule classpathref="dumb.path" jarsToModules="dumb.jar, garble.jar">
+    </ideamodule>
+  </target>
 
   
 </project>

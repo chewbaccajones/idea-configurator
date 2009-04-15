@@ -61,9 +61,9 @@ class JavaComponent implements Visitable
     {
         jarsToModules.split(",").each {
             String jarName = it.trim()
-            JarToModule jarToModule = new JarToModule(this)
+            JarToModule jarToModule = new JarToModule(dependencies)
             jarToModule.setJarName(jarName)
-            dependencies << jarToModule
+            dependencies.add(jarToModule)
         }
     }
 
