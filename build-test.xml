@@ -36,6 +36,7 @@
   </target>
 
 
+  <!-- used by jarToModule tests -->
   <path id="dumb.path">
     <pathelement location="survives.jar"/>
     <pathelement location="lib/module2.jar"/>
@@ -44,7 +45,7 @@
   </path>
 
 
-  <target name="jar.to.module">
+  <target name="jarToMmodule">
     <ideamodule classpathref="dumb.path">
       <dependencies>
         <jartomodule jarName="garble.jar"/>

@@ -4,11 +4,7 @@ import org.apache.tools.ant.BuildFileTest
 
 /**
  * 
- * User: tomichj
- * Date: Apr 10, 2009
- * Time: 4:34:50 PM
  */
-
 public class JarToModuleTest extends BuildFileTest
 {
     public void setUp()
@@ -18,7 +14,7 @@ public class JarToModuleTest extends BuildFileTest
 
     public void testManyJarToModulesElements()
     {
-        executeTarget 'jar.to.module'
+        executeTarget 'jarToMmodule'
         def module = new XmlParser().parseText(getOutput())
 
         // test the module libs... should only be one

@@ -30,33 +30,7 @@
     <orderEntry type="library" name="groovy-1.5.6" level="application" />
     <orderEntry type="jdk" jdkName="1.5" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="easymock-2.3" level="application" />
     <orderEntry type="library" name="junit 4.4" level="application" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar:///lib/ant-contrib-1.0b1/lib/ant-contrib-1.0b1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="bfo-2.10.5">
-        <CLASSES>
-          <root url="jar:///lib/bfopdf-2.10.5/bfopdf-cmap.jar!/" />
-          <root url="jar:///lib/bfopdf-2.10.5/bfopdf.jar!/" />
-          <root url="jar:///lib/bfopdf-2.10.5/bfopdf-qrcode.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="file:///lib/bfopdf-2.10.5/docs/api" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="file:///lib/bfopdf-2.10.5/src" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="groovy-lib-1.5.6" level="application" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

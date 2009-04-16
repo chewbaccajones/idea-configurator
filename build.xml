@@ -36,6 +36,7 @@
   <!-- src -->
   <property name="src.dir" location="src"/>
   <property name="test.dir" location="test"/>
+  <property name="test.integration.dir" location="test-integration"/>
   <property name="docs.dir" location="docs"/>
 
   <!-- build -->
@@ -81,21 +82,20 @@
 
 
   <path id="build.test.classpath">
-    <path refid="build.classpath"/>
+    <!--<path refid="build.classpath"/>-->
     <path refid="build.test.libs.classpath"/>
     <pathelement location="${build.classes.dir}"/>
   </path>
 
-  <!-- classpath for running/testing -->
+  
   <path id="test.run.classpath">
-    <path refid="build.classpath"/>
+    <!--<path refid="build.classpath"/>-->
     <path refid="build.test.libs.classpath"/>
-    <!--<path refid="build.test.classpath"/>-->
-    <pathelement location="${build.classes.dir}"/>
+    <!--<pathelement location="${build.classes.dir}"/>-->
     <pathelement location="${build.test.classes.dir}"/>
   </path>
-  
 
+  
   <taskdef name="groovyc"
            classname="org.codehaus.groovy.ant.Groovyc"
            classpath="${groovy.jar}"/>
@@ -104,8 +104,8 @@
   <!-- ============================================================== -->
   <!--        F  U  L  L    B  U  I  L  D    C  Y  C  L  E  S         -->
   <!-- ============================================================== -->
-  <target name="all" depends="compile, compile-tests, test, dist"
-          description="clean up and compile"/>
+  <target name="all" depends="compile, compile-tests, dist, test"
+          description="build a distribution and test it"/>
 
 
   <target name="docs" depends="clean-docs, javadoc"
@@ -145,6 +145,9 @@
   <!-- deprecation is off because of Faux classes. -->
   <target name="compile-tests" depends="init, compile" description="compile tests">
     <build srcdir="${test.dir}"
+           destdir="${build.test.classes.dir}"
+           classpathref="build.test.classpath"/>
+    <build srcdir="${test.integration.dir}"
            destdir="${build.test.classes.dir}"
            classpathref="build.test.classpath"/>
   </target>
@@ -191,8 +194,7 @@
   <!-- example:                                                       -->
   <!--        ant test -Dtestcase=configurator/model/ModuleTest.java  -->
   <!-- ============================================================== -->
-  <target name="test" depends="compile-tests" description="run tests">
-
+  <target name="test" depends="dist" description="run unit and integration tests">
     <junit fork="yes"
            forkmode="perTest"
            printsummary="no"
@@ -202,6 +204,7 @@
       <batchtest>
         <fileset dir="${build.test.classes.dir}">
           <include name="**/*Test.class"/>
+          <exclude  name="**/*$*"/>
         </fileset>
       </batchtest>
     </junit>
@@ -267,7 +270,7 @@
   <!--                          D  O  C  S                            -->
   <!-- ============================================================== -->
   <target name="init-docs">
-    <mkdir dir="${build.docs.dir}"/>
+    <!--<mkdir dir="${build.docs.dir}"/>-->
     <!--<mkdir dir="${build.javadocs.dir}"/>-->
   </target>
 
@@ -336,18 +339,18 @@
   <!-- ============================================================== -->
   <!--                     C  O  N  F  I  G                           -->
   <!-- ============================================================== -->
-  <target name="idea-conf" description="create IDEA module config file">
-    <taskdef classpath="${dist.jar}" resource="taskdef.properties"/>
-
-    <ideajavaiml moduleFile="idea-configurator.iml"
-                 outputDir="${build.classes.dir}"
-                 testsoutputdir="${build.test.classes.dir}"
-                 relativepaths="true"
-                 excludeoutputpaths="true"
-                 sourceproperty="source"
-                 javadocproperty="javadoc">
+  <target name="idea-conf"
+          depends="dist"
+          description="create IDEA module config file">
+    <taskdef classpath="${dist.jar}:${groovy.jar}" resource="taskdef.properties"/>
+    <ideamodule moduleFile="${ant.project.name}.iml"
+                outputDir="${build.classes.dir}"
+                testsoutputdir="${build.test.classes.dir}"
+                relativepaths="true"
+                excludeoutputpaths="true">
       <src path="${src.dir}"/>
       <tests path="${test.dir}"/>
+      <tests path="${test.integration.dir}"/>
       <excludes path="${build.dir}"/>
       <excludes path="${dist.dir}"/>
       <dependencies>
@@ -357,10 +360,13 @@
           <path refid="build.test.libs.classpath"/>
         </classpath>
       </dependencies>
+      <build jar="${dist.jar}">
+        <module name="${ant.project.name}"/>
+      </build>
       <facets>
-        <groovy/>
+        <groovy sdk="groovy-1.5.6"/>
       </facets>
-    </ideajavaiml>
+    </ideamodule>
   </target>
   
 
