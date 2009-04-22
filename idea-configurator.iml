@@ -64,13 +64,4 @@
       <configuration />
     </facet>
   </component>
-  <component name='BuildJarSettings'>
-    <containerElement name='idea-configurator' type='module'>
-      <attribute name='method' value='1' />
-      <attribute name='URI' value='/' />
-    </containerElement>
-    <setting name='jarUrl' value='file://$MODULE_DIR$/dist/idea-configurator-1.1.1.jar' />
-    <setting name='buildJar' value='true' />
-    <setting name='mainClass' value='' />
-  </component>
 </module>

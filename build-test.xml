@@ -61,5 +61,40 @@
     </ideamodule>
   </target>
 
-  
+  <target name="groovy.plain">
+    <ideamodule>
+      <facets>
+        <groovy/>
+      </facets>
+      <src location="src"/>
+    </ideamodule>
+  </target>
+
+  <target name="groovy.sdk">
+    <ideamodule>
+      <facets>
+        <groovy sdk="groovy-1.5.6"/>
+      </facets>
+      <src location="src"/>
+    </ideamodule>
+  </target>
+
+  <target name="groovy.sdk.none">
+    <ideamodule>
+      <facets>
+        <groovy sdk="NONE"/>
+      </facets>
+      <src location="src"/>
+    </ideamodule>
+  </target>
+
+
+  <target name="path.filter">
+    <ideamodule classpathref="dumb.path">
+      <dependencies>
+        <filter pattern=".*module2.jar"/>
+      </dependencies>
+    </ideamodule>
+  </target>
+
 </project>

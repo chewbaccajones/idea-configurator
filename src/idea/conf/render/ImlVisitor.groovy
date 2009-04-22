@@ -283,7 +283,7 @@ class ImlVisitor extends DefaultVisitor
     {
         xml.component(name:"BuildJarSettings"){
             super.visit(build)
-            println "build.size = ${build.getChildren().size()}"
+            Logger.debug "build.size = ${build.getChildren().size()}"
             // first do libraries and module dependencies
             setting("jarUrl", urls.file(build.getJar()))
             setting("buildJar", "true") // always true... what is it?

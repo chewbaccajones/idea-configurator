@@ -2,6 +2,7 @@ package idea.conf.java.depend
 
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.types.Path
+import idea.conf.Logger
 
 /**
  *
@@ -13,6 +14,13 @@ public class ClasspathFilterTest extends GroovyTestCase
 {
     static final String JAR = "/foo/bar/baz.jar"
     static final String JAR2 = "/foo/bar/bizzle.jar"
+
+    protected void setUp()
+    {
+        Logger.init new Project()  
+    }
+
+
 
     void testNullPattern()
     {

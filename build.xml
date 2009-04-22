@@ -75,23 +75,22 @@
   
 
   <path id="build.test.libs.classpath">
-    <path refid="build.classpath"/>
     <pathelement location="${junit.jar}"/>
     <pathelement location="${ant.testutil.jar}"/>
   </path>
 
 
   <path id="build.test.classpath">
-    <!--<path refid="build.classpath"/>-->
+    <path refid="build.classpath"/>
     <path refid="build.test.libs.classpath"/>
     <pathelement location="${build.classes.dir}"/>
   </path>
 
   
   <path id="test.run.classpath">
-    <!--<path refid="build.classpath"/>-->
+    <path refid="build.classpath"/>
     <path refid="build.test.libs.classpath"/>
-    <!--<pathelement location="${build.classes.dir}"/>-->
+    <pathelement location="${build.classes.dir}"/>
     <pathelement location="${build.test.classes.dir}"/>
   </path>
 
@@ -104,7 +103,7 @@
   <!-- ============================================================== -->
   <!--        F  U  L  L    B  U  I  L  D    C  Y  C  L  E  S         -->
   <!-- ============================================================== -->
-  <target name="all" depends="compile, compile-tests, dist, test"
+  <target name="all" depends="dist, test"
           description="build a distribution and test it"/>
 
 
@@ -112,7 +111,7 @@
           description="generate all documentation."/>
 
 
-  <target name="dist" depends="compile, docs, jar, jar-src, zip-dist"
+  <target name="dist" depends="compile, compile-tests, docs, jar, jar-src, zip-dist"
           description="create distribution"/>
 
 
@@ -204,7 +203,7 @@
       <batchtest>
         <fileset dir="${build.test.classes.dir}">
           <include name="**/*Test.class"/>
-          <exclude  name="**/*$*"/>
+          <!--<exclude  name="**/*$*"/>-->
         </fileset>
       </batchtest>
     </junit>
@@ -359,16 +358,13 @@
         <classpath>
           <path refid="build.test.libs.classpath"/>
         </classpath>
+		<!-- <filter pattern=".*groovy.*jar"/> -->
       </dependencies>
-      <build jar="${dist.jar}">
-        <module name="${ant.project.name}"/>
-      </build>
       <facets>
         <groovy sdk="groovy-1.5.6"/>
       </facets>
     </ideamodule>
   </target>
-  
 
 </project>
 

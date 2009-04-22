@@ -1,6 +1,7 @@
 package idea.conf.java.depend
 
 import org.apache.tools.ant.types.Path
+import idea.conf.Logger
 
 /**
  * 
@@ -25,6 +26,7 @@ public class PathFilter
      */
     Path filter(Path classes)
     {
+        Logger.debug "classes=${classes}"
         def filtered = classes.list().findAll { !matchesJar(it) }
         Path filteredPath = new Path(classes.getProject())
         filtered.each { filteredPath.createPathElement().setPath(it) }
@@ -36,13 +38,14 @@ public class PathFilter
         return classpathed.getClasspath().list().any { matchesJar(it) }
     }
 
-    boolean matches(Path path)
+    boolean matches(Path classes)
     {
-        return path.list().any { matchesJar(it) }
+        return classes.list().any { matchesJar(it) }
     }
 
     private boolean matchesJar(String jar)
     {
+        Logger.debug "testing=${jar}"
         if (pattern == null) return false
         return jar.matches(pattern)
     }

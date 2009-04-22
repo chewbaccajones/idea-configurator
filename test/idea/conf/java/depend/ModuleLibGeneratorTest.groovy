@@ -85,8 +85,8 @@ public class ModuleLibGeneratorTest extends GroovyTestCase
         Project proj = new Project()
         ModuleLibGenerator libGen = new ModuleLibGenerator(proj)
 
-        String jarPath = "lib/junit-4.4.jar"
-        String srcjarPath = "lib/junit-4.4-src.jar"
+        String jarPath = "test-lib/foo.jar"
+        String srcjarPath = "test-lib/foo-src.jar"
         String answer = libGen.findSourceJarByDir(jarPath)
         assert(answer.endsWith(srcjarPath))
     }
