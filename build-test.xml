@@ -96,5 +96,38 @@
     </ideamodule>
   </target>
 
+
+  <target name="spring.complex">
+    <ideamodule>
+      <facets>
+        <spring>
+          <files name="Production Fileset">
+            <file location="src/spring-conf.xml"/>
+            <file location="src/spring-conf2.xml"/>
+          </files>
+          <files name="test fileset" parentFilesetName="Production Fileset">
+            <file location="src/spring-conf3.xml"/>
+          </files>
+          <files name="another fileset"
+                 springFiles="src/spring-conf4.xml, src/springconf5.xml"/>
+        </spring>
+      </facets>
+    </ideamodule>
+  </target>
+
+  
+  <ideamodule>
+    <facets>
+      <gwt compilerParams="-Dfoo=1 -Dbar=2"
+           compilerMaxHeap="256"
+           compilerOutputPath="/foo/bar/output"
+           outputStyle="DETAILED"
+           gwtSdkUrl="/path/to/gwt-1.5"
+           runGwtCompilerOnMake="on"
+           intoWebFacet="web-facet-name"/>
+    </facets>
+    <src location="foobly"/>
+  </ideamodule>
+
 </project>
 
