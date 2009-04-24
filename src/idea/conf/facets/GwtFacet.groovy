@@ -2,6 +2,7 @@ package idea.conf.facets
 
 import idea.conf.Visitable
 import idea.conf.url.FileUrl
+import idea.conf.java.depend.Dependencies
 
 /**
  *
@@ -9,7 +10,7 @@ import idea.conf.url.FileUrl
  * @author tomichj
  */
 
-class GwtFacet implements Visitable
+class GwtFacet implements Visitable, DependencyInjector
 {
     String compilerParams
     Integer compilerMaxHeap = 128
@@ -19,10 +20,20 @@ class GwtFacet implements Visitable
     boolean runGwtCompilerOnMake = true  // defaults to true
     String intoWebFacet  // drop from iml unless empty
 
+    // add params, optional, for name of project or global gwt library
+    String projectGwtLib
+    String globalGwtLib
+    
 
     List<Visitable> getChildren()
     {
         return null;
+    }
+
+    public injectDependencies(Dependencies dependencies)
+    {
+        if (projectGwtLib) dependencies.createProjectLibrary().name = projectGwtLib
+        if (globalGwtLib) dependencies.createGlobalLibrary().name = globalGwtLib
     }
     
 
@@ -38,4 +49,5 @@ class GwtFacet implements Visitable
                 ", intoWebFacet=" + intoWebFacet +
                 "}"
     }
+
 }

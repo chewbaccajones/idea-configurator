@@ -1,6 +1,7 @@
 package idea.conf.facets
 
 import org.apache.tools.ant.BuildFileTest
+import idea.conf.BaseBuildFileTester
 
 /**
  * 
@@ -9,7 +10,7 @@ import org.apache.tools.ant.BuildFileTest
  * Time: 5:32:58 PM
  */
 
-public class SpringIntegrationTest extends BuildFileTest
+public class SpringIntegrationTest extends BaseBuildFileTester
 {
     public void setUp()
     {
@@ -19,13 +20,8 @@ public class SpringIntegrationTest extends BuildFileTest
     public void testGroovyNoSdk()
     {
         executeTarget "spring.complex"
-        def module = new XmlParser().parseText(getOutput())
-        println getOutput()
-        def spring = module.component.find { it.'@name' == 'FacetManager' }.
-                facet.find { it.'@name' == 'Spring' }
-        def filesets = spring.configuration.fileset
-        def filesetIds = filesets.'@id'
-        assertEquals(['fileset1', 'fileset2', 'fileset3'], filesetIds)
+        def filesets = facet('Spring').configuration.fileset
+        assertEquals(['fileset1', 'fileset2', 'fileset3'], filesets.'@id')
 
         // just dig into a single fileset... can't stand to do them all
         def fileset1 = filesets[0]

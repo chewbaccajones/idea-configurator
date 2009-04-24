@@ -20,12 +20,13 @@ class FacetManager implements Visitable
     public void addConfiguredGroovy(GroovyFacet groovy)
     {
         facets << groovy
-        groovy.injectGroovyLibrary(dependencies)
+        groovy.injectDependencies(dependencies)
     }
 
     public void addConfiguredGwt(GwtFacet gwt)
     {
         facets << gwt
+        gwt.injectDependencies(dependencies)
     }
 
     public void addConfiguredSpring(SpringFacet spring)

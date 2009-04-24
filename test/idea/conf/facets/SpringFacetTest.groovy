@@ -11,5 +11,5 @@ import idea.conf.ProjectTestCase
 
 public class SpringFacetTest extends ProjectTestCase
 {
-    
+    public void testNull() {}
 }

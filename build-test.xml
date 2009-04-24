@@ -115,19 +115,52 @@
     </ideamodule>
   </target>
 
-  
-  <ideamodule>
-    <facets>
-      <gwt compilerParams="-Dfoo=1 -Dbar=2"
-           compilerMaxHeap="256"
-           compilerOutputPath="/foo/bar/output"
-           outputStyle="DETAILED"
-           gwtSdkUrl="/path/to/gwt-1.5"
-           runGwtCompilerOnMake="on"
-           intoWebFacet="web-facet-name"/>
-    </facets>
-    <src location="foobly"/>
-  </ideamodule>
+  <target name="gwt.default">
+    <ideamodule>
+      <facets>
+        <gwt/>
+      </facets>
+    </ideamodule>
+  </target>
 
+  <target name="gwt.with.lib">
+    <ideamodule>
+      <facets>
+        <gwt projectGwtLib="gwt-lib"/>
+      </facets>
+    </ideamodule>
+  </target>
+
+  <target name="gwt.with.params">
+    <ideamodule>
+      <facets>
+        <gwt outputStyle="DETAILED"
+             gwtSdkUrl="/path/to/gwt-1.5"
+             intoWebFacet="web-facet-name"/>
+      </facets>
+      <src location="foobly"/>
+    </ideamodule>
+  </target>
+
+  
+  <target name="module.dependency">
+    <ideamodule>
+      <src location="src"/>
+      <dependencies>
+        <module name="another-module"/>
+      </dependencies>
+    </ideamodule>
+  </target>
+
+
+  <target name="classpath.reference">
+    <path id="dumb.path">
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumb.jar"/>
+    </path>
+    <ideamodule srcDir="src" classpathref="dumb.path"/>
+  </target>
+
+  
 </project>
 

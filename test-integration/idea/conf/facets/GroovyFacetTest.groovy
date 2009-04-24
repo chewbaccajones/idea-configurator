@@ -1,6 +1,7 @@
 package idea.conf.facets
 
 import org.apache.tools.ant.BuildFileTest
+import idea.conf.BaseBuildFileTester
 
 /**
  * 
@@ -9,39 +10,39 @@ import org.apache.tools.ant.BuildFileTest
  * Time: 10:23:56 AM
  */
 
-public class GroovyFacetTest extends BuildFileTest
+public class GroovyFacetTest extends BaseBuildFileTester
 {
-    public void setUp()
-    {
-        configureProject("build-test.xml")
-    }
-    
-
     public void testGroovyNoSdk()
     {
         executeTarget "groovy.plain"
-        def module = new XmlParser().parseText(getOutput())
-        def groovy = module.component.find { it['@name'] == 'FacetManager' }.facet[0]
-
-        assertEquals 'Groovy', groovy['@type']
-        assertEquals 'Groovy', groovy['@name']
+        def groovy = facet('Groovy')
         assertEquals 1, groovy.configuration.size()
         assertEquals 0, groovy.configuration[0].attributes().size()
+        assertEquals 'application',
+                moduleManager().orderEntry.find { it.'@name' == 'GROOVY' }.'@level'
     }
 
 
     public void testGrovyWithSdk()
     {
         executeTarget "groovy.sdk"
-        def module = new XmlParser().parseText(getOutput())
-
-        def groovy = module.component.find { it['@name'] == 'FacetManager' }.facet[0]
-
-        assertEquals 'Groovy', groovy['@type']
-        assertEquals 'Groovy', groovy['@name']
+        def groovy = facet('Groovy')
         assertEquals 1, groovy.configuration.size()
         assertEquals 0, groovy.configuration[0].attributes().size()
+        assertEquals 'application',
+                moduleManager().orderEntry.find { it.'@name' == 'groovy-1.5.6' }.'@level'
     }
+
+// fixme
+    public void testGrovyNoSdk()
+    {
+        executeTarget "groovy.sdk.none"
+        def groovy = facet('Groovy')
+        assertEquals 1, groovy.configuration.size()
+        assertEquals 0, groovy.configuration[0].attributes().size()
+        assertNull moduleManager().orderEntry.find { it.'@type' == 'library' }
+    }
+
 
 
     /**

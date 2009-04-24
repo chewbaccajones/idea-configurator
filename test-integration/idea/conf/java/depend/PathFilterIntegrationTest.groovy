@@ -1,8 +1,9 @@
 package idea.conf.java.depend
 
 import org.apache.tools.ant.BuildFileTest
+import idea.conf.BaseBuildFileTester
 
-public class PathFilterIntegrationTest extends BuildFileTest
+public class PathFilterIntegrationTest extends BaseBuildFileTester
 {
     public void setUp()
     {
@@ -12,9 +13,7 @@ public class PathFilterIntegrationTest extends BuildFileTest
     public void testManyJarToModulesElements()
     {
         executeTarget 'path.filter'
-        def module = new XmlParser().parseText(getOutput())
-        def libs = module.component.find { it.'@name' == 'NewModuleRootManager'}.
-            orderEntry.findAll { it.'@type' == 'module-library' }
+        def libs = moduleManager().orderEntry.findAll { it.'@type' == 'module-library' }
         def urls = libs.library.CLASSES.root.collect { it.'@url'[0] }
 
         assertTrue urls.any { it.contains ('garble.jar') }
