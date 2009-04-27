@@ -8,15 +8,16 @@ import org.apache.tools.ant.Task
  *
  * @author tomichj
  */
-class GroovyFacet implements Visitable
+class GroovyFacet implements Visitable, DependencyInjector
 {
+
     public static final String NONE = "NONE";
     private static final String DEFAULT = "GROOVY";
 
     // can be null, in which case lib is DEFAULT. Or can be any arbitrary thing.
     String sdk
     
-    def injectGroovyLibrary(Dependencies dependencies)
+    def injectDependencies(Dependencies dependencies)
     {
         if (NONE.equalsIgnoreCase(sdk)) return;
         if (sdk == null || sdk.equals(""))

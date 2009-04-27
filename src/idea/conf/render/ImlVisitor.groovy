@@ -32,6 +32,7 @@ import idea.conf.build.GlobalLibraryContainer
 import idea.conf.build.ModuleContainer
 import idea.conf.build.ModuleLibraryContainer
 import idea.conf.build.ProjectLibraryContainer
+import idea.conf.Logger
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -165,7 +166,7 @@ class ImlVisitor extends DefaultVisitor
     void visit(Dependencies dependencies)
     {
         // get a handle on the filters so we can apply them to module lib entries
-        filters = dependencies.filters
+        filters = dependencies.filters()
 
         super.visit(dependencies)
         
@@ -185,12 +186,14 @@ class ImlVisitor extends DefaultVisitor
     {
         Path classes = lib.classes
 
+        //Logger.verbose("filters=${filters}")
+
         // apply filters - this application is whack... todo fixme
         filters.each { filter -> classes = filter.filter(classes) }
-        
+
         if (!classes.list().size() &&
-                !lib.jarDirs.list().size() &&
-                !lib.getIdeaLibs().size()) return;
+            !lib.jarDirs.list().size() &&
+            !lib.getIdeaLibs().size()) return;
 
         xml.orderEntry(addExport([type:"module-library"], lib)) {
             xml.library(nonNulls(name:lib.getName())){
@@ -280,7 +283,7 @@ class ImlVisitor extends DefaultVisitor
     {
         xml.component(name:"BuildJarSettings"){
             super.visit(build)
-            println "build.size = ${build.getChildren().size()}"
+            Logger.debug "build.size = ${build.getChildren().size()}"
             // first do libraries and module dependencies
             setting("jarUrl", urls.file(build.getJar()))
             setting("buildJar", "true") // always true... what is it?

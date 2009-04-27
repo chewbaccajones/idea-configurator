@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build-test">
+
+  <path id="configurator.classpath">
+    <fileset dir="dist">
+      <include name="idea-configurator*jar"/>
+    </fileset>
+    <pathelement location="lib/groovy-all-1.5.6.jar"/>
+  </path>
+  <taskdef classpathref="configurator.classpath" resource="taskdef.properties"/>
+
+
+  <property name="stdout.only" value="true"/>
+
+
+  <target name="source.folder">
+    <ideamodule>
+      <src location="src"/>
+    </ideamodule>
+  </target>
+
+  
+  <target name="source.folders">
+    <ideamodule>
+      <src location="src1"/>
+      <src location="src2"/>
+    </ideamodule>
+  </target>
+
+  <target name="source.tests.folders">
+    <ideamodule>
+      <src location="src"/>
+      <tests location="test1"/>
+    </ideamodule>
+  </target>
+
+
+  <!-- used by jarToModule tests -->
+  <path id="dumb.path">
+    <pathelement location="survives.jar"/>
+    <pathelement location="lib/module2.jar"/>
+    <pathelement location="lib/dumb.jar"/>
+    <pathelement location="lib/garble.jar"/>
+  </path>
+
+
+  <target name="jarToMmodule">
+    <ideamodule classpathref="dumb.path">
+      <dependencies>
+        <jartomodule jarName="garble.jar"/>
+        <jarToModule jarPattern=".*module2.jar" moduleName="dumbModule2" exported="true"/>
+        <jarToModule jarPattern=".*dumb.jar" moduleName="dumbModule"/> <!-- maps name -->
+      </dependencies>
+    </ideamodule>
+  </target>
+
+
+  <target name="jarsToModules.top.level.declaration">
+    <ideamodule classpathref="dumb.path" jarsToModules="dumb.jar, garble.jar">
+    </ideamodule>
+  </target>
+
+  <target name="groovy.plain">
+    <ideamodule>
+      <facets>
+        <groovy/>
+      </facets>
+      <src location="src"/>
+    </ideamodule>
+  </target>
+
+  <target name="groovy.sdk">
+    <ideamodule>
+      <facets>
+        <groovy sdk="groovy-1.5.6"/>
+      </facets>
+      <src location="src"/>
+    </ideamodule>
+  </target>
+
+  <target name="groovy.sdk.none">
+    <ideamodule>
+      <facets>
+        <groovy sdk="NONE"/>
+      </facets>
+      <src location="src"/>
+    </ideamodule>
+  </target>
+
+
+  <target name="path.filter">
+    <ideamodule classpathref="dumb.path">
+      <dependencies>
+        <filter pattern=".*module2.jar"/>
+      </dependencies>
+    </ideamodule>
+  </target>
+
+
+  <target name="spring.complex">
+    <ideamodule>
+      <facets>
+        <spring>
+          <files name="Production Fileset">
+            <file location="src/spring-conf.xml"/>
+            <file location="src/spring-conf2.xml"/>
+          </files>
+          <files name="test fileset" parentFilesetName="Production Fileset">
+            <file location="src/spring-conf3.xml"/>
+          </files>
+          <files name="another fileset"
+                 springFiles="src/spring-conf4.xml, src/springconf5.xml"/>
+        </spring>
+      </facets>
+    </ideamodule>
+  </target>
+
+  <target name="gwt.default">
+    <ideamodule>
+      <facets>
+        <gwt/>
+      </facets>
+    </ideamodule>
+  </target>
+
+  <target name="gwt.with.lib">
+    <ideamodule>
+      <facets>
+        <gwt projectGwtLib="gwt-lib"/>
+      </facets>
+    </ideamodule>
+  </target>
+
+  <target name="gwt.with.params">
+    <ideamodule>
+      <facets>
+        <gwt outputStyle="DETAILED"
+             gwtSdkUrl="/path/to/gwt-1.5"
+             intoWebFacet="web-facet-name"/>
+      </facets>
+      <src location="foobly"/>
+    </ideamodule>
+  </target>
+
+  
+  <target name="module.dependency">
+    <ideamodule>
+      <src location="src"/>
+      <dependencies>
+        <module name="another-module"/>
+      </dependencies>
+    </ideamodule>
+  </target>
+
+
+  <target name="classpath.reference">
+    <path id="dumb.path">
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumb.jar"/>
+    </path>
+    <ideamodule srcDir="src" classpathref="dumb.path"/>
+  </target>
+
+  <target name="build.jar">
+    <property name="lib1.jar" location="lib/lib1.jar"/>
+    <property name="lib2.jar" location="lib/lib2.jar"/>
+    <ideamodule>
+      <src location="foobly"/>
+      <build jar="foo.jar">
+        <classpath>
+          <pathelement location="${lib1.jar}"/>
+          <pathelement location="${lib2.jar}"/>
+        </classpath>
+        <module name="fooModule"/>
+        <moduleLibrary name="someNamedModuleLibrary"/>
+        <projectLibrary name="someProjectLibrary"/>
+        <globalLibrary name="someGlobalLibrary"/>
+      </build>
+    </ideamodule>
+  </target>
+
+</project>
+

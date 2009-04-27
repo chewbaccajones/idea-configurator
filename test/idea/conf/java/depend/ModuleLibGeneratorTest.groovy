@@ -79,14 +79,18 @@ public class ModuleLibGeneratorTest extends GroovyTestCase
         assertEquals(fooSrcJar, module.sources.toString())
     }
 
+    
     void testFindSourceJarByDir()
     {
         Project proj = new Project()
         ModuleLibGenerator libGen = new ModuleLibGenerator(proj)
 
-        String answer = libGen.findSourceJarByDir("/lib/junit4.4/junit-4.4.jar")
-        println "answer=" + answer
+        String jarPath = "test-lib/foo.jar"
+        String srcjarPath = "test-lib/foo-src.jar"
+        String answer = libGen.findSourceJarByDir(jarPath)
+        assert(answer.endsWith(srcjarPath))
     }
+
     
     void testEndWithDot()
     {

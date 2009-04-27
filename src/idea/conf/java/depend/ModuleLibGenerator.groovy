@@ -3,6 +3,7 @@ package idea.conf.java.depend
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.BuildException
 import org.apache.tools.ant.types.Path
+import static idea.conf.Validator.*
 
 /**
  * Inspect an ant Path being used as a classpath. Each path element is assumed to be
@@ -33,7 +34,8 @@ class ModuleLibGenerator
     ModuleLibGenerator(Project project)
     {
         this.project = project;
-        if (project == null) throw new BuildException("null project!")
+        //if (project == null) throw new BuildException("null project!")
+        notNull(project, "null project!!")
         log = {msg -> project.log(msg, Project.MSG_ERR) }
     }
 

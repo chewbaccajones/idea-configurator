@@ -7,6 +7,66 @@ package idea.conf.java.depend
  */
 class DependenciesTest extends GroovyTestCase
 {
+    void testCompleteEntriesEmptyDeps()
+    {
+        def d = new Dependencies(null, null)
+        assertFalse(d.hasSource())
+        assertFalse(d.hasJdk())
+
+        d.completeJdkAndSourceOrderEntries()
+
+        assertTrue(d.hasSource())
+        assertTrue(d.hasJdk())
+        
+        assertTrue(d.deps[0] instanceof ModuleSource)
+    }
+
+    void testCompleteEntriesWithExistingSource()
+    {
+        def d = new Dependencies(null, null)
+        d.createModuleSource()
+
+        assertTrue(d.hasSource())
+        assertFalse(d.hasJdk())
+
+        d.completeJdkAndSourceOrderEntries()
+
+        assertTrue(d.hasSource())
+        assertTrue(d.hasJdk())
+
+        assertTrue(d.deps[0] instanceof ModuleSource)
+    }
+
+
+    void testCompleteEntriesWithExistingJdk()
+    {
+        def d = new Dependencies(null, null)
+        d.createJdk()
+
+        assertFalse(d.hasSource())
+        assertTrue(d.hasJdk())
+
+        // source gets put in front of jdk
+        d.completeJdkAndSourceOrderEntries()
+
+        assertTrue(d.hasSource())
+        assertTrue(d.hasJdk())
+
+        assertTrue(d.deps[0] instanceof ModuleSource)
+    }
+
+
+
+    void testHasSource()
+    {
+        def d = new Dependencies(null, null)
+        assertFalse(d.hasSource())
+
+        d.createModuleSource()
+
+        assertTrue(d.hasSource())
+    }
+
     void testHasJdk()
     {
         def d = new Dependencies(null, null)

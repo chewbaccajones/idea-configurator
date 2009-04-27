@@ -4,7 +4,7 @@ import idea.conf.Visitable
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project
-
+import static idea.conf.Validator.*
 
 /**
  * Refers to a library housed inside IDEA's interior lib dir.
@@ -24,6 +24,7 @@ class IdeaLibrary implements Dependency, Exportable
         this.project = project
     }
 
+
     ModuleLibraryType asModuleLibrary()
     {
         def lib = new ModuleLibrary(project)
@@ -32,17 +33,21 @@ class IdeaLibrary implements Dependency, Exportable
         return lib
     }
 
+
     List<Visitable> getChildren()
     {
         return [asModuleLibrary()];
     }
 
+
     void validate()
     {
-        if (!name) throw new BuildException("IdeaLibrary name must not be null!")
+        //if (!name) throw new BuildException("IdeaLibrary name must not be null!")
+        notNull(name, "IdeaLibrary name must not be null")
         // don't check to see if library actually exists
     }
 
+    
     String toString()
     {
         return "IdeaLibrary{name=${name}, exported=${exported}}"

@@ -11,23 +11,93 @@
   <taskdef classpathref="configurator.classpath" resource="taskdef.properties"/>
 
   
-  <property name="debug" value="true"/>
+  <property name="stdout.only" value="true"/>
 
 
   <target name="all"
-          depends="simplest, has-spring, has-gwt, has-groovy, has-groovy-sdk,
-            has-groovy-sdk-none,
-            has-source, has-module-lib, has-contents, global-lib,
+          depends="simplest, output, build-jar, spring, gwt, groovy,
+            groovy-sdk,
+            groovy-sdk-none,
+            source, module-lib, many-sources, global-lib,
             simple-module-lib, module-lib-with-all, module-dependency,
             classpath, jdk-and-source, idea-lib, filters"/>
 
 
+  <target name="module-dep">
+    <ideamodule>
+      <src location="src"/>
+      <dependencies>
+        <module name="another-module"/>
+      </dependencies>
+    </ideamodule>
+  </target>
+
+  <target name="jar-to-modules">
+    <path id="dumb.path">
+      <pathelement location="wedding.jar"/>
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumb.jar"/>
+      <pathelement location="lib/garble.jar"/>
+    </path>
+    <ideamodule classpathref="dumb.path">
+      <dependencies>
+        <jartomodule  jarName="garble.jar"/>
+        <jarToModule jarPattern=".*module2.jar" moduleName="dumbModule2" exported="true"/> <!-- doesn't map name -->
+        <jarToModule jarPattern=".*dumb.jar" moduleName="dumbModule"/> <!-- maps name -->
+      </dependencies>
+    </ideamodule>
+  </target>
+
+  <target name="jars-to-modules">
+    <path id="dumb.path">
+      <pathelement location="wedding.jar"/>
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumb.jar"/>
+      <pathelement location="lib/garble.jar"/>
+    </path>
+    <ideamodule classpathref="dumb.path" jarsToModules="dumb.jar, garble.jar">
+    </ideamodule>
+  </target>
+
   <target name="simplest">
     <ideamodule/>
   </target>
+
+  <target name="output">
+    <ideamodule outputdir="build/classes"/>
+  </target>
+
+  <target name="claspath-ref">
+    <path id="dumb.path">
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumb.jar"/>
+    </path>
+    <ideamodule srcDir="src" classpathref="dumb.path"/>
+  </target>
+
+  <target name="classpath-direct">
+    <ideamodule srcDir="src" classpath="lib/module2.jar:lib/dumb.jar"/>
+  </target>
+
+
+  <target name="jar-to-module-dep">
+    <path id="dumb.path">
+      <pathelement location="lib/module1.jar"/>
+      <pathelement location="lib/module2.jar"/>
+      <pathelement location="lib/dumbModule.jar"/>
+      <pathelement location="lib/someDumbLibrary.jar"/>
+      <pathelement location="lib/library.jar"/>
+    </path>
+    <ideamodule srcDir="src" classpathref="dumb.path">
+      <dependencies>
+        <jartomodule jarName="dumbModule.jar"/>
+        <jartomodule jarPattern=".*module.*jar" modulename="some-module"/>
+      </dependencies>
+    </ideamodule>
+  </target>
   
 
-  <target name="has-build">
+  <target name="build-jar">
     <property name="lib1.jar" location="lib/lib1.jar"/>
     <property name="lib2.jar" location="lib/lib2.jar"/>
     <ideamodule>
@@ -45,7 +115,8 @@
     </ideamodule>
   </target>
 
-  <target name="has-spring">
+
+  <target name="spring">
     <ideamodule>
       <facets>
         <spring>
@@ -65,7 +136,7 @@
   
 
 
-  <target name="has-gwt">
+  <target name="gwt">
     <ideamodule>
       <facets>
         <gwt compilerParams="-Dfoo=1 -Dbar=2"
@@ -89,7 +160,7 @@
 	
 	no-sdk specification yields no order entry
   -->
-  <target name="has-groovy">
+  <target name="groovy">
     <ideamodule>
       <facets>
         <groovy/>
@@ -98,7 +169,7 @@
     </ideamodule>
   </target>
 
-  <target name="has-groovy-sdk">
+  <target name="groovy-sdk">
     <ideamodule>
       <facets>
         <groovy sdk="groovy-1.5.4"/>
@@ -107,7 +178,7 @@
     </ideamodule>
   </target>
 
-  <target name="has-groovy-sdk-none">
+  <target name="groovy-sdk-none">
     <ideamodule>
       <facets>
         <groovy sdk="NONE"/>
@@ -117,13 +188,13 @@
   </target>
 
 
-  <target name="has-source">
+  <target name="source">
     <ideamodule>
       <src location="foobly"/>
     </ideamodule>
   </target>
 
-  <target name="has-src-ref">
+  <target name="source-ref">
     <path id="sources">
       <pathelement location="src1"/>
       <pathelement location="src2"/>
@@ -178,7 +249,7 @@
   </target>
 
   
-  <target name="has-module-lib">
+  <target name="module-lib">
     <ideamodule modulefile="has-module-lib.iml"
                 outputDir="build/classes"
                 testsOutputDir="build/test-classes"
@@ -199,7 +270,7 @@
   </target>
     
 
-  <target name="has-contents">
+  <target name="many-sources">
     <ideamodule outputDir="build/classes" testsOutputDir="build/test-classes">
       <src location="src1"/>
       <src location="src2"/>

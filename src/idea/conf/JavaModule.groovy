@@ -14,6 +14,7 @@ import idea.conf.url.UrlFactoryImpl
 import idea.conf.java.JavaComponent
 import idea.conf.facets.FacetManager
 import idea.conf.build.BuildComponent
+import static idea.conf.Validator.*
 
 /**
  * The java module type. This is the top level ant task for Java Modules.
@@ -24,37 +25,34 @@ import idea.conf.build.BuildComponent
  */
 class JavaModule extends Task implements Visitable
 {
+
     File rootDir
     private File moduleFile
     boolean relativePaths
     JavaComponent java
     FacetManager facets
     BuildComponent build
-    boolean debug
-
+    Boolean stdoutOnly
+    
 
     void execute()
     {
         super.execute();
 
-        // check for debug flag
-        if (!debug && project.getProperty("debug")) {
-            debug = Boolean.parseBoolean(project.getProperty("debug"))
-        }
+        Logger.init(project)
 
-        if (debug)
-        {
-            def debuggery = new DebugVisitor()
-            debuggery.visit(this)
-            println debuggery
-            println ""
-        }
+        stdoutOnly = isStdoutOnly()
+
+        def debuggery = new DebugVisitor()
+        debuggery.visit(this)
+        Logger.verbose(debuggery.toString() + "\n\n")
+
 
         UrlFactory urlFactory = new UrlFactoryImpl(getRootDir(), relativePaths)
         def xml = new ImlVisitor(urlFactory);
         xml.visit(this)
 
-        if (debug)
+        if (stdoutOnly)
         {
             println xml
             println "\n"
@@ -63,6 +61,13 @@ class JavaModule extends Task implements Visitable
         {
             getModuleFile().write(xml.toString())
         }
+    }
+
+    boolean isStdoutOnly()
+    {
+        Map m = project.getProperties()
+        if (m.containsKey("stdout.only")) return true
+        return false
     }
 
     /**
@@ -80,7 +85,8 @@ class JavaModule extends Task implements Visitable
 
     void setModuleFile(File moduleFile)
     {
-        if (moduleFile == null) throw new BuildException("Null moduleFile!")
+        notNull(moduleFile, "Null moduleFile!")
+        //if (moduleFile == null) huck("Null moduleFile!")
         if (!moduleFile.getAbsolutePath().endsWith(".iml"))
         {
             String p = moduleFile.getAbsolutePath() + ".iml";
@@ -126,6 +132,11 @@ class JavaModule extends Task implements Visitable
     // Java stuff here
     // we could do some crazy property delegation stuff, but this might be simpler
 
+
+    void setJarsToModules(String jarsToModules)
+    {
+        java.setJarsToModules jarsToModules 
+    }
 
     void setSourceProperty(String sourceProperty)
     {
@@ -228,6 +239,10 @@ class JavaModule extends Task implements Visitable
         java.setClasspath(classpath);
     }
 
+    void setClasspathRef(Reference ref)
+    {
+        java.setClasspathRef(ref);
+    }
 
     Dependencies createDependencies()
     {

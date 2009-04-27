@@ -6,10 +6,10 @@ import org.apache.tools.ant.types.Path
 import org.apache.tools.ant.types.Reference
 
 import idea.conf.java.depend.Dependencies
-import idea.conf.java.depend.ClasspathFilter
 import idea.conf.Visitable
 import idea.conf.java.depend.ModuleLibGenerator;
-
+import static idea.conf.Validator.*
+import idea.conf.java.depend.JarToModule
 
 
 /**
@@ -19,6 +19,7 @@ import idea.conf.java.depend.ModuleLibGenerator;
  */
 class JavaComponent implements Visitable
 {
+    Project project
     File outputDir
     File testsOutputDir
     boolean excludeOutputPaths
@@ -35,6 +36,7 @@ class JavaComponent implements Visitable
     
     JavaComponent(Project project)
     {
+        this.project = project
         sources = new Path(project);
         tests = new Path(project);
         excludes = new Path(project);
@@ -54,6 +56,17 @@ class JavaComponent implements Visitable
         return dependencies
     }
     
+
+    void setJarsToModules(String jarsToModules)
+    {
+        jarsToModules.split(",").each {
+            String jarName = it.trim()
+            JarToModule jarToModule = new JarToModule(dependencies)
+            jarToModule.setJarName(jarName)
+            dependencies.add(jarToModule)
+        }
+    }
+
 
     /**
      * Set string that source properties must begin with to be automagically
@@ -152,6 +165,12 @@ class JavaComponent implements Visitable
         return excludes.createPath()
     }
 
+    void setClasspathRef(Reference ref)
+    {
+        Path p = path(ref)
+        dependencies.createClasspath().append(p)
+    }
+
 
     void setClasspath(Path classpath)
     {
@@ -171,10 +190,9 @@ class JavaComponent implements Visitable
 
     private void validateInheritOrSetOutput()
     {
-        if (inheritCompilerOutput && (output != null || outputTest != null))
+        if (inheritCompilerOutput && (outputDir != null || testsOutputDir != null))
         {
-            throw new BuildException("Set either inheritCompilerOutput or " +
-                                     "output/outputTest, not both.")
+            huck("Set either inheritCompilerOutput or outputDir/testOutputDir, not both.")
         }
     }
 

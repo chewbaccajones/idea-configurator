@@ -10,17 +10,19 @@ import idea.conf.render.DebugVisitor
 */
 class ModuleTest extends GroovyTestCase
 {
+    private static final String EMPTY_MODULE =
+        'JavaModule{rootDir=null,moduleFile=moduleFile,relativePaths=false}'
     void testConstructor()
     {
         JavaModule module = new JavaModule()
-        println module
+        assertTrue module.toString().trim().equals(EMPTY_MODULE)
     }
 
     void testSetProject()
     {
         JavaModule module = new JavaModule()
         module.setProject([] as Project)
-        println module
+        assertTrue module.toString().trim().equals(EMPTY_MODULE)
     }
 
     void testDebug()
@@ -29,7 +31,9 @@ class ModuleTest extends GroovyTestCase
         module.setProject([] as Project)
         DebugVisitor v = new DebugVisitor();
         v.visit module
-        println v
+        String out = v.toString()
+        assertTrue out.startsWith('JavaModule{')
+        assertTrue out.contains('Jdk{jdkName=null}')
     }
 
 }

@@ -6,14 +6,14 @@ import idea.conf.Visitable;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Path
 import org.apache.tools.ant.Project
-
+import static idea.conf.Validator.*
 
 /**
  * A module library.
  *
  * @author tomichj
  */
-class ModuleLibrary implements ModuleLibraryType
+class ModuleLibrary implements ModuleLibraryType, Classpathed
 {
     String name
     boolean exported
@@ -60,6 +60,11 @@ class ModuleLibrary implements ModuleLibraryType
         javadocUrls.addAll(other.getJavadocUrls())
     }
     
+    public Path getClasspath()
+    {
+        return classes
+    }
+
     Path getClasses() { return classes }
     Path getJarDirs() { return jarDirs }
     Path getSources() { return sources }
@@ -124,10 +129,10 @@ class ModuleLibrary implements ModuleLibraryType
     
     void validate()
     {
-        if (!isValid()) throw new BuildException("ModuleLibrary requires classes")
+        if (!hasClasses()) throw new BuildException("ModuleLibrary requires classes")
     }
 
-    boolean isValid()
+    boolean hasClasses()
     {
         if (ideaLibs.size() > 0) return true;
         if (classes.size() > 0) return true
@@ -147,5 +152,6 @@ class ModuleLibrary implements ModuleLibraryType
                 ", exported=${exported}" <<
                 "}"
     }
+
 }
 

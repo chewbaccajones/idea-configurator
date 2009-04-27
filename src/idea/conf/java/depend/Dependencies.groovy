@@ -2,6 +2,7 @@ package idea.conf.java.depend
 
 import idea.conf.Visitable
 import org.apache.tools.ant.Project
+import org.apache.tools.ant.types.Path
 
 /**
  * Containes all Dependency instances, squirts some logic into the processing of them.
@@ -12,7 +13,6 @@ class Dependencies implements Visitable
 {
     Project project;
     def deps = []
-    def filters = []
 
 
     /**
@@ -35,6 +35,22 @@ class Dependencies implements Visitable
         this.moduleLibGenerator = moduleLibGenerator
     }
 
+    private Path list()
+    {
+        Path path = new Path(project)
+        list(this, path)
+        return path
+    }
+
+    private void list(Visitable obj, Path path)
+    {
+        if (obj == null) return
+        if (obj instanceof JarToModule) return
+        if (obj instanceof Classpathed) path.add(obj.getClasspath())
+        def kids = obj.getChildren()
+        kids?.each { list(it, path) }
+    }
+
 
     int size()
     {
@@ -46,15 +62,15 @@ class Dependencies implements Visitable
     {
         completeJdkAndSourceOrderEntries()
         deps.each { it.validate() }
-        return deps + filters
+        return deps
     }
 
-
-//    def moduleLibraries()
-//    {
-//        deps.findAll { it instanceof ModuleLibrary }
-//    }
-
+    
+    JarToModule createJarToModule()
+    {
+        add new JarToModule(this)
+    }
+    
 
     void completeJdkAndSourceOrderEntries()
     {
@@ -87,7 +103,7 @@ class Dependencies implements Visitable
     }
 
 
-    void putAfter(Class clazz, Dependency insert)
+    private void putAfter(Class clazz, Dependency insert)
     {
         def entry = deps.find { clazz.isInstance(it) }
         int index = deps.indexOf(entry)
@@ -95,7 +111,7 @@ class Dependencies implements Visitable
     }
 
 
-    void putBefore(Class clazz, Dependency insert)
+    private void putBefore(Class clazz, Dependency insert)
     {
         def entry = deps.find { clazz.isInstance(it) }
         int index = deps.indexOf(entry)
@@ -159,6 +175,11 @@ class Dependencies implements Visitable
         add new Classpath(project, moduleLibGenerator)
     }
 
+    def filters()
+    {
+        deps.findAll { it instanceof Filter }
+    }
+
     def add(dependency)
     {
         deps << dependency
@@ -169,7 +190,6 @@ class Dependencies implements Visitable
     {
         return "Dependencies{" +
                 "deps.size()=" + deps.size() +
-                ", filters.size()=" + filters.size() +
                 "}"
     }
 
