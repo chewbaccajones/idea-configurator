@@ -161,6 +161,23 @@
     <ideamodule srcDir="src" classpathref="dumb.path"/>
   </target>
 
-  
+  <target name="build.jar">
+    <property name="lib1.jar" location="lib/lib1.jar"/>
+    <property name="lib2.jar" location="lib/lib2.jar"/>
+    <ideamodule>
+      <src location="foobly"/>
+      <build jar="foo.jar">
+        <classpath>
+          <pathelement location="${lib1.jar}"/>
+          <pathelement location="${lib2.jar}"/>
+        </classpath>
+        <module name="fooModule"/>
+        <moduleLibrary name="someNamedModuleLibrary"/>
+        <projectLibrary name="someProjectLibrary"/>
+        <globalLibrary name="someGlobalLibrary"/>
+      </build>
+    </ideamodule>
+  </target>
+
 </project>
 
