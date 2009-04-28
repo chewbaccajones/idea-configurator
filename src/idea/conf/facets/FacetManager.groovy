@@ -2,6 +2,7 @@ package idea.conf.facets
 
 import idea.conf.Visitable
 import idea.conf.java.depend.Dependencies
+import idea.conf.facets.web.WebFacet
 
 /**
  * FacetManager might disappear. It's an extra layer we probably don't need.
@@ -32,6 +33,11 @@ class FacetManager implements Visitable
     public void addConfiguredSpring(SpringFacet spring)
     {
         facets << spring
+    }
+
+    public void addConfiguredWeb(WebFacet web)
+    {
+        facets << web
     }
     
     public List<Visitable> getChildren()

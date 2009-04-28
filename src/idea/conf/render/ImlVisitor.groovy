@@ -2,10 +2,8 @@ package idea.conf.render
 
 import groovy.xml.MarkupBuilder
 
-import idea.conf.JavaModule
 import idea.conf.java.JavaComponent
 import idea.conf.java.depend.Dependencies
-import idea.conf.java.depend.ModuleLibrary
 import idea.conf.java.depend.Jdk
 import idea.conf.java.depend.ModuleSource
 import idea.conf.java.depend.ProjectLibrary
@@ -20,19 +18,20 @@ import idea.conf.facets.GroovyFacet
 import idea.conf.facets.FacetManager
 import org.apache.tools.ant.types.Path
 import idea.conf.java.depend.ModuleLibraryType
-import idea.conf.JavaModule
 import idea.conf.facets.GwtFacet
 import idea.conf.facets.SpringFacet
 import idea.conf.facets.SpringFileset
 import idea.conf.facets.SpringFile
 import idea.conf.build.BuildComponent
 import idea.conf.build.ClasspathContainer
-import idea.conf.build.ClasspathContainer
 import idea.conf.build.GlobalLibraryContainer
 import idea.conf.build.ModuleContainer
 import idea.conf.build.ModuleLibraryContainer
 import idea.conf.build.ProjectLibraryContainer
 import idea.conf.Logger
+import idea.conf.facets.web.WebFacet
+import idea.conf.facets.web.Descriptor
+import idea.conf.facets.web.WebRoot
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -123,6 +122,38 @@ class ImlVisitor extends DefaultVisitor
             xml.setting(name:"gwtSdkUrl", value:sdkUrl.url())
             xml.setting(name:"runGwtCompilerOnMake", value:gwt.runGwtCompilerOnMake)
             if (gwt.intoWebFacet) xml.setting(name:"webFacet", value:gwt.intoWebFacet)
+        }
+    }
+
+    void visit(WebFacet web)
+    {
+        xml.facet(type:"web", name:"web") {
+            xml.configuration() {
+                xml.descriptors() {
+                    web.descriptors.each { visit((Descriptor)it)  }
+                }
+                xml.webroots() {
+                    web.webRoots.each { visit((WebRoot)it)}
+                }
+                xml.packaging() {
+                    web.packaging.each { visit(it) }
+                }
+            }
+        }
+    }
+
+    void visit(Descriptor d)
+    {
+        xml.deploymentDescriptor(name:d.getName(), url:urls.file(d.url),
+                optional:d.optional, version:d.version) {
+            super.visit(d)
+        }
+    }
+
+    void visit(WebRoot root)
+    {
+        xml.root(url:urls.file(root.url), relative:root.relative) {
+            super.visit(root)
         }
     }
 

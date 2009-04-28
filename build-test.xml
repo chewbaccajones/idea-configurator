@@ -179,5 +179,19 @@
     </ideamodule>
   </target>
 
+  <target name="web.basic">
+    <ideamodule>
+      <src location="src"/>
+      <facets>
+        <web>
+          <webXml/>
+          <root url="web/WEB-INF" relative="/"/>
+          <module name="foo-module"/>
+          <projectLibrary name="foo-project-library"/>
+        </web>
+      </facets>
+    </ideamodule>
+  </target>
+
 </project>
 
