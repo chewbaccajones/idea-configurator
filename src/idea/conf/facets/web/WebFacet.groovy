@@ -6,6 +6,7 @@ import idea.conf.build.GlobalLibraryContainer
 import idea.conf.build.ProjectLibraryContainer
 import idea.conf.build.ModuleLibraryContainer
 import idea.conf.build.ClasspathContainer
+import org.apache.tools.ant.Project
 
 /**
  * 
@@ -19,7 +20,27 @@ public class WebFacet implements Visitable
     def descriptors = []
     def packaging = []
     def webRoots = []
-    
+
+
+    // set if dir is specified:
+    // <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../out/exploded/web-module3Web" />
+    // <setting name="EXPLODED_ENABLED" value="false" />
+    // <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
+    File explodedDir
+    boolean excludeExploded = true 
+
+    // <setting name="JAR_URL" value="file://$MODULE_DIR$/../out/Web.war" />
+    // <setting name="JAR_ENABLED" value="true" />
+    File war
+
+
+    Project project
+
+
+    WebFacet(Project project)
+    {
+        this.project = project
+    }
 
     void addWebXml(WebXml webXml)
     {
@@ -36,9 +57,11 @@ public class WebFacet implements Visitable
         packaging << module
     }
 
-    void addClasspath(ClasspathContainer classpath)
+    ClasspathContainer createClasspath()
     {
+        ClasspathContainer classpath = new ClasspathContainer(project)
         packaging << classpath
+        return classpath
     }
 
     void addModuleLibrary(ModuleLibraryContainer lib)
@@ -54,6 +77,11 @@ public class WebFacet implements Visitable
     void addProjectLibrary(ProjectLibraryContainer lib)
     {
         packaging << lib
+    }
+
+    void addResource(AdditionalResource resource)
+    {
+        descriptors << resource
     }
 
 

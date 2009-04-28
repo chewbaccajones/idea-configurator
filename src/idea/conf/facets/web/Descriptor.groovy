@@ -1,9 +1,11 @@
 package idea.conf.facets.web
 
+import idea.conf.Visitable
+
 /**
  * 
  */
-public interface Descriptor
+public interface Descriptor extends Visitable
 {
     String getName()
     File getUrl()

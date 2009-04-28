@@ -32,6 +32,7 @@ import idea.conf.Logger
 import idea.conf.facets.web.WebFacet
 import idea.conf.facets.web.Descriptor
 import idea.conf.facets.web.WebRoot
+import idea.conf.facets.web.Option
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -115,13 +116,13 @@ class ImlVisitor extends DefaultVisitor
         def sdkUrl = new FileUrl(path)
 
         xml.facet(type:"gwt", name:"GWT") {
-            xml.setting(name:"additionalCompilerParameters", value:gwt.compilerParams)
-            xml.setting(name:"compilerMaxHeapSize", value:gwt.compilerMaxHeap)
-            xml.setting(name:"compilerOutputPath", value:gwt.compilerOutputPath)
-            xml.setting(name:"gwtScriptOutputStyle", value:gwt.outputStyle)
-            xml.setting(name:"gwtSdkUrl", value:sdkUrl.url())
-            xml.setting(name:"runGwtCompilerOnMake", value:gwt.runGwtCompilerOnMake)
-            if (gwt.intoWebFacet) xml.setting(name:"webFacet", value:gwt.intoWebFacet)
+            setting("additionalCompilerParameters", gwt.compilerParams)
+            setting("compilerMaxHeapSize", gwt.compilerMaxHeap)
+            setting("compilerOutputPath", gwt.compilerOutputPath)
+            setting("gwtScriptOutputStyle", gwt.outputStyle)
+            setting("gwtSdkUrl", sdkUrl.url())
+            setting("runGwtCompilerOnMake", gwt.runGwtCompilerOnMake)
+            if (gwt.intoWebFacet) setting("webFacet", gwt.intoWebFacet)
         }
     }
 
@@ -135,6 +136,13 @@ class ImlVisitor extends DefaultVisitor
                 xml.webroots() {
                     web.webRoots.each { visit((WebRoot)it)}
                 }
+                xml.building(){
+                    setting('EXPLODED_URL', web.explodedDir)
+                    setting('EXPLODED_ENABLED', web.explodedDir != null)
+                    setting('JAR_URL', web.war)
+                    setting('JAR_ENABLED', web.war != null)
+                    setting('EXCLUDE_EXPLODED_DIRECTORY', web.excludeExploded)
+                }
                 xml.packaging() {
                     web.packaging.each { visit(it) }
                 }
@@ -144,16 +152,34 @@ class ImlVisitor extends DefaultVisitor
 
     void visit(Descriptor d)
     {
-        xml.deploymentDescriptor(name:d.getName(), url:urls.file(d.url),
-                optional:d.optional, version:d.version) {
+        println "DESCRIPTOR:" + d
+        def args = [:]
+        args['url'] = urls.file(d.url)
+        if (d.getName()) args['name'] = d.getName()
+        if (d.getOptional()) args['optional'] = d.getOptional()
+        if (d.getVersion()) args['version'] = d.getVersion()
+
+        xml.deploymentDescriptor(args) {
             super.visit(d)
         }
+        
+        //xml.deploymentDescriptor(name:d.getName(), url:urls.file(d.url),
+        //        optional:d.optional, version:d.version) {
+        //    super.visit(d)
+        //}
     }
 
     void visit(WebRoot root)
     {
         xml.root(url:urls.file(root.url), relative:root.relative) {
             super.visit(root)
+        }
+    }
+
+    void visit(Option option)
+    {
+        xml.option(name:option.name, value:option.value){
+            super.visit(option)
         }
     }
 
@@ -380,7 +406,6 @@ class ImlVisitor extends DefaultVisitor
         }        
     }
 
-    
     /**
      * Given a path as a String, return the appropriate Url type.
      */

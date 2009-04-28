@@ -12,6 +12,8 @@ import idea.conf.Visitable
 public class WebXml implements Descriptor, Visitable
 {
     public static final def DEFAULT_VERSION = "2.5"
+    public static final def OPTIONAL = "false"
+    public static final def NAME = "web.xml"
 
     File url
     String version
@@ -31,12 +33,12 @@ public class WebXml implements Descriptor, Visitable
 
     public String getName()
     {
-        return "web.xml";
+        return NAME;
     }
 
     public String getOptional()
     {
-        return "false";
+        return OPTIONAL;
     }
 
     public List<Visitable> getChildren()
