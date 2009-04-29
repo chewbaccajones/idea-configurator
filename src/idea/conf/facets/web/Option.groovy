@@ -3,7 +3,7 @@ package idea.conf.facets.web
 import idea.conf.Visitable
 
 /**
- * 
+ *
  * User: tomichj
  * Date: Apr 28, 2009
  * Time: 2:27:16 PM
@@ -25,4 +25,13 @@ public class Option implements Visitable
     {
         return null;
     }
+
+    public String toString()
+    {
+        return "Option{" +
+                "name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
+
 }

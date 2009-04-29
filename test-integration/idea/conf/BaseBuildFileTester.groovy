@@ -42,4 +42,10 @@ public abstract class BaseBuildFileTester extends BuildFileTest
     {
         return moduleManager().orderEntry.findAll { it.'@type' == type }
     }
+
+    def assertSetting(facetName, name, value)
+    {
+        def found = facet(facetName).setting.find { it.'@name' == name }.'@value'
+        assertEquals value, found
+    }
 }

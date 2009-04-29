@@ -3,7 +3,7 @@ package idea.conf.facets.web
 import idea.conf.Visitable
 
 /**
- * 
+ *
  * User: tomichj
  * Date: Apr 28, 2009
  * Time: 9:55:37 AM
@@ -24,7 +24,7 @@ public class WebXml implements Descriptor, Visitable
         if (url == null) return new File("web/META-INF/web.xml")
         return url
     }
-    
+
     public String getVersion()
     {
         if (version == null) return DEFAULT_VERSION
@@ -45,4 +45,13 @@ public class WebXml implements Descriptor, Visitable
     {
         return null;
     }
+
+    public String toString()
+    {
+        return "WebXml{" +
+                "url=" + url +
+                ", version='" + version + '\'' +
+                '}';
+    }
+
 }

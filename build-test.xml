@@ -189,6 +189,19 @@
     <ideamodule>
       <src location="src"/>
       <facets>
+        <web war="build/foo.war" explodedDir="build/exploded" excludeExploded="false"/>
+      </facets>
+    </ideamodule>
+  </target>
+
+  <target name="web.complex">
+    <path id="whatever.yo">
+      <pathelement location="lib/foo.jar"/>
+      <pathelement location="lib/bar.jar"/>
+    </path>
+    <ideamodule>
+      <src location="src"/>
+      <facets>
         <web war="build/foo.war" explodedDir="build/exploded" excludeExploded="false">
           <webXml/>
           <root url="web/WEB-INF" relative="/"/>
@@ -203,6 +216,7 @@
       </facets>
     </ideamodule>
   </target>
+
 
 </project>
 

@@ -152,7 +152,6 @@ class ImlVisitor extends DefaultVisitor
 
     void visit(Descriptor d)
     {
-        println "DESCRIPTOR:" + d
         def args = [:]
         args['url'] = urls.file(d.url)
         if (d.getName()) args['name'] = d.getName()

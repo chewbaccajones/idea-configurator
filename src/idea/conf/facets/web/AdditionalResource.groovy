@@ -38,10 +38,6 @@ public class AdditionalResource implements Descriptor
 
     public List<Visitable> getChildren()
     {
-        println "CALLING getChildren() for " + toString()
-        //List<Visitable> kids = new ArrayList<Visitable>()
-        //kids << new Option(OPTION_NAME, deploymentPath)
-        
         return [new Option(OPTION_NAME, deploymentPath)]
     }
 
