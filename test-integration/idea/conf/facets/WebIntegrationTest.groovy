@@ -25,7 +25,7 @@ public class WebIntegrationTest extends BaseBuildFileTester
     void testDeploymentDescriptors()
     {
         executeTarget 'web.complex'
-        println getOutput()
+        //println getOutput()
         final def facet = facet('web')
 
         def deployments = facet.configuration.descriptors.deploymentDescriptor
@@ -36,7 +36,7 @@ public class WebIntegrationTest extends BaseBuildFileTester
         def roots = facet.configuration.webroots.root
         assertEquals 1, roots.size()
         def root = roots[0]
-        println root
+        //println root
         assertEquals 'file://$MODULE_DIR$/web', root.'@url'
         assertEquals '/', root.'@relative'
     }

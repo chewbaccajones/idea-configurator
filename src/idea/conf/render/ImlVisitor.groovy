@@ -169,7 +169,7 @@ class ImlVisitor extends DefaultVisitor
     void visit(Descriptor d)
     {
         def args = [:]
-        args['url'] = urls.file(d.url)
+        args['url'] = urls.file(d.file)
         if (d.getName()) args['name'] = d.getName()
         if (d.getOptional()) args['optional'] = d.getOptional()
         if (d.getVersion()) args['version'] = d.getVersion()
@@ -276,7 +276,7 @@ class ImlVisitor extends DefaultVisitor
                 }
                 xml.JAVADOC() {
                     lib.javadocs.list().each { javadoc -> xml.root(url:asUrl(javadoc)) }
-                    lib.javadocUrls.each { docUrl -> xml.root(url:asUrl(docUrl.url)) }
+                    lib.javadocUrls.each { docUrl -> xml.root(url:asUrl(docUrl.getFile)) }
                 }
                 xml.SOURCES() {
                     lib.sources.list().each { source -> xml.root(url:asUrl(source)) }
@@ -375,7 +375,7 @@ class ImlVisitor extends DefaultVisitor
             xml.containerElement(type:"library", level:"module") {
                 attribute("method", "1")
                 attribute("URI", "/")
-                xml.url() {
+                xml.getFile() {
                     xml.yield urls.jar(jar)
                 }
             }

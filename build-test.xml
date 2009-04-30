@@ -204,15 +204,15 @@
       <facets>
         <web war="build/foo.war" explodedDir="build/exploded" excludeExploded="false">
           <webXml/>
-          <glassfish/>
+          <glassfish file="dir/some-other-file" version="2.4"/>
           <root dir="web" deploymentPath="/"/>
           <module name="foo-module"/>
           <classpath>
             <path refid="whatever.yo"/>
           </classpath>
           <projectLibrary name="foo-project-library"/>
-          <resource url="resources/foo" deploymentPath="META-INF/resource/foo"/>
-          <resource url="resources/bar" deploymentPath="META-INF/resource/bar"/>
+          <resource file="resources/foo" deploymentPath="META-INF/resource/foo"/>
+          <resource file="resources/bar" deploymentPath="META-INF/resource/bar"/>
         </web>
       </facets>
     </ideamodule>

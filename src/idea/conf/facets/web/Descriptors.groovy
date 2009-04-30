@@ -13,7 +13,7 @@ public class Descriptors implements Visitable
 {
     def contents = []
 
-    def leftShift(def thing)
+    def leftShift(Descriptor thing)
     {
         contents << thing
     }

@@ -11,13 +11,9 @@ import idea.conf.Visitable
 
 public class AdditionalResource implements Descriptor
 {
-    //<deploymentDescriptor url="file://$MODULE_DIR$/additional-resource">
-    //  <option name="DEFAULT_DIR" value="META-INF" />
-    //</deploymentDescriptor>
-
     private static final String OPTION_NAME = "DEFAULT_DIR"
 
-    File url
+    File file
     String deploymentPath
 
 
@@ -44,7 +40,7 @@ public class AdditionalResource implements Descriptor
     public String toString()
     {
         return "AdditionalResource{" +
-                "url=" + url +
+                "file=" + file +
                 ", deploymentPath='" + deploymentPath + '\'' +
                 '}';
     }

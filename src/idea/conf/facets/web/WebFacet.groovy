@@ -23,10 +23,6 @@ public class WebFacet implements Visitable
     def packaging = new Packaging()
     def webRoots = new WebRoots()
     
-    //def descriptors = []
-    //def packaging = []
-    //def webRoots = []
-
     // attributes the user sets
     String name = "web" // the name of the IDEA web facet
 

@@ -16,7 +16,7 @@ public abstract class BaseDescriptor implements Descriptor
     private String defaultVersion
 
 
-    String url
+    String file
     String version
 
 
@@ -27,9 +27,9 @@ public abstract class BaseDescriptor implements Descriptor
         this.defaultVersion = defaultVersion;
     }
     
-    public File getUrl()
+    public File getFile()
     {
-        if (url) return new File(url)
+        if (file) return new File(file)
         return new File(DEFAULT_URL + name)
     }
 
@@ -57,7 +57,7 @@ public abstract class BaseDescriptor implements Descriptor
     public String toString()
     {
         "${displayName}{" +
-                "url=" + url +
+                "file=" + file +
                 ", version='" + version + '\'' +
                 '}';
 

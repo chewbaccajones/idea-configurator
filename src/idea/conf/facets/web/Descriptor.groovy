@@ -8,7 +8,7 @@ import idea.conf.Visitable
 public interface Descriptor extends Visitable
 {
     String getName()
-    File getUrl()
+    File getFile()
     String getVersion()
     String getOptional()
 }

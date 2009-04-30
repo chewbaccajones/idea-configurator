@@ -21,7 +21,7 @@ public class BuildJarIntegrationTest extends BaseBuildFileTester
     void testBuildJar()
     {
         executeTarget 'build.jar'
-        println getOutput()
+        //println getOutput()
         assertContainerElement(null, 'library', 'module', LIBRARY_1)
         assertContainerElement(null, 'library', 'module', LIBRARY_2)
         assertContainerElement(MODULE, 'module', null, null)
@@ -36,7 +36,7 @@ public class BuildJarIntegrationTest extends BaseBuildFileTester
         if (name) searchCriterion <<  { it.'@name' == name }
         if (type) searchCriterion <<  { it.'@type' == type }
         if (level) searchCriterion << { it.'@level' == level }
-        if (url) searchCriterion <<   { it.url.text() == url }
+        if (url) searchCriterion <<   { it.getFile.text() == url }
         
         def elements = component('BuildJarSettings').containerElement
         def element = elements.find {  elem ->

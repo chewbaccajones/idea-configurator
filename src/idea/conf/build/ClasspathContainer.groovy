@@ -7,7 +7,7 @@ import idea.conf.Visitable
  * 
  */
 
-public class ClasspathContainer extends Path implements Visitable 
+public class ClasspathContainer extends Path implements PackagingContainer 
 {
     def ClasspathContainer(project)
     {
