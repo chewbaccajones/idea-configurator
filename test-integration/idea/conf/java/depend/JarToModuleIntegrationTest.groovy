@@ -6,7 +6,7 @@ import idea.conf.BaseBuildFileTester
 /**
  * 
  */
-public class JarToModuleTest extends BaseBuildFileTester
+public class JarToModuleIntegrationTest extends BaseBuildFileTester
 {
     public void testManyJarToModulesElements()
     {
@@ -28,7 +28,7 @@ public class JarToModuleTest extends BaseBuildFileTester
     public void testTopLevelJarsToModules()
     {
         executeTarget 'jarsToModules.toplevel'
-        println getOutput()
+        //println getOutput()
 
         // check that two jars were converted to modules
         def moduleDeps = orderEntries('module')

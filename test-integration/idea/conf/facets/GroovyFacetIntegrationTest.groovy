@@ -10,7 +10,7 @@ import idea.conf.BaseBuildFileTester
  * Time: 10:23:56 AM
  */
 
-public class GroovyFacetTest extends BaseBuildFileTester
+public class GroovyFacetIntegrationTest extends BaseBuildFileTester
 {
     public void testGroovyNoSdk()
     {
