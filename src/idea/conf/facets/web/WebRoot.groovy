@@ -11,8 +11,8 @@ import idea.conf.Visitable
 
 public class WebRoot implements Visitable
 {
-    File url;
-    String relative;
+    File dir;
+    String deploymentPath;
 
 
     public List<Visitable> getChildren()
@@ -23,8 +23,8 @@ public class WebRoot implements Visitable
     public String toString()
     {
         return "WebRoot{" +
-                "url=" + url +
-                ", relative='" + relative + '\'' +
+                "dir=" + dir +
+                ", deploymentPath='" + deploymentPath + '\'' +
                 '}';
     }
 

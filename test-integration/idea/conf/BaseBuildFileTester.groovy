@@ -43,9 +43,18 @@ public abstract class BaseBuildFileTester extends BuildFileTest
         return moduleManager().orderEntry.findAll { it.'@type' == type }
     }
 
-    def assertSetting(facetName, name, value)
+    def assertSetting(facetName, name, String value)
     {
-        def found = facet(facetName).setting.find { it.'@name' == name }.'@value'
-        assertEquals value, found
+        assertSetting facetName, name, { it == value }
     }
+
+    def assertSetting(facetName, name, Closure valueTest)
+    {
+
+        final def facet = facet(facetName)
+        def foundValue = facet.depthFirst().setting.find { it.'@name' == name }.'@value'
+        assertNotNull foundValue
+        assertTrue "expected ${valueTest}, got ${foundValue}", valueTest(foundValue)
+    }
+
 }

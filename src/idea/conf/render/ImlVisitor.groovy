@@ -33,6 +33,9 @@ import idea.conf.facets.web.WebFacet
 import idea.conf.facets.web.Descriptor
 import idea.conf.facets.web.WebRoot
 import idea.conf.facets.web.Option
+import idea.conf.facets.web.Descriptors
+import idea.conf.facets.web.Packaging
+import idea.conf.facets.web.WebRoots
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -128,25 +131,38 @@ class ImlVisitor extends DefaultVisitor
 
     void visit(WebFacet web)
     {
-        xml.facet(type:"web", name:"web") {
+        xml.facet(type:"web", name:web.name) {
             xml.configuration() {
-                xml.descriptors() {
-                    web.descriptors.each { visit((Descriptor)it)  }
-                }
-                xml.webroots() {
-                    web.webRoots.each { visit((WebRoot)it)}
-                }
+                super.visit(web)
                 xml.building(){
-                    setting('EXPLODED_URL', web.explodedDir)
+                    setting('EXPLODED_URL', urls.file(web.explodedDir))
                     setting('EXPLODED_ENABLED', web.explodedDir != null)
-                    setting('JAR_URL', web.war)
+                    setting('JAR_URL', urls.file(web.war))
                     setting('JAR_ENABLED', web.war != null)
                     setting('EXCLUDE_EXPLODED_DIRECTORY', web.excludeExploded)
                 }
-                xml.packaging() {
-                    web.packaging.each { visit(it) }
-                }
             }
+        }
+    }
+
+    void visit(Descriptors descriptors)
+    {
+        xml.descriptors() {
+            super.visit(descriptors)
+        }
+    }
+
+    void visit(Packaging packaging)
+    {
+        xml.packaging() {
+            super.visit(packaging)
+        }
+    }
+
+    void visit(WebRoots webRoots)
+    {
+        xml.webroots() {
+            super.visit(webRoots)
         }
     }
 
@@ -170,7 +186,7 @@ class ImlVisitor extends DefaultVisitor
 
     void visit(WebRoot root)
     {
-        xml.root(url:urls.file(root.url), relative:root.relative) {
+        xml.root(url:urls.file(root.dir), relative:root.deploymentPath) {
             super.visit(root)
         }
     }

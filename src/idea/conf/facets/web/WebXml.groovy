@@ -1,57 +1,14 @@
 package idea.conf.facets.web
 
-import idea.conf.Visitable
 
-/**
- *
- * User: tomichj
- * Date: Apr 28, 2009
- * Time: 9:55:37 AM
- */
-
-public class WebXml implements Descriptor, Visitable
+public class WebXml extends BaseDescriptor
 {
-    public static final def DEFAULT_VERSION = "2.5"
-    public static final def OPTIONAL = "false"
     public static final def NAME = "web.xml"
+    public static final def DISPLAY_NAME = "WebXml"
+    public static final def DEFAULT_VERSION = "2.5"
 
-    File url
-    String version
-
-
-    public File getUrl()
+    def WebXml()
     {
-        if (url == null) return new File("web/META-INF/web.xml")
-        return url
+        super(NAME, DISPLAY_NAME, DEFAULT_VERSION)
     }
-
-    public String getVersion()
-    {
-        if (version == null) return DEFAULT_VERSION
-        return version
-    }
-
-    public String getName()
-    {
-        return NAME;
-    }
-
-    public String getOptional()
-    {
-        return OPTIONAL;
-    }
-
-    public List<Visitable> getChildren()
-    {
-        return null;
-    }
-
-    public String toString()
-    {
-        return "WebXml{" +
-                "url=" + url +
-                ", version='" + version + '\'' +
-                '}';
-    }
-
 }

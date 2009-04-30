@@ -17,17 +17,26 @@ import org.apache.tools.ant.Project
 
 public class WebFacet implements Visitable
 {
-    def descriptors = []
-    def packaging = []
-    def webRoots = []
+    private Project project
+    
+    def descriptors = new Descriptors()
+    def packaging = new Packaging()
+    def webRoots = new WebRoots()
+    
+    //def descriptors = []
+    //def packaging = []
+    //def webRoots = []
+
+    // attributes the user sets
+    String name = "web" // the name of the IDEA web facet
 
     File explodedDir
     boolean excludeExploded = true
 
     File war
 
-    private Project project
-
+    String version
+    
 
     WebFacet(Project project)
     {
@@ -37,6 +46,26 @@ public class WebFacet implements Visitable
     void addWebXml(WebXml webXml)
     {
         descriptors << webXml
+    }
+
+    void addGeronimo(Geronimo geronimo)
+    {
+        descriptors << geronimo
+    }
+
+    void addGlassfish(Glassfish glassfish)
+    {
+        descriptors << glassfish
+    }
+
+    void addJBoss(JBoss jboss)
+    {
+        descriptors << jboss
+    }
+
+    void addWeblogic(Weblogic weblogic)
+    {
+        descriptors << weblogic
     }
 
     void addRoot(WebRoot root)
@@ -78,7 +107,7 @@ public class WebFacet implements Visitable
 
     public List<Visitable> getChildren()
     {
-        return descriptors + packaging + webRoots
+        return [descriptors, packaging, webRoots]
     }
 
     public String toString()
