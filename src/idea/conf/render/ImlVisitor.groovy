@@ -2,10 +2,8 @@ package idea.conf.render
 
 import groovy.xml.MarkupBuilder
 
-import idea.conf.JavaModule
 import idea.conf.java.JavaComponent
 import idea.conf.java.depend.Dependencies
-import idea.conf.java.depend.ModuleLibrary
 import idea.conf.java.depend.Jdk
 import idea.conf.java.depend.ModuleSource
 import idea.conf.java.depend.ProjectLibrary
@@ -20,19 +18,24 @@ import idea.conf.facets.GroovyFacet
 import idea.conf.facets.FacetManager
 import org.apache.tools.ant.types.Path
 import idea.conf.java.depend.ModuleLibraryType
-import idea.conf.JavaModule
 import idea.conf.facets.GwtFacet
 import idea.conf.facets.SpringFacet
 import idea.conf.facets.SpringFileset
 import idea.conf.facets.SpringFile
 import idea.conf.build.BuildComponent
 import idea.conf.build.ClasspathContainer
-import idea.conf.build.ClasspathContainer
 import idea.conf.build.GlobalLibraryContainer
 import idea.conf.build.ModuleContainer
 import idea.conf.build.ModuleLibraryContainer
 import idea.conf.build.ProjectLibraryContainer
 import idea.conf.Logger
+import idea.conf.facets.web.WebFacet
+import idea.conf.facets.web.Descriptor
+import idea.conf.facets.web.WebRoot
+import idea.conf.facets.web.Option
+import idea.conf.facets.web.Descriptors
+import idea.conf.facets.web.Packaging
+import idea.conf.facets.web.WebRoots
 
 /**
 * The JavaImlVisitor creates an iml file for java projects.
@@ -116,13 +119,82 @@ class ImlVisitor extends DefaultVisitor
         def sdkUrl = new FileUrl(path)
 
         xml.facet(type:"gwt", name:"GWT") {
-            xml.setting(name:"additionalCompilerParameters", value:gwt.compilerParams)
-            xml.setting(name:"compilerMaxHeapSize", value:gwt.compilerMaxHeap)
-            xml.setting(name:"compilerOutputPath", value:gwt.compilerOutputPath)
-            xml.setting(name:"gwtScriptOutputStyle", value:gwt.outputStyle)
-            xml.setting(name:"gwtSdkUrl", value:sdkUrl.url())
-            xml.setting(name:"runGwtCompilerOnMake", value:gwt.runGwtCompilerOnMake)
-            if (gwt.intoWebFacet) xml.setting(name:"webFacet", value:gwt.intoWebFacet)
+            setting("additionalCompilerParameters", gwt.compilerParams)
+            setting("compilerMaxHeapSize", gwt.compilerMaxHeap)
+            setting("compilerOutputPath", gwt.compilerOutputPath)
+            setting("gwtScriptOutputStyle", gwt.outputStyle)
+            setting("gwtSdkUrl", sdkUrl.url())
+            setting("runGwtCompilerOnMake", gwt.runGwtCompilerOnMake)
+            if (gwt.intoWebFacet) setting("webFacet", gwt.intoWebFacet)
+        }
+    }
+
+    void visit(WebFacet web)
+    {
+        xml.facet(type:"web", name:web.name) {
+            xml.configuration() {
+                super.visit(web)
+                xml.building(){
+                    setting('EXPLODED_URL', urls.file(web.explodedDir))
+                    setting('EXPLODED_ENABLED', web.explodedDir != null)
+                    setting('JAR_URL', urls.file(web.war))
+                    setting('JAR_ENABLED', web.war != null)
+                    setting('EXCLUDE_EXPLODED_DIRECTORY', web.excludeExploded)
+                }
+            }
+        }
+    }
+
+    void visit(Descriptors descriptors)
+    {
+        xml.descriptors() {
+            super.visit(descriptors)
+        }
+    }
+
+    void visit(Packaging packaging)
+    {
+        xml.packaging() {
+            super.visit(packaging)
+        }
+    }
+
+    void visit(WebRoots webRoots)
+    {
+        xml.webroots() {
+            super.visit(webRoots)
+        }
+    }
+
+    void visit(Descriptor d)
+    {
+        def args = [:]
+        args['url'] = urls.file(d.file)
+        if (d.getName()) args['name'] = d.getName()
+        if (d.getOptional()) args['optional'] = d.getOptional()
+        if (d.getVersion()) args['version'] = d.getVersion()
+
+        xml.deploymentDescriptor(args) {
+            super.visit(d)
+        }
+        
+        //xml.deploymentDescriptor(name:d.getName(), url:urls.file(d.url),
+        //        optional:d.optional, version:d.version) {
+        //    super.visit(d)
+        //}
+    }
+
+    void visit(WebRoot root)
+    {
+        xml.root(url:urls.file(root.dir), relative:root.deploymentPath) {
+            super.visit(root)
+        }
+    }
+
+    void visit(Option option)
+    {
+        xml.option(name:option.name, value:option.value){
+            super.visit(option)
         }
     }
 
@@ -204,7 +276,7 @@ class ImlVisitor extends DefaultVisitor
                 }
                 xml.JAVADOC() {
                     lib.javadocs.list().each { javadoc -> xml.root(url:asUrl(javadoc)) }
-                    lib.javadocUrls.each { docUrl -> xml.root(url:asUrl(docUrl.url)) }
+                    lib.javadocUrls.each { docUrl -> xml.root(url:asUrl(docUrl.getFile)) }
                 }
                 xml.SOURCES() {
                     lib.sources.list().each { source -> xml.root(url:asUrl(source)) }
@@ -303,7 +375,7 @@ class ImlVisitor extends DefaultVisitor
             xml.containerElement(type:"library", level:"module") {
                 attribute("method", "1")
                 attribute("URI", "/")
-                xml.url() {
+                xml.getFile() {
                     xml.yield urls.jar(jar)
                 }
             }
@@ -348,7 +420,6 @@ class ImlVisitor extends DefaultVisitor
             attribute("URI", "/")
         }        
     }
-
 
     /**
      * Given a path as a String, return the appropriate Url type.

@@ -21,7 +21,7 @@ public class BuildJarIntegrationTest extends BaseBuildFileTester
     void testBuildJar()
     {
         executeTarget 'build.jar'
-        println getOutput()
+        //println getOutput()
         assertContainerElement(null, 'library', 'module', LIBRARY_1)
         assertContainerElement(null, 'library', 'module', LIBRARY_2)
         assertContainerElement(MODULE, 'module', null, null)
@@ -32,16 +32,15 @@ public class BuildJarIntegrationTest extends BaseBuildFileTester
 
     def assertContainerElement(name, type, level, url)
     {
-        def criterion = []
-        if (name) criterion <<  { it.'@name' == name }
-        if (type) criterion <<  { it.'@type' == type }
-        if (level) criterion << { it.'@level' == level }
-        if (url) criterion <<   { it.url.text() == url }
-        //criterion << { it.attribute.find { attr -> attr.'@name' == 'method' }.'@value' == 1  }
+        def searchCriterion = []
+        if (name) searchCriterion <<  { it.'@name' == name }
+        if (type) searchCriterion <<  { it.'@type' == type }
+        if (level) searchCriterion << { it.'@level' == level }
+        if (url) searchCriterion <<   { it.getFile.text() == url }
         
         def elements = component('BuildJarSettings').containerElement
         def element = elements.find {  elem ->
-            criterion.every  { test -> test(elem) }
+            searchCriterion.every  { test -> test(elem) }
         }
         assertNotNull element
         assertElementAttributes(element)
@@ -49,6 +48,7 @@ public class BuildJarIntegrationTest extends BaseBuildFileTester
 
     def assertElementAttributes(element)
     {
+        // right now all build elements have the same method and URI attributes  
         element.attribute.find { attr -> attr.'@name' == 'method' }.'@value' == '1'
         element.attribute.find { attr -> attr.'@name' == 'URI' }.'@value' == '/'
     }

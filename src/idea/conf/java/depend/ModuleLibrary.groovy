@@ -72,7 +72,7 @@ class ModuleLibrary implements ModuleLibraryType, Classpathed
 
     List<JavadocUrl> getJavadocUrls()
     {
-        javadocUrls.findAll { it.url != null }
+        javadocUrls.findAll { it.getFile != null }
     }
     
     void setClasses(File jar)

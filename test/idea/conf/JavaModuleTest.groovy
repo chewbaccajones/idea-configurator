@@ -8,23 +8,19 @@ import idea.conf.render.DebugVisitor
 *
 * @author tomichj
 */
-class ModuleTest extends GroovyTestCase
+class JavaModuleTest extends GroovyTestCase
 {
     private static final String EMPTY_MODULE =
-        'JavaModule{rootDir=null,moduleFile=moduleFile,relativePaths=false}'
+        'JavaModule{rootDir=null,moduleFile=moduleFile,relativePaths=true}'
+
     void testConstructor()
     {
+        Project p = new Project()
         JavaModule module = new JavaModule()
-        assertTrue module.toString().trim().equals(EMPTY_MODULE)
+        module.setProject(p)
+        assertNotNull module.rootDir
     }
-
-    void testSetProject()
-    {
-        JavaModule module = new JavaModule()
-        module.setProject([] as Project)
-        assertTrue module.toString().trim().equals(EMPTY_MODULE)
-    }
-
+    
     void testDebug()
     {
         JavaModule module = new JavaModule()

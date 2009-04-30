@@ -25,10 +25,9 @@ import static idea.conf.Validator.*
  */
 class JavaModule extends Task implements Visitable
 {
-
     File rootDir
     private File moduleFile
-    boolean relativePaths
+    boolean relativePaths = true
     JavaComponent java
     FacetManager facets
     BuildComponent build

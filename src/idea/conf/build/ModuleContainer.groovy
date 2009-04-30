@@ -3,7 +3,7 @@ package idea.conf.build
 import idea.conf.Visitable
 
 
-public class ModuleContainer implements Visitable 
+public class ModuleContainer implements PackagingContainer 
 {
     String name
 

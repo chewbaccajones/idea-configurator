@@ -161,6 +161,7 @@
     <ideamodule srcDir="src" classpathref="dumb.path"/>
   </target>
 
+
   <target name="build.jar">
     <property name="lib1.jar" location="lib/lib1.jar"/>
     <property name="lib2.jar" location="lib/lib2.jar"/>
@@ -176,6 +177,44 @@
         <projectLibrary name="someProjectLibrary"/>
         <globalLibrary name="someGlobalLibrary"/>
       </build>
+    </ideamodule>
+  </target>
+
+  
+  <target name="web.basic">
+    <path id="whatever.yo">
+      <pathelement location="lib/foo.jar"/>
+      <pathelement location="lib/bar.jar"/>
+    </path>
+    <ideamodule>
+      <src location="src"/>
+      <facets>
+        <web war="build/foo.war" explodedDir="build/exploded" excludeExploded="false"/>
+      </facets>
+    </ideamodule>
+  </target>
+
+  <target name="web.complex">
+    <path id="whatever.yo">
+      <pathelement location="lib/foo.jar"/>
+      <pathelement location="lib/bar.jar"/>
+    </path>
+    <ideamodule>
+      <src location="src"/>
+      <facets>
+        <web war="build/foo.war" explodedDir="build/exploded" excludeExploded="false">
+          <webXml/>
+          <glassfish file="dir/some-other-file" version="2.4"/>
+          <root dir="web" deploymentPath="/"/>
+          <module name="foo-module"/>
+          <classpath>
+            <path refid="whatever.yo"/>
+          </classpath>
+          <projectLibrary name="foo-project-library"/>
+          <resource file="resources/foo" deploymentPath="META-INF/resource/foo"/>
+          <resource file="resources/bar" deploymentPath="META-INF/resource/bar"/>
+        </web>
+      </facets>
     </ideamodule>
   </target>
 
