@@ -10,7 +10,7 @@ import idea.conf.Visitable
  * To change this template use File | Settings | File Templates.
  */
 
-public class ProjectLibraryContainer implements PackagingContainer
+public class ProjectLibraryContainer implements Packaging
 {
     String name
 

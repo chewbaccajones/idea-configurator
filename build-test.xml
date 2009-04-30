@@ -55,7 +55,7 @@
   </target>
 
 
-  <target name="jarsToModules.top.level.declaration">
+  <target name="jarsToModules.toplevel">
     <ideamodule classpathref="dumb.path" jarsToModules="dumb.jar, garble.jar">
     </ideamodule>
   </target>

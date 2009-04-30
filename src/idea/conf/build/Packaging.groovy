@@ -8,7 +8,7 @@ import idea.conf.Visitable
  * Date: Apr 29, 2009
  * Time: 5:31:47 PM
  */
-public interface PackagingContainer extends Visitable
+public interface Packaging extends Visitable
 {
 
 }

@@ -27,11 +27,18 @@ public class JarToModuleTest extends BaseBuildFileTester
 
     public void testTopLevelJarsToModules()
     {
-        executeTarget 'jarsToModules.top.level.declaration'
-        def module = new XmlParser().parseText(getOutput())
+        executeTarget 'jarsToModules.toplevel'
+        println getOutput()
+
+        // check that two jars were converted to modules
         def moduleDeps = orderEntries('module')
         assertEquals(['dumb', 'garble'], moduleDeps.'@module-name')
         assertEquals ([null, null], moduleDeps.'@exported')
+
+        def libs = orderEntries('module-library')
+        def jars = ['jar://$MODULE_DIR$/survives.jar!/',
+                'jar://$MODULE_DIR$/lib/module2.jar!/']
+        assertEquals jars, libs.library.CLASSES.root.collect { it[0].'@url' }
     }
 
 }
