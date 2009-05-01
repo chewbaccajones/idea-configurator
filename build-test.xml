@@ -87,6 +87,15 @@
     </ideamodule>
   </target>
 
+  <target name="groovy.no.compile">
+    <ideamodule>
+      <facets>
+        <groovy compile="false"/>
+      </facets>
+      <src location="src"/>
+    </ideamodule>
+  </target>
+
 
   <target name="path.filter">
     <ideamodule classpathref="dumb.path">

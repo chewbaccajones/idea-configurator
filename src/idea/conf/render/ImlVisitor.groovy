@@ -108,8 +108,10 @@ class ImlVisitor extends DefaultVisitor
 
     void visit(GroovyFacet groovy)
     {
+        Map args = [:]
+        if (!groovy.compile) args['compile'] = "false"
         xml.facet(type:"Groovy", name:"Groovy") {
-            xml.configuration()
+            xml.configuration(args)
         }
     }
 
@@ -342,7 +344,7 @@ class ImlVisitor extends DefaultVisitor
     }
 
 
-    void globalOrProjectLib(library, String level)
+    private void globalOrProjectLib(library, String level)
     {
         Map a = addExport([type:"library", name:library.getName(), level:level], library);
         xml.orderEntry(a){
@@ -363,7 +365,7 @@ class ImlVisitor extends DefaultVisitor
         }
     }
 
-    void setting(name, value)
+    private void setting(name, value)
     {
         xml.setting(name:name, value:value)
     }

@@ -14,8 +14,11 @@ class GroovyFacet implements Visitable, DependencyInjector
     public static final String NONE = "NONE";
     private static final String DEFAULT = "GROOVY";
 
-    // can be null, in which case lib is DEFAULT. Or can be any arbitrary thing.
+    // can be null, in which case lib is set to GROOVY. Can be any arbitrary groovy jdk,
+    // or can be set to NONE.
     String sdk
+    boolean compile = "true"
+
     
     def injectDependencies(Dependencies dependencies)
     {
