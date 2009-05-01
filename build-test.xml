@@ -191,10 +191,16 @@
 
   
   <target name="web.basic">
-    <path id="whatever.yo">
-      <pathelement location="lib/foo.jar"/>
-      <pathelement location="lib/bar.jar"/>
-    </path>
+    <ideamodule>
+      <src location="src"/>
+      <facets>
+        <web war="build/foo.war"/>
+      </facets>
+    </ideamodule>
+  </target>
+
+  
+  <target name="web.basic.with.attributes">
     <ideamodule>
       <src location="src"/>
       <facets>
@@ -202,6 +208,7 @@
       </facets>
     </ideamodule>
   </target>
+
 
   <target name="web.complex">
     <path id="whatever.yo">
@@ -226,6 +233,30 @@
       </facets>
     </ideamodule>
   </target>
+
+
+  <target name="web.specify.version">
+    <ideamodule>
+      <src location="src"/>
+      <facets>
+        <web version="2.5"/>
+      </facets>
+    </ideamodule>
+  </target>
+
+
+  <target name="web.specify.version.and.webxml">
+    <ideamodule>
+      <src location="src"/>
+      <facets>
+        <web version="2.5">
+          <webXml/>
+        </web>
+      </facets>
+    </ideamodule>
+  </target>
+
+
 
 </project>
 

@@ -11,9 +11,16 @@ import idea.conf.BaseBuildFileTester
 
 public class WebIntegrationTest extends BaseBuildFileTester
 {
-    void testBasicSettings()
+    void testBasic()
     {
         executeTarget 'web.basic'
+        println getOutput()
+
+    }
+
+    void testBasicSettings()
+    {
+        executeTarget 'web.basic.with.attributes'
         assertSetting 'web', 'EXPLODED_URL', 'file://$MODULE_DIR$/build/exploded'
         assertSetting 'web', 'EXPLODED_ENABLED', 'true'
         assertSetting 'web', 'JAR_URL', 'file://$MODULE_DIR$/build/foo.war'
@@ -36,8 +43,26 @@ public class WebIntegrationTest extends BaseBuildFileTester
         def roots = facet.configuration.webroots.root
         assertEquals 1, roots.size()
         def root = roots[0]
-        //println root
         assertEquals 'file://$MODULE_DIR$/web', root.'@url'
         assertEquals '/', root.'@relative'
     }
+
+    void testWebVersion()
+    {
+        executeTarget 'web.specify.version'
+
+        final def facet = facet('web')
+        def descriptors = facet.configuration.descriptors.deploymentDescriptor
+        assertEquals 1, descriptors.size()
+
+        def webXml = descriptors[0]
+        assertEquals "2.5", webXml.'@version'
+    }
+
+    void testVersionAndWebXmlExpectException()
+    {
+        expectBuildException('web.specify.version.and.webxml',
+                'specifying <web version="..."> and <webxml> should explodify')
+    }
+
 }

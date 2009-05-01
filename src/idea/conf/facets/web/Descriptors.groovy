@@ -13,6 +13,11 @@ public class Descriptors implements Visitable
 {
     def contents = []
 
+    boolean hasWebXml()
+    {
+        return contents.any { it.class == WebXml }
+    }
+
     def leftShift(Descriptor thing)
     {
         contents << thing

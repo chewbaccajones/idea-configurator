@@ -7,6 +7,8 @@ import idea.conf.build.ProjectLibraryContainer
 import idea.conf.build.ModuleLibraryContainer
 import idea.conf.build.ClasspathContainer
 import org.apache.tools.ant.Project
+import org.apache.tools.ant.BuildException
+import idea.conf.Logger
 
 /**
  *
@@ -18,29 +20,48 @@ import org.apache.tools.ant.Project
 public class WebFacet implements Visitable
 {
     private Project project
-    
-    def descriptors = new Descriptors()
+
+    Descriptors descriptors = new Descriptors()
     def packaging = new Packaging()
     def webRoots = new WebRoots()
-    
+
+    ////////////////////////////////
     // attributes the user sets
-    String name = "web" // the name of the IDEA web facet
+
+    /** the name of the IDEA web facet, defaults to "web"  */
+    String name = "web"
 
     File explodedDir
     boolean excludeExploded = true
 
     File war
 
+    /**
+     * specify webxml version here OR in WebXml child
+     */
     String version
-    
+
+
 
     WebFacet(Project project)
     {
         this.project = project
     }
 
+    void setVersion(String v)
+    {
+        def webXml = new WebXml()
+        webXml.version = v
+        descriptors << webXml
+    }
+
     void addWebXml(WebXml webXml)
     {
+        if (descriptors.hasWebXml())
+        {
+            throw new BuildException("Specify web version *OR* a webxml entry.")
+        }
+        
         descriptors << webXml
     }
 
@@ -101,9 +122,12 @@ public class WebFacet implements Visitable
         descriptors << resource
     }
 
+
     public List<Visitable> getChildren()
     {
-        return [descriptors, packaging, webRoots]
+        def result = [descriptors, packaging, webRoots]
+
+        return result
     }
 
     public String toString()
