@@ -95,7 +95,6 @@ public class WebFacet implements Visitable
         }
     }
 
-
     void addConfiguredWebXml(WebXml webXml)
     {
         if (descriptors.hasWebXml())
