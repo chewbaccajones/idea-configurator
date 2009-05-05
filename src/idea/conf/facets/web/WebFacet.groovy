@@ -53,6 +53,13 @@ public class WebFacet implements Visitable
         this.project = project
     }
 
+    void setVersion(String v)
+    {
+        def webXml = new WebXml()
+        webXml.version = v
+        descriptors << webXml
+    }
+    
     void setWebRoot(File dir)
     {
         def root = new WebRoot()
@@ -75,7 +82,7 @@ public class WebFacet implements Visitable
             String moduleName = javaModule.getModuleName()
             ModuleContainer moduleContainer = new ModuleContainer()
             moduleContainer.setName moduleName
-            addModule moduleContainer 
+            addModule moduleContainer
         }
         // add default web root
         if (!webRoots.hasRoots())
@@ -83,18 +90,11 @@ public class WebFacet implements Visitable
             File dir = new File("web", project.getBaseDir())
             def root = new WebRoot()
             root.setDir(dir)
-            root.setDeploymentPath("/") 
+            root.setDeploymentPath("/")
             webRoots << root
         }
-        
     }
 
-    void setVersion(String v)
-    {
-        def webXml = new WebXml()
-        webXml.version = v
-        descriptors << webXml
-    }
 
     void addConfiguredWebXml(WebXml webXml)
     {

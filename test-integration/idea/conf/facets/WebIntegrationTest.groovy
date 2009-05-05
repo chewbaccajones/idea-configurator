@@ -8,7 +8,6 @@ public class WebIntegrationTest extends BaseBuildFileTester
     void testBasic()
     {
         executeTarget 'web.basic'
-        println getOutput()
 
         final def web = facet('web')
         def deployment = web.configuration.descriptors.deploymentDescriptor
