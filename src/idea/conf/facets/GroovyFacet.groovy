@@ -20,7 +20,7 @@ class GroovyFacet implements Visitable, DependencyInjector
     boolean compile = "true"
 
     
-    def injectDependencies(Dependencies dependencies)
+    void injectDependencies(Dependencies dependencies)
     {
         if (NONE.equalsIgnoreCase(sdk)) return;
         if (sdk == null || sdk.equals(""))

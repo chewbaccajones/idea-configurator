@@ -9,6 +9,7 @@ import idea.conf.build.ClasspathContainer
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.BuildException
 import idea.conf.Logger
+import idea.conf.JavaModule
 
 /**
  *
@@ -20,10 +21,11 @@ import idea.conf.Logger
 public class WebFacet implements Visitable
 {
     private Project project
+    private JavaModule javaModule
 
     Descriptors descriptors = new Descriptors()
-    def packaging = new Packaging()
-    def webRoots = new WebRoots()
+    Packaging packaging = new Packaging()
+    WebRoots webRoots = new WebRoots()
 
     ////////////////////////////////
     // attributes the user sets
@@ -35,17 +37,56 @@ public class WebFacet implements Visitable
     boolean excludeExploded = true
 
     File war
+    
 
     /**
      * specify webxml version here OR in WebXml child
      */
     String version
 
+    boolean packageModule = true // by default, add this module to the web package
+
 
 
     WebFacet(Project project)
     {
         this.project = project
+    }
+
+    void setWebRoot(File dir)
+    {
+        def root = new WebRoot()
+        root.setDir(dir)
+        root.setDeploymentPath("/")
+        webRoots << root
+    }
+
+    void setJavaModule(JavaModule module)
+    {
+        this.javaModule = module
+    }
+
+    void setupDefaults()
+    {
+        // consider: if has webXml, check version against declared in web facet
+        if (!descriptors.hasWebXml()) descriptors << new WebXml()
+        if (packageModule)
+        {
+            String moduleName = javaModule.getModuleName()
+            ModuleContainer moduleContainer = new ModuleContainer()
+            moduleContainer.setName moduleName
+            addModule moduleContainer 
+        }
+        // add default web root
+        if (!webRoots.hasRoots())
+        {
+            File dir = new File("web", project.getBaseDir())
+            def root = new WebRoot()
+            root.setDir(dir)
+            root.setDeploymentPath("/") 
+            webRoots << root
+        }
+        
     }
 
     void setVersion(String v)
@@ -55,11 +96,11 @@ public class WebFacet implements Visitable
         descriptors << webXml
     }
 
-    void addWebXml(WebXml webXml)
+    void addConfiguredWebXml(WebXml webXml)
     {
         if (descriptors.hasWebXml())
         {
-            throw new BuildException("Specify web version *OR* a webxml entry.")
+            throw new BuildException("Specify <web version='...'> *OR* a <webxml> entry.")
         }
         
         descriptors << webXml
@@ -121,13 +162,10 @@ public class WebFacet implements Visitable
     {
         descriptors << resource
     }
-
-
+    
     public List<Visitable> getChildren()
     {
-        def result = [descriptors, packaging, webRoots]
-
-        return result
+        return [descriptors, packaging, webRoots]
     }
 
     public String toString()

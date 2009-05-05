@@ -37,9 +37,7 @@ class JavaModule extends Task implements Visitable
     void execute()
     {
         super.execute();
-
         Logger.init(project)
-
         stdoutOnly = isStdoutOnly()
 
         def debuggery = new DebugVisitor()
@@ -111,11 +109,16 @@ class JavaModule extends Task implements Visitable
         return new File(project.getBaseDir(), project.getName() + ".iml")
     }
 
+    String getModuleName()
+    {
+        return getModuleFile().getName().replace('.iml', '')
+    }
+
 
     def createFacets()
     {
         final Dependencies dependencies = java.dependencies
-        facets = new FacetManager(dependencies);
+        facets = new FacetManager(this);
         return facets;
     }
 

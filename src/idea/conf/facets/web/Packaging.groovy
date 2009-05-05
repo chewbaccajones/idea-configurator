@@ -14,6 +14,11 @@ public class Packaging implements Visitable
 {
     def contents = []
 
+    //def hasModule()
+    //{
+    //    
+    //}
+
     def leftShift(idea.conf.build.Packaging thing)
     {
         contents << thing

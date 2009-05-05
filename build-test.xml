@@ -199,6 +199,16 @@
     </ideamodule>
   </target>
 
+
+  <target name="web.root">
+    <ideamodule>
+      <src location="src"/>
+      <facets>
+        <web war="build/foo.war" webRoot="web2"/>
+      </facets>
+    </ideamodule>
+  </target>
+
   
   <target name="web.basic.with.attributes">
     <ideamodule>
@@ -244,13 +254,13 @@
     </ideamodule>
   </target>
 
-
+  
   <target name="web.specify.version.and.webxml">
     <ideamodule>
       <src location="src"/>
       <facets>
         <web version="2.5">
-          <webXml/>
+          <webXml/> <!-- should throw exception... web version and webXml specified -->
         </web>
       </facets>
     </ideamodule>
