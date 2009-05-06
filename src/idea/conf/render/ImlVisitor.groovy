@@ -15,7 +15,7 @@ import idea.conf.java.depend.Classpath
 import idea.conf.url.UrlFactory
 import idea.conf.url.FileUrl
 import idea.conf.facets.GroovyFacet
-import idea.conf.facets.FacetManager
+import idea.conf.facets.FacetManagerComponent
 import org.apache.tools.ant.types.Path
 import idea.conf.java.depend.ModuleLibraryType
 import idea.conf.facets.GwtFacet
@@ -70,7 +70,7 @@ class ImlVisitor extends DefaultVisitor
 
 
     // eventually we'll extract the facets, i think
-    void visit(FacetManager facets)
+    void visit(FacetManagerComponent facets)
     {
         xml.component(name:"FacetManager") {
             super.visit(facets)

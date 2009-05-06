@@ -9,17 +9,18 @@ import idea.conf.JavaModule
  * FacetManager might disappear. It's an extra layer we probably don't need.
  * @author tomichj
  */
-class FacetManager implements Visitable
+class FacetManagerComponent implements Visitable
 {
     def facets = []
     JavaModule javaModule
     Dependencies dependencies
 
-    public FacetManager(JavaModule javaModule)
+    public FacetManagerComponent(JavaModule javaModule)
     {
         this.javaModule = javaModule;
         this.dependencies = javaModule.java.dependencies
     }
+
 
     public void addConfiguredGroovy(GroovyFacet groovy)
     {

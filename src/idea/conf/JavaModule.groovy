@@ -12,7 +12,7 @@ import idea.conf.java.depend.Dependencies
 import idea.conf.url.UrlFactory
 import idea.conf.url.UrlFactoryImpl
 import idea.conf.java.JavaComponent
-import idea.conf.facets.FacetManager
+import idea.conf.facets.FacetManagerComponent
 import idea.conf.build.BuildComponent
 import static idea.conf.Validator.*
 
@@ -28,11 +28,11 @@ class JavaModule extends Task implements Visitable
     File rootDir
     private File moduleFile
     boolean relativePaths = true
-    JavaComponent java
-    FacetManager facets
-    BuildComponent build
     Boolean stdoutOnly
-    
+
+    JavaComponent java // other components don't need member variable references
+    def kids = []
+
 
     void execute()
     {
@@ -77,6 +77,7 @@ class JavaModule extends Task implements Visitable
     {
         super.setProject(project)
         java = new JavaComponent(project)
+        kids << java
     }
 
 
@@ -104,8 +105,6 @@ class JavaModule extends Task implements Visitable
     File getModuleFile()
     {
         if (moduleFile != null) return moduleFile
-
-        // default is ant project name, .iws, in the base dir.
         return new File(project.getBaseDir(), project.getName() + ".iml")
     }
 
@@ -117,15 +116,16 @@ class JavaModule extends Task implements Visitable
 
     def createFacets()
     {
-        final Dependencies dependencies = java.dependencies
-        facets = new FacetManager(this);
+        def facets = new FacetManagerComponent(this);
+        kids << facets
         return facets;
     }
 
     
     BuildComponent createBuild()
     {
-        build = new BuildComponent(project)
+        def build = new BuildComponent(project)
+        kids << build
         return build
     }
     
@@ -254,10 +254,6 @@ class JavaModule extends Task implements Visitable
     
     List<Visitable> getChildren()
     {
-        def kids = []
-        kids << java
-        if (facets) kids << facets
-        if (build) kids << build
         return kids as List<Visitable>;
     }
 

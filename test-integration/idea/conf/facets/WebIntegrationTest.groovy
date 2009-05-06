@@ -53,7 +53,7 @@ public class WebIntegrationTest extends BaseBuildFileTester
     void testComplexSetup()
     {
         executeTarget 'web.complex'
-        println getOutput()
+        //println getOutput()
         final def facet = facet('web')
 
         def deployments = facet.configuration.descriptors.deploymentDescriptor
