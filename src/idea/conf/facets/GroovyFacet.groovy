@@ -17,7 +17,7 @@ class GroovyFacet implements Visitable, DependencyInjector
     // can be null, in which case lib is set to GROOVY. Can be any arbitrary groovy jdk,
     // or can be set to NONE.
     String sdk
-    boolean compile = "true"
+    boolean compile = true
 
     
     void injectDependencies(Dependencies dependencies)
