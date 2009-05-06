@@ -30,7 +30,7 @@ class GwtFacet implements Visitable, DependencyInjector
         return null;
     }
 
-    public injectDependencies(Dependencies dependencies)
+    void injectDependencies(Dependencies dependencies)
     {
         if (projectGwtLib) dependencies.createProjectLibrary().name = projectGwtLib
         if (globalGwtLib) dependencies.createGlobalLibrary().name = globalGwtLib

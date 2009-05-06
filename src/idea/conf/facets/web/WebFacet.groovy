@@ -7,6 +7,9 @@ import idea.conf.build.ProjectLibraryContainer
 import idea.conf.build.ModuleLibraryContainer
 import idea.conf.build.ClasspathContainer
 import org.apache.tools.ant.Project
+import org.apache.tools.ant.BuildException
+import idea.conf.Logger
+import idea.conf.JavaModule
 
 /**
  *
@@ -18,29 +21,87 @@ import org.apache.tools.ant.Project
 public class WebFacet implements Visitable
 {
     private Project project
-    
-    def descriptors = new Descriptors()
-    def packaging = new Packaging()
-    def webRoots = new WebRoots()
-    
+    private JavaModule javaModule
+
+    Descriptors descriptors = new Descriptors()
+    Packaging packaging = new Packaging()
+    WebRoots webRoots = new WebRoots()
+
+    ////////////////////////////////
     // attributes the user sets
-    String name = "web" // the name of the IDEA web facet
+
+    /** the name of the IDEA web facet, defaults to "web"  */
+    String name = "web"
 
     File explodedDir
     boolean excludeExploded = true
 
     File war
-
-    String version
     
+
+    /**
+     * specify webxml version here OR in WebXml child
+     */
+    String version
+
+    boolean packageModule = true // by default, add this module to the web package
+
+
 
     WebFacet(Project project)
     {
         this.project = project
     }
 
-    void addWebXml(WebXml webXml)
+    void setVersion(String v)
     {
+        def webXml = new WebXml()
+        webXml.version = v
+        descriptors << webXml
+    }
+    
+    void setWebRoot(File dir)
+    {
+        def root = new WebRoot()
+        root.setDir(dir)
+        root.setDeploymentPath("/")
+        webRoots << root
+    }
+
+    void setJavaModule(JavaModule module)
+    {
+        this.javaModule = module
+    }
+
+    void setupDefaults()
+    {
+        // consider: if has webXml, check version against declared in web facet
+        if (!descriptors.hasWebXml()) descriptors << new WebXml()
+        if (packageModule)
+        {
+            String moduleName = javaModule.getModuleName()
+            ModuleContainer moduleContainer = new ModuleContainer()
+            moduleContainer.setName moduleName
+            addModule moduleContainer
+        }
+        // add default web root
+        if (!webRoots.hasRoots())
+        {
+            File dir = new File("web", project.getBaseDir())
+            def root = new WebRoot()
+            root.setDir(dir)
+            root.setDeploymentPath("/")
+            webRoots << root
+        }
+    }
+
+    void addConfiguredWebXml(WebXml webXml)
+    {
+        if (descriptors.hasWebXml())
+        {
+            throw new BuildException("Specify <web version='...'> *OR* a <webxml> entry.")
+        }
+        
         descriptors << webXml
     }
 
@@ -100,7 +161,7 @@ public class WebFacet implements Visitable
     {
         descriptors << resource
     }
-
+    
     public List<Visitable> getChildren()
     {
         return [descriptors, packaging, webRoots]

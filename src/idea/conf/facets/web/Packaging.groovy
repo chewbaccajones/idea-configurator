@@ -1,7 +1,7 @@
 package idea.conf.facets.web
 
 import idea.conf.Visitable
-import idea.conf.build.PackagingContainer
+import idea.conf.build.Packaging
 
 /**
  * 
@@ -14,7 +14,12 @@ public class Packaging implements Visitable
 {
     def contents = []
 
-    def leftShift(PackagingContainer thing)
+    //def hasModule()
+    //{
+    //    
+    //}
+
+    def leftShift(idea.conf.build.Packaging thing)
     {
         contents << thing
     }

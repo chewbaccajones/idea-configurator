@@ -6,7 +6,7 @@ import idea.conf.Visitable
  * 
  */
 
-public class GlobalLibraryContainer implements PackagingContainer
+public class GlobalLibraryContainer implements Packaging
 {
     String name
 

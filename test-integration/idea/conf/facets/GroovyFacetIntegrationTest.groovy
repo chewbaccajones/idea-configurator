@@ -10,7 +10,7 @@ import idea.conf.BaseBuildFileTester
  * Time: 10:23:56 AM
  */
 
-public class GroovyFacetTest extends BaseBuildFileTester
+public class GroovyFacetIntegrationTest extends BaseBuildFileTester
 {
     public void testGroovyNoSdk()
     {
@@ -43,22 +43,11 @@ public class GroovyFacetTest extends BaseBuildFileTester
         assertNull moduleManager().orderEntry.find { it.'@type' == 'library' }
     }
 
-
-
-    /**
-
-     if set to no sdk, no lib added to deps and set compile to false
-
-     compile groovy files: empty <configuration/>
-
-     
-     
-     <component name="FacetManager">
-       <facet type="Groovy" name="Groovy">
-         <configuration compile="false" />
-       </facet>
-     </component>
-     
-     */
+    public void testGroovyNoCompile()
+    {
+        executeTarget "groovy.no.compile"
+        def groovy = facet('Groovy')
+        assertEquals "false", groovy.configuration[0].'@compile'
+    }
 }
 

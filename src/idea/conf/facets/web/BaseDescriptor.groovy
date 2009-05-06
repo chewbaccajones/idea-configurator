@@ -11,9 +11,9 @@ public abstract class BaseDescriptor implements Descriptor
     private static final def OPTIONAL = "false"
     private static final def DEFAULT_URL = "web/WEB-INF/"
 
-    private String name
-    private String displayName
-    private String defaultVersion
+    private final String name
+    private final String displayName
+    private final String defaultVersion
 
 
     String file

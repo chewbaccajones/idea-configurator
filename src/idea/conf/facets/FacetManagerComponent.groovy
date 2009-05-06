@@ -3,20 +3,24 @@ package idea.conf.facets
 import idea.conf.Visitable
 import idea.conf.java.depend.Dependencies
 import idea.conf.facets.web.WebFacet
+import idea.conf.JavaModule
 
 /**
  * FacetManager might disappear. It's an extra layer we probably don't need.
  * @author tomichj
  */
-class FacetManager implements Visitable
+class FacetManagerComponent implements Visitable
 {
     def facets = []
+    JavaModule javaModule
     Dependencies dependencies
 
-    FacetManager(Dependencies dependencies)
+    public FacetManagerComponent(JavaModule javaModule)
     {
-        this.dependencies = dependencies;
+        this.javaModule = javaModule;
+        this.dependencies = javaModule.java.dependencies
     }
+
 
     public void addConfiguredGroovy(GroovyFacet groovy)
     {
@@ -38,6 +42,8 @@ class FacetManager implements Visitable
     public void addConfiguredWeb(WebFacet web)
     {
         facets << web
+        web.setJavaModule(javaModule)
+        web.setupDefaults()
     }
     
     public List<Visitable> getChildren()

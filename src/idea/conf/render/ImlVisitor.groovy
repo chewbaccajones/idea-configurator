@@ -15,7 +15,7 @@ import idea.conf.java.depend.Classpath
 import idea.conf.url.UrlFactory
 import idea.conf.url.FileUrl
 import idea.conf.facets.GroovyFacet
-import idea.conf.facets.FacetManager
+import idea.conf.facets.FacetManagerComponent
 import org.apache.tools.ant.types.Path
 import idea.conf.java.depend.ModuleLibraryType
 import idea.conf.facets.GwtFacet
@@ -70,7 +70,7 @@ class ImlVisitor extends DefaultVisitor
 
 
     // eventually we'll extract the facets, i think
-    void visit(FacetManager facets)
+    void visit(FacetManagerComponent facets)
     {
         xml.component(name:"FacetManager") {
             super.visit(facets)
@@ -108,8 +108,10 @@ class ImlVisitor extends DefaultVisitor
 
     void visit(GroovyFacet groovy)
     {
+        Map args = [:]
+        if (!groovy.compile) args['compile'] = "false"
         xml.facet(type:"Groovy", name:"Groovy") {
-            xml.configuration()
+            xml.configuration(args)
         }
     }
 
@@ -342,7 +344,7 @@ class ImlVisitor extends DefaultVisitor
     }
 
 
-    void globalOrProjectLib(library, String level)
+    private void globalOrProjectLib(library, String level)
     {
         Map a = addExport([type:"library", name:library.getName(), level:level], library);
         xml.orderEntry(a){
@@ -363,7 +365,7 @@ class ImlVisitor extends DefaultVisitor
         }
     }
 
-    void setting(name, value)
+    private void setting(name, value)
     {
         xml.setting(name:name, value:value)
     }

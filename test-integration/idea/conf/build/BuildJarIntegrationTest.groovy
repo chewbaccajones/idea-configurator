@@ -21,7 +21,6 @@ public class BuildJarIntegrationTest extends BaseBuildFileTester
     void testBuildJar()
     {
         executeTarget 'build.jar'
-        //println getOutput()
         assertContainerElement(null, 'library', 'module', LIBRARY_1)
         assertContainerElement(null, 'library', 'module', LIBRARY_2)
         assertContainerElement(MODULE, 'module', null, null)

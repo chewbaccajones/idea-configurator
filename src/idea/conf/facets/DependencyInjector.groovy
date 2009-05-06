@@ -8,5 +8,5 @@ import idea.conf.java.depend.Dependencies
  */
 public interface DependencyInjector
 {
-    def injectDependencies(Dependencies dependencies)
+    void injectDependencies(Dependencies dependencies)
 }
