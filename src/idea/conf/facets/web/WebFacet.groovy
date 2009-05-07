@@ -8,8 +8,8 @@ import idea.conf.build.ModuleLibraryContainer
 import idea.conf.build.ClasspathContainer
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.BuildException
-import idea.conf.Logger
 import idea.conf.JavaModule
+import idea.conf.build.PackageMethod
 
 /**
  *
@@ -137,7 +137,8 @@ public class WebFacet implements Visitable
 
     ClasspathContainer createClasspath()
     {
-        ClasspathContainer classpath = new ClasspathContainer(project)
+        ClasspathContainer classpath =
+            new ClasspathContainer(project, PackageMethod.COPY_OUTPUT, "/WEB-INF/lib")
         packaging << classpath
         return classpath
     }

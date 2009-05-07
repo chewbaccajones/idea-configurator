@@ -6,17 +6,21 @@ import idea.conf.Visitable
  * 
  */
 
-public class GlobalLibraryContainer implements Packaging
+public class GlobalLibraryContainer implements Package
 {
     String name
+    PackageMethod method
+    String relativePath
+    
 
     public List<Visitable> getChildren()
     {
-        return null;
+        return [new Attribute("method", method),
+                new Attribute("URI", relativePath)]
     }
 
     String toString()
     {
-        "GlobalLibrary{name=${name}}"
+        "GlobalLibraryContainer{name=${name}}"
     }
 }

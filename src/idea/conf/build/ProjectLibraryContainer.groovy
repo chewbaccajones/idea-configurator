@@ -2,25 +2,21 @@ package idea.conf.build
 
 import idea.conf.Visitable
 
-/**
- * Created by IntelliJ IDEA.
- * User: tomichj
- * Date: Jan 6, 2009
- * Time: 2:26:41 PM
- * To change this template use File | Settings | File Templates.
- */
 
-public class ProjectLibraryContainer implements Packaging
+public class ProjectLibraryContainer implements Package
 {
     String name
+    PackageMethod method
+    String relativePath
 
     public List<Visitable> getChildren()
     {
-        return null;
+        return [new Attribute("method", method),
+                new Attribute("URI", relativePath)]
     }
 
     String toString()
     {
-        "ProjectLibrary{name=${name}}"
+        "ProjectLibraryContainer{name=${name}}"
     }
 }

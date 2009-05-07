@@ -3,25 +3,43 @@ package idea.conf.build
 import org.apache.tools.ant.types.Path
 import idea.conf.Visitable
 
-/**
- * 
- */
 
-public class ClasspathContainer extends Path implements Packaging 
+public class ClasspathContainer extends Path implements Package
 {
-    def ClasspathContainer(project)
+    PackageMethod defaultMethod
+    String defaultRelativePath
+
+    PackageMethod method
+    String relativePath
+
+    
+    def ClasspathContainer(project, defaultMethod, defaultRelativePath)
     {
         super(project);
+        this.defaultMethod = defaultMethod
+        this.defaultRelativePath = defaultRelativePath
     }
 
+    def defaultedMethod()
+    {
+        if (method) return method
+        return defaultMethod
+    }
+
+    def defaultedRelativePath()
+    {
+        if (relativePath) return relativePath
+        return defaultRelativePath
+    }
 
     List<Visitable> getChildren()
     {
-        return null;
+        return [new Attribute("method", defaultedMethod()),
+                new Attribute("URI", defaultedRelativePath())]
     }
 
     String toString()
     {
-        "Classpath{list=${list()}}"
+        "ClasspathContainer{list=${list()}}"
     }
 }

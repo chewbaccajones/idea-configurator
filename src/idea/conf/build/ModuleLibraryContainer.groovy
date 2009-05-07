@@ -10,17 +10,20 @@ import idea.conf.Visitable
  * To change this template use File | Settings | File Templates.
  */
 
-public class ModuleLibraryContainer implements Packaging
+public class ModuleLibraryContainer implements Package
 {
     String name
+    PackageMethod method
+    String relativePath
 
     public List<Visitable> getChildren()
     {
-        return null;
+        return [new Attribute("method", method),
+                new Attribute("URI", relativePath)]
     }
 
     String toString()
     {
-        "ModuleLibrary{name=${name}}"
+        "ModuleLibraryContainer{name=${name}}"
     }
 }
