@@ -3,17 +3,20 @@ package idea.conf.build
 import idea.conf.Visitable
 
 
-public class ModuleLibraryContainer implements Packaging
+public class ModuleLibraryContainer implements Package
 {
     String name
+    PackageMethod method
+    String relativePath
 
     public List<Visitable> getChildren()
     {
-        return null;
+        return [new Attribute("method", method),
+                new Attribute("URI", relativePath)]
     }
 
     String toString()
     {
-        "ModuleLibrary{name=${name}}"
+        "ModuleLibraryContainer{name=${name}}"
     }
 }

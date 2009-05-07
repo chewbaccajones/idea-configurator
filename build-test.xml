@@ -189,7 +189,16 @@
     </ideamodule>
   </target>
 
-  
+
+  <target name="build.jar.module.jarandcopy">
+    <ideamodule>
+      <build jar="foo.jar">
+        <module name="fooModule" method="JAR_OUTPUT_AND_COPY"/>
+      </build>
+    </ideamodule>
+  </target>
+
+
   <target name="web.basic">
     <ideamodule>
       <src location="src"/>

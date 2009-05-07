@@ -12,6 +12,8 @@ import idea.conf.Visitable
 
 public class BuildComponent implements Visitable
 {
+    static final String DEFAULT_RELATIVE_PATH = "/"
+
     Project project
 
     // default jar to moduleName.jar in module root dir 
@@ -21,49 +23,61 @@ public class BuildComponent implements Visitable
 
     def kids = []
 
-    
+
     BuildComponent(Project project)
     {
         this.project = project
     }
-
+    
     Path createClasspath()
     {
-        ClasspathContainer lib = new ClasspathContainer(project)
+        // path-based class requires project in constructor, which breaks addConfiguredXXX
+        ClasspathContainer lib =
+            new ClasspathContainer(project, PackageMethod.COPY_OUTPUT, "/")
         kids << lib
         return lib.createPath()
     }
 
-    ModuleContainer createModule()
+    void addConfiguredModule(ModuleContainer module)
     {
-        addKid(new ModuleContainer())
+        defaults(module)
+        kids << module
     }
 
-    ModuleLibraryContainer createModuleLibrary()
+    void addConfiguredModuleLibrary(ModuleLibraryContainer library)
     {
-        addKid(new ModuleLibraryContainer())
+        defaults(library)
+        kids << library
     }
 
-    ProjectLibraryContainer createProjectLibrary()
+    void addConfiguredProjectLibrary(ProjectLibraryContainer library)
     {
-        addKid(new ProjectLibraryContainer())
+        defaults(library)
+        kids << library
     }
 
-    GlobalLibraryContainer createGlobalLibrary()
+    void addConfiguredGlobalLibrary(GlobalLibraryContainer library)
     {
-        addKid(new GlobalLibraryContainer())
+        defaults(library)
+        kids << library
     }
-
-
-    def addKid(kid)
+    
+    def defaults(container)
     {
-        kids << kid
-        return kid
+        if (!container.method) container.method = PackageMethod.COPY_OUTPUT
+        if (!container.relativePath) container.relativePath = defaultPath(container)
+
+    }
+    
+    def defaultPath(container)
+    {
+        if (container.method == PackageMethod.COPY_OUTPUT) return DEFAULT_RELATIVE_PATH
+        return "/" + container.name + ".jar"
     }
 
     // add an "all dependencies" flag?
     // add a filter to all dependencies?
-    
+
     List<Visitable> getChildren()
     {
         return kids

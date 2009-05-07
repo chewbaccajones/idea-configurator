@@ -3,17 +3,20 @@ package idea.conf.build
 import idea.conf.Visitable
 
 
-public class ProjectLibraryContainer implements Packaging
+public class ProjectLibraryContainer implements Package
 {
     String name
+    PackageMethod method
+    String relativePath
 
     public List<Visitable> getChildren()
     {
-        return null;
+        return [new Attribute("method", method),
+                new Attribute("URI", relativePath)]
     }
 
     String toString()
     {
-        "ProjectLibrary{name=${name}}"
+        "ProjectLibraryContainer{name=${name}}"
     }
 }
